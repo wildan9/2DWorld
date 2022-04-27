@@ -13,14 +13,14 @@ Map::~Map()
 	UnloadTexture(m_desert);
 }
 
-Size Map::GetDreamlandSize() const
+MapSize Map::GetDreamlandSize() const
 {
-	return Size{ m_dreamland.width, m_dreamland.width };
+	return MapSize{ m_dreamland.width, m_dreamland.height }; // 768 x 768 
 }
 
-Size Map::GetDesertSize() const
+MapSize Map::GetDesertSize() const
 {
-	return Size{ m_desert.width, m_desert.width };
+	return MapSize{ m_desert.width, m_desert.height }; // 768 x 768 
 }
 
 Vector2 Map::GetDreamlandPos() const

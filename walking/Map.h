@@ -4,7 +4,7 @@
 
 #include "raylib.h"
 
-struct Size
+struct MapSize
 {
 	int width;
 	int height;
@@ -15,8 +15,8 @@ class Map
 public:
 	Map();
 	~Map();
-	Size GetDreamlandSize() const;
-	Size GetDesertSize() const;
+	MapSize GetDreamlandSize() const;
+	MapSize GetDesertSize() const;
 	Vector2 GetDreamlandPos() const;
 	Vector2 GetDesertPos() const;
 	Rectangle GetMapLine1() const;

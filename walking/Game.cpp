@@ -17,7 +17,7 @@ Game::~Game()
 
 void Game::Run()
 {
-	Player wildan{ Vector2{40.0f, 140.0f} };
+	Player wildan{ Vector2{ 40.0f, 140.0f } };
 
 	Animals animals;
 
