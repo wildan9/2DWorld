@@ -103,7 +103,7 @@ void Player::Draw()
 
 // ---------------- Private Functions ------------------------------------------
 
-Vector2s Player::direction() const
+Vec2 Player::direction() const
 {
 	Vector2 direction{};
 

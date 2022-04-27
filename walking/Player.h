@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Animation.h"
-#include "Vector2s.h"
+#include "Vec2.h"
 
 class Player : public BaseAnimation
 {
@@ -25,9 +25,9 @@ private:
 	float m_timer{};
 	float m_facing{ 1.0f };
 	const float m_update_time{ 0.0834f };
-	Vector2s m_texture_pos;
 	Vector2 m_texture_last_pos{};
-	Vector2s direction() const;
+	Vec2 m_texture_pos{};
+	Vec2 direction() const;
 	Texture2D m_texture{ LoadTexture("textures/character/friendly_man_idle.png") };
 	Texture2D m_texture_idle{ LoadTexture("textures/character/friendly_man_idle.png") };
 	Texture2D m_texture_punch{ LoadTexture("textures/character/friendly_man_punch.png") };
