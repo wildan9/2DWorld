@@ -85,7 +85,7 @@ void Player::Draw()
 	if (Vector2Length(direction()) != 0.0f)
 	{
 		m_is_walk = 1;
-		m_texture_pos = m_texture_pos.Subtract(direction().Normalize().Scale(speed()));
+		m_texture_pos = Vector2Subtract(m_texture_pos, Vector2Scale(Vector2Normalize(direction()), speed()));
 		m_texture = m_texture_walk;
 		if (direction().x < 0.0f)  m_facing = 1.0f;
 		if (direction().x > 0.0f)  m_facing = -1.0f;
@@ -103,7 +103,7 @@ void Player::Draw()
 
 // ---------------- Private Functions ------------------------------------------
 
-Vec2 Player::direction() const
+Vector2 Player::direction() const
 {
 	Vector2 direction{};
 

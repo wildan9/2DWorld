@@ -39,9 +39,6 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vec2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Camera2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
