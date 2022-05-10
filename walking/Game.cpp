@@ -43,7 +43,7 @@ struct GameObject
             wildan.GetPosition().x > animals.crocodile.GetPosition().x)) animals.crocodile.Hurt();
         else animals.crocodile.Walk();
 
-        for (auto& rhino : animals.rhinos) if (CheckCollisionRecs(wildan.GetCollision(), rhino.GetRectColl())) wildan.Stop();
+        for (auto& rhino : animals.rhinos) if (CheckCollisionRecs(wildan.GetCollision(), rhino.GetCollision())) wildan.Stop();
 
         if (CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetFenceRectangle1()) ||
             CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetFenceRectangle2())) wildan.Stop();
