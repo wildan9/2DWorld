@@ -2,29 +2,13 @@
 
 #include "Header.h"
 
-struct InvisibleFence
+const Rectangle invisible_fences[]
 {
-	Rectangle GetTreeRectangle1()
-	{
-		return Rectangle{ 980.414f, 280.586f, 150.0f, 560.0f };
-	}
-
-	Rectangle GetTreeRectangle2()
-	{
-		return Rectangle{ GetTreeRectangle1().x + 280.0f, GetTreeRectangle1().y + 180.0f, 150.0f, 450.0f };
-	}
-
-	Rectangle GetFenceRectangle1()
-	{
-		return Rectangle{ 40.0f, 252.0f, 250.0f, 0.2f };
-	}
-
-	Rectangle GetFenceRectangle2()
-	{
-		return Rectangle{ 40.0f, 900.0f, 350.0f, 0.2f };
-	}
+	Rectangle{ 980.414f, 280.586f, 150.0f, 560.0f },	
+	Rectangle{ 980.414f + 280.0f, 280.586f + 180.0f, 150.0f, 450.0f },
+	Rectangle{ 40.0f, 252.0f, 250.0f, 0.2f },
+	Rectangle{ 40.0f, 900.0f, 350.0f, 0.2f }
 };
-
 
 class NaturalObject
 {
@@ -74,7 +58,6 @@ private:
 
 struct Prop
 {
-	InvisibleFence invisible_fence;
 	NaturalObject natural_obj;
 
 	void Draw()

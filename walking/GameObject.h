@@ -42,11 +42,11 @@ inline void GameObject::CheckCollision()
     if (CheckCollisionRecs(wildan.GetCollision(), map.GetMapLine1()) ||
         CheckCollisionRecs(wildan.GetCollision(), map.GetMapLine2())) wildan.Stop();
 
-    if (CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetFenceRectangle1()) ||
-        CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetFenceRectangle2())) wildan.Stop();
-
-    if (CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetTreeRectangle1()) ||
-        CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetTreeRectangle2())) wildan.Stop();
+    for (auto& invisible_fence : invisible_fences)
+    {
+        if (CheckCollisionRecs(wildan.GetCollision(), 
+            Rectangle{ invisible_fence.x, invisible_fence.y, invisible_fence.width, invisible_fence.height })) wildan.Stop();
+    }
 
     if (CheckCollisionRecs(wildan.GetCollision(), prop.natural_obj.GetBigStone1Coll())) wildan.SetPosition(Vector2D{ 3000.0f, 300.0f });
 
