@@ -69,7 +69,7 @@ void Player::OnLand()
 void Player::OnWater()
 {
 	if (speed() == 2.0f) m_timer += frame_time() * 0.11f;
-	else m_timer += frame_time() * 0.13;
+	else m_timer += frame_time() * 0.13f;
 
 	if (m_is_walk && m_timer >= m_update_time)
 	{
