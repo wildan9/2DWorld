@@ -16,26 +16,29 @@ public:
 		UnloadTexture(m_texture);
 	}
 
-	void Draw(const float& delta_time)
-	{
-		Animate(m_texture_pos, m_texture, delta_time, 2.0f, 8.0f);
-	}
+	void Draw(const float& delta_time);
 
-	Rectangle GetRectColl()
-	{
-		return Rectangle{
-			static_cast<float>(m_texture_pos.x + 12.0f),
-			static_cast<float>(m_texture_pos.y + 25.0f),
-			static_cast<float>(2.0f * m_texture.width / 8.0f - 30.0f),
-			static_cast<float>(2.0f * m_texture.height - 25.0f)
-		};
-	}
+	Rectangle GetRectColl();
 
 private:
 	Texture2D m_texture{ LoadTexture("textures/animals/rhino_idle.png") };
 	Vector2D m_texture_pos{};
 };
 
+inline void Rhino::Draw(const float& delta_time)
+{
+	Animate(m_texture_pos, m_texture, delta_time, 2.0f, 8.0f);
+}
+
+inline Rectangle Rhino::GetRectColl()
+{
+	return Rectangle{
+			static_cast<float>(m_texture_pos.x + 12.0f),
+			static_cast<float>(m_texture_pos.y + 25.0f),
+			static_cast<float>(2.0f * m_texture.width / 8.0f - 30.0f),
+			static_cast<float>(2.0f * m_texture.height - 25.0f)
+	};
+}
 
 class Bat : public BaseAnimation
 {
@@ -50,23 +53,7 @@ public:
 		UnloadTexture(m_texture);
 	}
 
-	void Draw(const float& delta_time, const float& fly_radius)
-	{
-		if (true)
-		{
-			m_texture_pos.x += m_speed.x;
-			m_texture_pos.y += m_speed.y;
-
-			if (m_texture_pos.x >= fly_radius || m_texture_pos.x <= 0)
-			{
-				m_speed.x *= -1.0f;
-				m_facing *= -1.0f;
-			}
-			if (m_texture_pos.y >= fly_radius || m_texture_pos.y <= 0) m_speed.y *= -1.0f;
-		}
-
-		Animate(m_texture_pos, m_texture, delta_time, 2.0f, 6.0f);
-	}
+	void Draw(const float& delta_time, const float& fly_radius);
 
 private:
 	Texture2D m_texture{ LoadTexture("textures/animals/bat_fly.png") };
@@ -75,6 +62,23 @@ private:
 	float m_facing{ 1.0f };
 };
 
+inline void Bat::Draw(const float& delta_time, const float& fly_radius)
+{
+	if (true)
+	{
+		m_texture_pos.x += m_speed.x;
+		m_texture_pos.y += m_speed.y;
+
+		if (m_texture_pos.x >= fly_radius || m_texture_pos.x <= 0)
+		{
+			m_speed.x *= -1.0f;
+			m_facing *= -1.0f;
+		}
+		if (m_texture_pos.y >= fly_radius || m_texture_pos.y <= 0) m_speed.y *= -1.0f;
+	}
+
+	Animate(m_texture_pos, m_texture, delta_time, 2.0f, 6.0f);
+}
 
 class Chicken : public BaseAnimation
 {
@@ -89,56 +93,7 @@ public:
 		UnloadTexture(m_texture);
 	}
 
-	void Draw(const float& delta_time)
-	{
-		int x = 1, y = 0;
-
-		if (m_texture_pos.x == 320.0f)
-		{
-			x = 0;
-			y = 1;
-		}
-		if (m_texture_pos.y == 300.0f)
-		{
-			x = 2;
-			y = 0;
-		}
-		if (m_texture_pos.x < 0.0f)
-		{
-			x = 1;
-			y = 2;
-		}
-
-		switch (x)
-		{
-		case 1:
-			m_texture_pos.x += m_speed;
-			m_facing = -1.0f;
-			break;
-		case 2:
-			m_texture_pos.x -= m_speed;
-			m_facing = 1.0f;
-			break;
-		default:
-			break;
-		}
-
-		switch (y)
-		{
-		case 1:
-			m_texture_pos.y += m_speed;
-			break;
-		case 2:
-			m_texture_pos.y -= m_speed;
-			break;
-		default:
-			break;
-		}
-
-		if (m_texture_pos.y != 0.0f) m_animate = 1;
-
-		Animate(m_texture_pos, m_texture, delta_time, 1.2f, 7.0f, m_facing, 0.0f, m_animate);
-	}
+	void Draw(const float& delta_time);
 
 private:
 	const float m_speed{ 1.0f };
@@ -148,6 +103,56 @@ private:
 	Vector2D m_texture_pos{};
 };
 
+inline void Chicken::Draw(const float& delta_time)
+{
+	int x = 1, y = 0;
+
+	if (m_texture_pos.x == 320.0f)
+	{
+		x = 0;
+		y = 1;
+	}
+	if (m_texture_pos.y == 300.0f)
+	{
+		x = 2;
+		y = 0;
+	}
+	if (m_texture_pos.x < 0.0f)
+	{
+		x = 1;
+		y = 2;
+	}
+
+	switch (x)
+	{
+	case 1:
+		m_texture_pos.x += m_speed;
+		m_facing = -1.0f;
+		break;
+	case 2:
+		m_texture_pos.x -= m_speed;
+		m_facing = 1.0f;
+		break;
+	default:
+		break;
+	}
+
+	switch (y)
+	{
+	case 1:
+		m_texture_pos.y += m_speed;
+		break;
+	case 2:
+		m_texture_pos.y -= m_speed;
+		break;
+	default:
+		break;
+	}
+
+	if (m_texture_pos.y != 0.0f) m_animate = 1;
+
+	Animate(m_texture_pos, m_texture, delta_time, 1.2f, 7.0f, m_facing, 0.0f, m_animate);
+}
 
 class Crocodile : public BaseAnimation
 {
@@ -255,22 +260,26 @@ public:
 
 	std::array<Bat, 3> bats{ bat1, bat2, bat3 };
 
-	void SetBatFlyRadius(const float& bat_fly_radius)
-	{
-		m_bat_fly_radius = bat_fly_radius;
-	}
+	void SetBatFlyRadius(const float& bat_fly_radius);
 
-	void Draw(const float& delta_time)
-	{
-		for (auto& rhino : rhinos) rhino.Draw(delta_time);
-
-		for (auto& bat : bats) bat.Draw(delta_time, m_bat_fly_radius);
-
-		crocodile.Draw(delta_time);
-
-		chicken.Draw(delta_time);
-	}
+	void Draw(const float& delta_time);
 
 private:
 	float m_bat_fly_radius{};
 };
+
+inline void Animals::SetBatFlyRadius(const float& bat_fly_radius)
+{
+	m_bat_fly_radius = bat_fly_radius;
+}
+
+inline void Animals::Draw(const float& delta_time)
+{
+	for (auto& rhino : rhinos) rhino.Draw(delta_time);
+
+	for (auto& bat : bats) bat.Draw(delta_time, m_bat_fly_radius);
+
+	crocodile.Draw(delta_time);
+
+	chicken.Draw(delta_time);
+}
