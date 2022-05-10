@@ -4,10 +4,7 @@
 
 #include "Header.h"
 #include "Camera2D.h"
-#include "Player.h"
-#include "Map.h"
-#include "Animal.cpp"
-#include "Prop.cpp"
+#include "GameObject.h"
 #include <string>
 
 class Game

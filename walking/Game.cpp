@@ -17,54 +17,6 @@ Game::~Game()
 
 enum class GameScreen { LOGO = 0, TITLE, GAMEPLAY };
 
-struct GameObject
-{
-    Player wildan{ Vector2D{ 40.0f, 140.0f } };
-    Prop prop;
-    Map map;
-    Animals animals;
-
-    void PlayWalkSound()
-    {
-        if (wildan.GetPosition().x < -15.0f || wildan.GetPosition().y < 0.0f ||
-            wildan.GetPosition().x > ((float)map.GetDreamlandSize().width - 15.0f) * map.GetMapScale() &&
-            wildan.GetPosition().x < (float)map.GetDreamlandSize().width + 1500.0f ||
-            wildan.GetPosition().y > (float)map.GetDreamlandSize().height * map.GetMapScale()) wildan.OnWater();
-        else wildan.OnLand();
-    }
-
-    void CheckCollision()
-    {
-        if (CheckCollisionRecs(wildan.GetCollision(), animals.crocodile.GetCollision()) &&
-            wildan.IsPunch() && (wildan.GetFacing() == 1.0f && animals.crocodile.GetFacing() >= -1.0f &&
-            wildan.GetPosition().x < animals.crocodile.GetPosition().x)) animals.crocodile.Hurt();
-        else if (CheckCollisionRecs(wildan.GetCollision(), animals.crocodile.GetCollision()) &&
-            wildan.IsPunch() && (wildan.GetFacing() == -1.0f && animals.crocodile.GetFacing() >= -1.0f &&
-            wildan.GetPosition().x > animals.crocodile.GetPosition().x)) animals.crocodile.Hurt();
-        else animals.crocodile.Walk();
-
-        for (auto& rhino : animals.rhinos) if (CheckCollisionRecs(wildan.GetCollision(), rhino.GetCollision())) wildan.Stop();
-
-        if (CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetFenceRectangle1()) ||
-            CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetFenceRectangle2())) wildan.Stop();
-
-        if (CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetTreeRectangle1()) ||
-            CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetTreeRectangle2())) wildan.Stop();
-
-        if (CheckCollisionRecs(wildan.GetCollision(), prop.natural_obj.GetBigStone1Coll())) wildan.SetPosition(Vector2D{ 3000.0f, 300.0f });
-
-        if (CheckCollisionRecs(wildan.GetCollision(), prop.natural_obj.GetBigStone2Coll())) wildan.SetPosition(Vector2D{ 40.0f, 140.0f });
-    }
-
-    void Draw()
-    {
-        map.Draw();
-        wildan.Draw();
-        prop.Draw();
-        animals.Draw(GetFrameTime());
-    }
-};
-
 void Game::Run()
 {
     GameScreen current_screen{ GameScreen::LOGO };
