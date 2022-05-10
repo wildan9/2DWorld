@@ -4,7 +4,7 @@
 
 // ---------------- Public Functions ------------------------------------------
 
-Player::Player(Vector2& pos)
+Player::Player(Vector2D& pos)
 {
 	m_texture_pos = pos;
 }
@@ -19,12 +19,12 @@ Player::~Player()
 	UnloadSound(m_water_step);
 }
 
-Vector2 Player::GetPosition() const
+Vector2D Player::GetPosition() const
 {
 	return m_texture_pos;
 }
 
-void Player::SetPosition(Vector2& pos)
+void Player::SetPosition(Vector2D& pos)
 {
 	m_texture_pos = pos;
 }
@@ -82,10 +82,10 @@ void Player::Draw()
 {
 	m_texture_last_pos = m_texture_pos;
 
-	if (Vector2Length(direction()) != 0.0f)
+	if (direction().Length() != 0.0f)
 	{
 		m_is_walk = 1;
-		m_texture_pos = Vector2Subtract(m_texture_pos, Vector2Scale(Vector2Normalize(direction()), speed()));
+		m_texture_pos = m_texture_pos.Subtract(direction().Normalize().Scale(speed()));
 		m_texture = m_texture_walk;
 		if (direction().x < 0.0f)  m_facing = 1.0f;
 		if (direction().x > 0.0f)  m_facing = -1.0f;
@@ -103,9 +103,9 @@ void Player::Draw()
 
 // ---------------- Private Functions ------------------------------------------
 
-Vector2 Player::direction() const
+Vector2D Player::direction() const
 {
-	Vector2 direction{};
+	Vector2D direction{};
 
 	if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) direction.x -= 1.0f;
 	if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) direction.x += 1.0f;

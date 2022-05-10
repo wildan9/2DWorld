@@ -23,12 +23,12 @@ MapSize Map::GetDesertSize() const
 	return MapSize{ m_desert.width, m_desert.height }; // 768 x 768 
 }
 
-Vector2 Map::GetDreamlandPos() const
+Vector2D Map::GetDreamlandPos() const
 {
 	return m_dreamland_pos;
 }
 
-Vector2 Map::GetDesertPos() const
+Vector2D Map::GetDesertPos() const
 {
 	return m_desert_pos;
 }
@@ -50,6 +50,6 @@ float Map::GetMapScale() const
 
 void Map::Draw()
 {
-	DrawTextureEx(m_dreamland, m_dreamland_pos, 0.0f, m_map_scale, WHITE);
-	DrawTextureEx(m_desert, m_desert_pos, 0.0f, m_map_scale, WHITE);
+	DrawTextureEx(m_dreamland, m_dreamland_pos.ToVector2(), 0.0f, m_map_scale, WHITE);
+	DrawTextureEx(m_desert, m_desert_pos.ToVector2(), 0.0f, m_map_scale, WHITE);
 }

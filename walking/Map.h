@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "raylib.h"
+#include "Header.h"
 
 struct MapSize
 {
@@ -17,8 +17,8 @@ public:
 	~Map();
 	MapSize GetDreamlandSize() const;
 	MapSize GetDesertSize() const;
-	Vector2 GetDreamlandPos() const;
-	Vector2 GetDesertPos() const;
+	Vector2D GetDreamlandPos() const;
+	Vector2D GetDesertPos() const;
 	Rectangle GetMapLine1() const;
 	Rectangle GetMapLine2() const;
 	float GetMapScale() const;
@@ -28,6 +28,6 @@ private:
 	const float m_map_scale{ 2.0f };
 	Texture2D m_dreamland{ LoadTexture("textures/maps/dreamland.png") };
 	Texture2D m_desert{ LoadTexture("textures/maps/desert.png") };
-	Vector2 m_dreamland_pos{};
-	Vector2 m_desert_pos{ m_dreamland.width * m_map_scale + 760.0f, 0.0f };
+	Vector2D m_dreamland_pos{};
+	Vector2D m_desert_pos{ m_dreamland.width * m_map_scale + 760.0f, 0.0f };
 };

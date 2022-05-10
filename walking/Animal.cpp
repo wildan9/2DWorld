@@ -6,7 +6,7 @@
 class Rhino : public BaseAnimation
 {
 public:
-	Rhino(Vector2& pos)
+	Rhino(Vector2D& pos)
 	{
 		m_texture_pos = pos;
 	}
@@ -33,14 +33,14 @@ public:
 
 private:
 	Texture2D m_texture{ LoadTexture("textures/animals/rhino_idle.png") };
-	Vector2 m_texture_pos{};
+	Vector2D m_texture_pos{};
 };
 
 
 class Bat : public BaseAnimation
 {
 public:
-	Bat(Vector2& pos)
+	Bat(Vector2D& pos)
 	{
 		m_texture_pos = pos;
 	}
@@ -70,8 +70,8 @@ public:
 
 private:
 	Texture2D m_texture{ LoadTexture("textures/animals/bat_fly.png") };
-	Vector2 m_speed{ 1.5f, 1.0f };
-	Vector2 m_texture_pos{};
+	Vector2D m_speed{ 1.5f, 1.0f };
+	Vector2D m_texture_pos{};
 	float m_facing{ 1.0f };
 };
 
@@ -145,7 +145,7 @@ private:
 	float m_facing{ -1.0f };
 	bool m_animate{ 0 };
 	Texture2D m_texture{ LoadTexture("textures/animals/chicken_walk.png") };
-	Vector2 m_texture_pos{};
+	Vector2D m_texture_pos{};
 };
 
 
@@ -165,7 +165,7 @@ public:
 		UnloadSound(m_getting_punched);
 	}
 
-	Vector2 GetPosition()
+	Vector2D GetPosition()
 	{
 		return m_texture_pos;
 	}
@@ -228,7 +228,7 @@ private:
 	float m_facing{ 1.0f };
 	float m_update_time{ 0.0834f };
 	bool m_is_walk{};
-	Vector2 m_texture_pos{};
+	Vector2D m_texture_pos{};
 	Texture2D m_texture{ LoadTexture("textures/animals/crocodile_walk.png") };
 	Texture2D m_texture_walk{ LoadTexture("textures/animals/crocodile_walk.png") };
 	Texture2D m_texture_hurt{ LoadTexture("textures/animals/crocodile_hurt.png") };
@@ -239,13 +239,13 @@ private:
 class Animals
 {
 public:
-	Rhino rhino1{ Vector2{ 800.0f, 120.0f } };
-	Rhino rhino2{ Vector2{ 950.0f, 80.0f } };
-	Rhino rhino3{ Vector2{ 650.0f, 100.0f } };
+	Rhino rhino1{ Vector2D{ 800.0f, 120.0f } };
+	Rhino rhino2{ Vector2D{ 950.0f, 80.0f } };
+	Rhino rhino3{ Vector2D{ 650.0f, 100.0f } };
 
-	Bat bat1{ Vector2{ 111.0f, 111.0f } };
-	Bat bat2{ Vector2{ 212.0f, 212.0f } };
-	Bat bat3{ Vector2{ 313.0f, 313.0f } };
+	Bat bat1{ Vector2D{ 111.0f, 111.0f } };
+	Bat bat2{ Vector2D{ 212.0f, 212.0f } };
+	Bat bat3{ Vector2D{ 313.0f, 313.0f } };
 
 	Crocodile crocodile;
 

@@ -7,7 +7,7 @@ BaseAnimation::BaseAnimation()
 
 }
 
-void BaseAnimation::Animate(Vector2& position, Texture2D& texture, const float& delta_time, const float& size, const float& row, float facing, bool animate)
+void BaseAnimation::Animate(Vector2D& position, Texture2D& texture, const float& delta_time, const float& size, const float& row, float facing, bool animate)
 {
     if (animate)
     {
@@ -30,10 +30,10 @@ void BaseAnimation::Animate(Vector2& position, Texture2D& texture, const float& 
         size * (float)texture.width / row,
         size * (float)texture.height
     };
-    DrawTexturePro(texture, source, dest, Vector2{}, 0.0f, WHITE);
+    DrawTexturePro(texture, source, dest, Vector2D{}.ToVector2(), 0.0f, WHITE);
 }
 
-void BaseAnimation::Animate(Vector2& position, Texture2D& texture, const float& delta_time, const float& size, const float& row, float facing, float timer, bool animate)
+void BaseAnimation::Animate(Vector2D& position, Texture2D& texture, const float& delta_time, const float& size, const float& row, float facing, float timer, bool animate)
 {
     if (animate)
     {
@@ -56,5 +56,5 @@ void BaseAnimation::Animate(Vector2& position, Texture2D& texture, const float& 
         size * (float)texture.width / row,
         size * (float)texture.height
     };
-    DrawTexturePro(texture, source, dest, Vector2{}, 0.0f, WHITE);
+    DrawTexturePro(texture, source, dest, Vector2D{}.ToVector2(), 0.0f, WHITE);
 }

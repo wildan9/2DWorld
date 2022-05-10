@@ -3,15 +3,14 @@
 #pragma once
 
 #include "Animation.h"
-#include "raymath.h"
 
 class Player : public BaseAnimation
 {
 public:
-	Player(Vector2& pos);
+	Player(Vector2D& pos);
 	~Player();
-	Vector2 GetPosition() const;
-	void SetPosition(Vector2& pos);
+	Vector2D GetPosition() const;
+	void SetPosition(Vector2D& pos);
 	Rectangle GetCollision() const;
 	float GetFacing() const;
 	bool IsPunch() const;
@@ -25,9 +24,9 @@ private:
 	float m_timer{};
 	float m_facing{ 1.0f };
 	const float m_update_time{ 0.0834f };
-	Vector2 m_texture_last_pos{};
-	Vector2 m_texture_pos{};
-	Vector2 direction() const;
+	Vector2D m_texture_last_pos{};
+	Vector2D m_texture_pos{};
+	Vector2D direction() const;
 	Texture2D m_texture{ LoadTexture("textures/character/friendly_man_idle.png") };
 	Texture2D m_texture_idle{ LoadTexture("textures/character/friendly_man_idle.png") };
 	Texture2D m_texture_punch{ LoadTexture("textures/character/friendly_man_punch.png") };

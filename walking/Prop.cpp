@@ -1,6 +1,6 @@
 /* by Wildan R. */
 
-#include "raylib.h"
+#include "Header.h"
 
 struct InvisibleFence
 {
@@ -61,14 +61,14 @@ public:
 
 	void Draw()
 	{
-		DrawTextureV(m_big_stone, m_big_stone1_pos, WHITE);
-		DrawTextureV(m_big_stone, m_big_stone2_pos, WHITE);
+		DrawTextureV(m_big_stone, m_big_stone1_pos.ToVector2(), WHITE);
+		DrawTextureV(m_big_stone, m_big_stone2_pos.ToVector2(), WHITE);
 	}
 
 private:
 	Texture2D m_big_stone{ LoadTexture("textures/natural_objects/big_stone.png") };
-	Vector2 m_big_stone1_pos{ 1600.0f, 700.0f };
-	Vector2 m_big_stone2_pos{ 3400.0f, 600.0f };
+	Vector2D m_big_stone1_pos{ 1600.0f, 700.0f };
+	Vector2D m_big_stone2_pos{ 3400.0f, 600.0f };
 };
 
 

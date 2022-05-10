@@ -19,9 +19,9 @@ enum class GameScreen { LOGO = 0, TITLE, GAMEPLAY };
 
 struct GameObject
 {
-    Player wildan{ Vector2{ 40.0f, 140.0f } };
-    Map map;
+    Player wildan{ Vector2D{ 40.0f, 140.0f } };
     Prop prop;
+    Map map;
     Animals animals;
 
     void PlayWalkSound()
@@ -45,18 +45,15 @@ struct GameObject
 
         for (auto& rhino : animals.rhinos) if (CheckCollisionRecs(wildan.GetCollision(), rhino.GetRectColl())) wildan.Stop();
 
-        if (CheckCollisionRecs(wildan.GetCollision(), map.GetMapLine1()) ||
-            CheckCollisionRecs(wildan.GetCollision(), map.GetMapLine2())) wildan.Stop();
-
         if (CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetFenceRectangle1()) ||
             CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetFenceRectangle2())) wildan.Stop();
 
         if (CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetTreeRectangle1()) ||
             CheckCollisionRecs(wildan.GetCollision(), prop.invisible_fence.GetTreeRectangle2())) wildan.Stop();
 
-        if (CheckCollisionRecs(wildan.GetCollision(), prop.natural_obj.GetBigStone1Coll())) wildan.SetPosition(Vector2{ 3000.0f, 300.0f });
+        if (CheckCollisionRecs(wildan.GetCollision(), prop.natural_obj.GetBigStone1Coll())) wildan.SetPosition(Vector2D{ 3000.0f, 300.0f });
 
-        if (CheckCollisionRecs(wildan.GetCollision(), prop.natural_obj.GetBigStone2Coll())) wildan.SetPosition(Vector2{ 40.0f, 140.0f });
+        if (CheckCollisionRecs(wildan.GetCollision(), prop.natural_obj.GetBigStone2Coll())) wildan.SetPosition(Vector2D{ 40.0f, 140.0f });
     }
 
     void Draw()
@@ -78,8 +75,8 @@ void Game::Run()
 
     game_obj.animals.SetBatFlyRadius(game_obj.map.GetDreamlandSize().width * game_obj.map.GetMapScale());
 
-    m_camera.target = game_obj.wildan.GetPosition();
-    m_camera.offset = Vector2{ m_window_width / 2.0f,  m_window_height / 2.0f };
+    m_camera.target = game_obj.wildan.GetPosition().ToVector2();
+    m_camera.offset = Vector2D{ m_window_width / 2.0f,  m_window_height / 2.0f }.ToVector2();
     m_camera.rotation = 0.0f;
     m_camera.zoom = 1.0f;
 
@@ -120,7 +117,7 @@ void Game::Run()
         } break;
         case GameScreen::GAMEPLAY:
         {
-            m_camera.target = game_obj.wildan.GetPosition();
+            m_camera.target = game_obj.wildan.GetPosition().ToVector2();
             m_camera.BeginMode();
             game_obj.CheckCollision();
             game_obj.PlayWalkSound();
