@@ -347,7 +347,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="GetterSetter.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="sounds\getting_punched.wav" />
