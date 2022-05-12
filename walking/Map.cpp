@@ -9,47 +9,47 @@ Map::Map()
 
 Map::~Map()
 {
-	UnloadTexture(m_dreamland);
-	UnloadTexture(m_desert);
+	UnloadTexture(_dreamland);
+	UnloadTexture(_desert);
 }
 
 MapSize Map::GetDreamlandSize() const
 {
-	return MapSize{ m_dreamland.width, m_dreamland.height }; // 768 x 768 
+	return MapSize{ _dreamland.width, _dreamland.height }; // 768 x 768 
 }
 
 MapSize Map::GetDesertSize() const
 {
-	return MapSize{ m_desert.width, m_desert.height }; // 768 x 768 
+	return MapSize{ _desert.width, _desert.height }; // 768 x 768 
 }
 
 Vector2D Map::GetDreamlandPos() const
 {
-	return m_dreamland_pos;
+	return _dreamlandPos;
 }
 
 Vector2D Map::GetDesertPos() const
 {
-	return m_desert_pos;
+	return _desertPos;
 }
 
 Rectangle Map::GetMapLine1() const
 {
-	return Rectangle{ m_desert_pos.x - 480.0f, 0.0f, 100.0f, (float)m_dreamland.height * m_map_scale };
+	return Rectangle{ _desertPos.x - 480.0f, 0.0f, 100.0f, (float)_dreamland.height * _mapScale };
 }
 
 Rectangle Map::GetMapLine2() const
 {
-	return Rectangle{ (float)m_dreamland.width * m_map_scale * 2.5f, 0.0f, 100.0f, (float)m_desert.height * m_map_scale };
+	return Rectangle{ (float)_dreamland.width * _mapScale * 2.5f, 0.0f, 100.0f, (float)_desert.height * _mapScale };
 }
 
 float Map::GetMapScale() const
 {
-	return m_map_scale;
+	return _mapScale;
 }
 
 void Map::Draw()
 {
-	DrawTextureEx(m_dreamland, m_dreamland_pos.ToVector2(), 0.0f, m_map_scale, WHITE);
-	DrawTextureEx(m_desert, m_desert_pos.ToVector2(), 0.0f, m_map_scale, WHITE);
+	DrawTextureEx(_dreamland, _dreamlandPos.ToVector2(), 0.0f, _mapScale, WHITE);
+	DrawTextureEx(_desert, _desertPos.ToVector2(), 0.0f, _mapScale, WHITE);
 }

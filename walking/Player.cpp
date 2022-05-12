@@ -6,99 +6,99 @@
 
 Player::Player(Vector2D& pos)
 {
-	m_texture_pos = pos;
+	_texturePos = pos;
 }
 
 Player::~Player()
 {
-	UnloadTexture(m_texture);
-	UnloadTexture(m_texture_idle);
-	UnloadTexture(m_texture_walk);
-	UnloadTexture(m_texture_punch);
-	UnloadSound(m_land_step);
-	UnloadSound(m_water_step);
+	UnloadTexture(_texture);
+	UnloadTexture(_textureIdle);
+	UnloadTexture(_textureWalk);
+	UnloadTexture(_texturePunch);
+	UnloadSound(_landStep);
+	UnloadSound(_waterStep);
 }
 
 Vector2D Player::GetPosition() const
 {
-	return m_texture_pos;
+	return _texturePos;
 }
 
 void Player::SetPosition(Vector2D& pos)
 {
-	m_texture_pos = pos;
+	_texturePos = pos;
 }
 
 Rectangle Player::GetCollision() const
 {
 	return Rectangle{
-		m_texture_pos.x, m_texture_pos.y,
-		1.5f * (float)m_texture.width / row(),
-		1.5f * (float)m_texture.height
+		_texturePos.x, _texturePos.y,
+		1.5f * (float)_texture.width / row(),
+		1.5f * (float)_texture.height
 	};
 }
 
 float Player::GetFacing() const
 {
-	return m_facing;
+	return _facing;
 }
 
 bool Player::IsPunch() const
 {
-	if (IsKeyDown(KEY_E) && !m_is_walk) return 1;
+	if (IsKeyDown(KEY_E) && !_isWalk) return 1;
 	else return 0;
 }
 
 void Player::Stop()
 {
-	m_texture_pos = m_texture_last_pos;
+	_texturePos = _textureLastPos;
 }
 
 void Player::OnLand()
 {
-	if (speed() == 2.0f) m_timer += frame_time() * 0.23f;
-	else m_timer += frame_time() * 0.33f;
+	if (speed() == 2.0f) _timer += frame_time() * 0.23f;
+	else _timer += frame_time() * 0.33f;
 
-	if (m_is_walk && m_timer >= m_update_time)
+	if (_isWalk && _timer >= _updateTime)
 	{
-		m_timer = 0.0f;
-		PlaySound(m_land_step);
+		_timer = 0.0f;
+		PlaySound(_landStep);
 	}
 }
 
 void Player::OnWater()
 {
-	if (speed() == 2.0f) m_timer += frame_time() * 0.11f;
-	else m_timer += frame_time() * 0.13f;
+	if (speed() == 2.0f) _timer += frame_time() * 0.11f;
+	else _timer += frame_time() * 0.13f;
 
-	if (m_is_walk && m_timer >= m_update_time)
+	if (_isWalk && _timer >= _updateTime)
 	{
-		m_timer = 0.0f;
-		PlaySound(m_water_step);
+		_timer = 0.0f;
+		PlaySound(_waterStep);
 	}
 }
 
 void Player::Draw()
 {
-	m_texture_last_pos = m_texture_pos;
+	_textureLastPos = _texturePos;
 
 	if (direction().Length() != 0.0f)
 	{
-		m_is_walk = 1;
-		m_texture_pos = m_texture_pos.Subtract(direction().Normalize().Scale(speed()));
-		m_texture = m_texture_walk;
-		if (direction().x < 0.0f)  m_facing = 1.0f;
-		if (direction().x > 0.0f)  m_facing = -1.0f;
+		_isWalk = 1;
+		_texturePos = _texturePos.Subtract(direction().Normalize().Scale(speed()));
+		_texture = _textureWalk;
+		if (direction().x < 0.0f) _facing = 1.0f;
+		if (direction().x > 0.0f) _facing = -1.0f;
 	}
 	else
 	{
-		m_is_walk = 0;
-		m_texture = m_texture_idle;
+		_isWalk = 0;
+		_texture = _textureIdle;
 	}
 
-	if (IsPunch())  m_texture = m_texture_punch;
+	if (IsPunch()) _texture = _texturePunch;
 
-	Animate(m_texture_pos, m_texture, frame_time(), 1.5f, row(), m_facing, timer());
+	Animate(_texturePos, _texture, frame_time(), 1.5f, row(), _facing, timer());
 }
 
 // ---------------- Private Functions ------------------------------------------
@@ -117,9 +117,9 @@ Vector2D Player::direction() const
 
 float Player::row() const
 {
-	if (IsPunch() && !m_is_walk) return 3.0f;
-	else if (!m_is_walk) return 2.0f;
-	else if (m_is_walk) return 6.0f;
+	if (IsPunch() && !_isWalk) return 3.0f;
+	else if (!_isWalk) return 2.0f;
+	else if (_isWalk) return 6.0f;
 }
 
 float Player::speed() const
@@ -130,8 +130,8 @@ float Player::speed() const
 
 float Player::timer() const
 {
-	if (m_is_walk) return 0.0f;
-	else if (IsPunch() && !m_is_walk) return 0.02f;
+	if (_isWalk) return 0.0f;
+	else if (IsPunch() && !_isWalk) return 0.02f;
 	else return -0.2f;
 }
 

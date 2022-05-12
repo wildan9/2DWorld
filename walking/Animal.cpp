@@ -8,35 +8,35 @@ class Rhino : public BaseAnimation
 public:
 	Rhino(Vector2D& pos)
 	{
-		m_texture_pos = pos;
+		_texturePos = pos;
 	}
 
 	~Rhino()
 	{
-		UnloadTexture(m_texture);
+		UnloadTexture(_texture);
 	}
 
-	void Draw(const float& delta_time);
+	void Draw(const float& deltaTime);
 
 	Rectangle GetCollision();
 
 private:
-	Texture2D m_texture{ LoadTexture("textures/animals/rhino_idle.png") };
-	Vector2D m_texture_pos{};
+	Texture2D _texture{ LoadTexture("textures/animals/rhino_idle.png") };
+	Vector2D _texturePos{};
 };
 
-inline void Rhino::Draw(const float& delta_time)
+inline void Rhino::Draw(const float& deltaTime)
 {
-	Animate(m_texture_pos, m_texture, delta_time, 2.0f, 8.0f);
+	Animate(_texturePos, _texture, deltaTime, 2.0f, 8.0f);
 }
 
 inline Rectangle Rhino::GetCollision()
 {
 	return Rectangle{
-			static_cast<float>(m_texture_pos.x + 12.0f),
-			static_cast<float>(m_texture_pos.y + 25.0f),
-			static_cast<float>(2.0f * m_texture.width / 8.0f - 30.0f),
-			static_cast<float>(2.0f * m_texture.height - 25.0f)
+		static_cast<float>(_texturePos.x + 12.0f),
+		static_cast<float>(_texturePos.y + 25.0f),
+		static_cast<float>(2.0f * _texture.width / 8.0f - 30.0f),
+		static_cast<float>(2.0f * _texture.height - 25.0f)
 	};
 }
 
@@ -45,39 +45,39 @@ class Bat : public BaseAnimation
 public:
 	Bat(Vector2D& pos)
 	{
-		m_texture_pos = pos;
+		_texturePos = pos;
 	}
 
 	~Bat()
 	{
-		UnloadTexture(m_texture);
+		UnloadTexture(_texture);
 	}
 
-	void Draw(const float& delta_time, const float& fly_radius);
+	void Draw(const float& deltaTime, const float& flyRadius);
 
 private:
-	Texture2D m_texture{ LoadTexture("textures/animals/bat_fly.png") };
-	Vector2D m_speed{ 1.5f, 1.0f };
-	Vector2D m_texture_pos{};
-	float m_facing{ 1.0f };
+	Texture2D _texture{ LoadTexture("textures/animals/bat_fly.png") };
+	Vector2D _speed{ 1.5f, 1.0f };
+	Vector2D _texturePos{};
+	float _facing{ 1.0f };
 };
 
-inline void Bat::Draw(const float& delta_time, const float& fly_radius)
+inline void Bat::Draw(const float& deltaTime, const float& flyRadius)
 {
 	if (true)
 	{
-		m_texture_pos.x += m_speed.x;
-		m_texture_pos.y += m_speed.y;
+		_texturePos.x += _speed.x;
+		_texturePos.y += _speed.y;
 
-		if (m_texture_pos.x >= fly_radius || m_texture_pos.x <= 0)
+		if (_texturePos.x >= flyRadius || _texturePos.x <= 0)
 		{
-			m_speed.x *= -1.0f;
-			m_facing *= -1.0f;
+			_speed.x *= -1.0f;
+			_facing *= -1.0f;
 		}
-		if (m_texture_pos.y >= fly_radius || m_texture_pos.y <= 0) m_speed.y *= -1.0f;
+		if (_texturePos.y >= flyRadius || _texturePos.y <= 0) _speed.y *= -1.0f;
 	}
 
-	Animate(m_texture_pos, m_texture, delta_time, 2.0f, 6.0f);
+	Animate(_texturePos, _texture, deltaTime, 2.0f, 6.0f);
 }
 
 class Chicken : public BaseAnimation
@@ -90,34 +90,34 @@ public:
 
 	~Chicken()
 	{
-		UnloadTexture(m_texture);
+		UnloadTexture(_texture);
 	}
 
-	void Draw(const float& delta_time);
+	void Draw(const float& deltaTime);
 
 private:
-	const float m_speed{ 1.0f };
-	float m_facing{ -1.0f };
-	bool m_animate{ 0 };
-	Texture2D m_texture{ LoadTexture("textures/animals/chicken_walk.png") };
-	Vector2D m_texture_pos{};
+	const float _speed{ 1.0f };
+	float _facing{ -1.0f };
+	bool _animate{ 0 };
+	Texture2D _texture{ LoadTexture("textures/animals/chicken_walk.png") };
+	Vector2D _texturePos{};
 };
 
-inline void Chicken::Draw(const float& delta_time)
+inline void Chicken::Draw(const float& deltaTime)
 {
 	int x = 1, y = 0;
 
-	if (m_texture_pos.x == 320.0f)
+	if (_texturePos.x == 320.0f)
 	{
 		x = 0;
 		y = 1;
 	}
-	if (m_texture_pos.y == 300.0f)
+	if (_texturePos.y == 300.0f)
 	{
 		x = 2;
 		y = 0;
 	}
-	if (m_texture_pos.x < 0.0f)
+	if (_texturePos.x < 0.0f)
 	{
 		x = 1;
 		y = 2;
@@ -126,12 +126,12 @@ inline void Chicken::Draw(const float& delta_time)
 	switch (x)
 	{
 	case 1:
-		m_texture_pos.x += m_speed;
-		m_facing = -1.0f;
+		_texturePos.x += _speed;
+		_facing = -1.0f;
 		break;
 	case 2:
-		m_texture_pos.x -= m_speed;
-		m_facing = 1.0f;
+		_texturePos.x -= _speed;
+		_facing = 1.0f;
 		break;
 	default:
 		break;
@@ -140,18 +140,18 @@ inline void Chicken::Draw(const float& delta_time)
 	switch (y)
 	{
 	case 1:
-		m_texture_pos.y += m_speed;
+		_texturePos.y += _speed;
 		break;
 	case 2:
-		m_texture_pos.y -= m_speed;
+		_texturePos.y -= _speed;
 		break;
 	default:
 		break;
 	}
 
-	if (m_texture_pos.y != 0.0f) m_animate = 1;
+	if (_texturePos.y != 0.0f) _animate = 1;
 
-	Animate(m_texture_pos, m_texture, delta_time, 1.2f, 7.0f, m_facing, 0.0f, m_animate);
+	Animate(_texturePos, _texture, deltaTime, 1.2f, 7.0f, _facing, 0.0f, _animate);
 }
 
 class Crocodile : public BaseAnimation
@@ -164,80 +164,84 @@ public:
 
 	~Crocodile()
 	{
-		UnloadTexture(m_texture);
-		UnloadTexture(m_texture_walk);
-		UnloadTexture(m_texture_hurt);
-		UnloadSound(m_getting_punched);
+		UnloadTexture(_texture);
+		UnloadTexture(_textureWalk);
+		UnloadTexture(_textureHurt);
+		UnloadSound(_gettingPunched);
 	}
 
 	Vector2D GetPosition()
 	{
-		return m_texture_pos;
+		return _texturePos;
 	}
 
 	float GetFacing()
 	{
-		return m_facing;
+		return _facing;
 	}
 
 	void Walk()
 	{
-		m_row = 12.0f;
-		m_texture = m_texture_walk;
-		m_is_walk = 1;
+		_row = 12.0f;
+		_texture = _textureWalk;
+		_isWalk = 1;
+		_rotate = 0.0f;
 	}
 
 	void Hurt()
 	{
-		m_row = 1.0f;
-		m_texture = m_texture_hurt;
-		m_is_walk = 0;
+		_row = 1.0f;
+		_texture = _textureHurt;
+		_isWalk = 0;
+		
+		_rotate = (_speed < 0.0f) ? 15.f : 350.0f;
 
-		m_timer += GetFrameTime();
-		if (m_timer >= m_update_time)
+		_timer += GetFrameTime();
+		if (_timer >= _updateTime)
 		{
-			m_timer = -0.32f;
-			PlaySound(m_getting_punched);
+			_timer = -0.32f;
+			PlaySound(_gettingPunched);
 		}
 	}
 
 	Rectangle GetCollision()
 	{
 		return Rectangle{
-			m_texture_pos.x, m_texture_pos.y,
-			1.2f * (float)m_texture.width / m_row,
-			1.2f * (float)m_texture.height
+			_texturePos.x, _texturePos.y,
+			1.2f * (float)_texture.width / _row,
+			1.2f * (float)_texture.height
 		};
 	}
 
-	void Draw(const float& delta_time)
+	void Draw(const float& deltaTime)
 	{
-		if (m_is_walk)
+		if (_isWalk)
 		{
-			m_texture_pos.x += m_speed;
+			_texturePos.x += _speed;
 
-			if (m_texture_pos.x >= 1400.0f || m_texture_pos.x <= 0)
+			if (_texturePos.x >= 1400.0f || _texturePos.x <= 0)
 			{
-				m_speed *= -1.0f;
-				m_facing *= -1.0f;
+				_speed *= -1.0f;
+				_facing *= -1.0f;
 			}
 		}
 
-		Animate(m_texture_pos, m_texture, delta_time, 2.0f, m_row, m_facing, 0.0f, 1);
+		Animate(_texturePos, _texture, deltaTime, 2.0f, _row, _facing, 0.0f, 1, _rotate);
 	}
 
 private:
-	float m_speed{ 1.0f };
-	float m_row{};
-	float m_timer{};
-	float m_facing{ 1.0f };
-	float m_update_time{ 0.0834f };
-	bool m_is_walk{};
-	Vector2D m_texture_pos{};
-	Texture2D m_texture{ LoadTexture("textures/animals/crocodile_walk.png") };
-	Texture2D m_texture_walk{ LoadTexture("textures/animals/crocodile_walk.png") };
-	Texture2D m_texture_hurt{ LoadTexture("textures/animals/crocodile_hurt.png") };
-	Sound m_getting_punched{ LoadSound("sounds/getting_punched.wav") };
+	float _speed{ 1.0f };
+	float _row{};
+	float _timer{};
+	float _facing{ 1.0f };
+	float _updateTime{ 0.0834f };
+	float _rotate{ 0.0f };
+	bool _isWalk{};
+	Vector2D _texturePos{};
+	Texture2D _texture{ LoadTexture("textures/animals/crocodile_walk.png") };
+	Texture2D _textureWalk{ LoadTexture("textures/animals/crocodile_walk.png") };
+	Texture2D _textureHurt{ LoadTexture("textures/animals/crocodile_hurt.png") };
+	Sound _gettingPunched{ LoadSound("sounds/getting_punched.wav") };
 };
 
 
@@ -260,26 +264,26 @@ public:
 
 	std::array<Bat, 3> bats{ bat1, bat2, bat3 };
 
-	void SetBatFlyRadius(const float& bat_fly_radius);
+	void SetBatFlyRadius(const float& batFlyRadius);
 
-	void Draw(const float& delta_time);
+	void Draw(const float& deltaTime);
 
 private:
-	float m_bat_fly_radius{};
+	float _batFlyRadius{};
 };
 
-inline void Animals::SetBatFlyRadius(const float& bat_fly_radius)
+inline void Animals::SetBatFlyRadius(const float& batFlyRadius)
 {
-	m_bat_fly_radius = bat_fly_radius;
+	_batFlyRadius = batFlyRadius;
 }
 
-inline void Animals::Draw(const float& delta_time)
+inline void Animals::Draw(const float& deltaTime)
 {
-	for (auto& rhino : rhinos) rhino.Draw(delta_time);
+	for (auto& rhino : rhinos) rhino.Draw(deltaTime);
 
-	for (auto& bat : bats) bat.Draw(delta_time, m_bat_fly_radius);
+	for (auto& bat : bats) bat.Draw(deltaTime, _batFlyRadius);
 
-	crocodile.Draw(delta_time);
+	crocodile.Draw(deltaTime);
 
-	chicken.Draw(delta_time);
+	chicken.Draw(deltaTime);
 }

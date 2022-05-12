@@ -15,8 +15,8 @@ public:
 	void Run();
 
 private:
-	const int m_window_width{ 512 };
-	const int m_window_height{ 512 };
-	const std::string& m_window_title{ "Walking" };
-	raylib::Camera2D m_camera;
+	const int _windowWidth{ 512 };
+	const int _windowHeight{ 512 };
+	const std::string& _windowTitle{ "Walking" };
+	raylib::Camera2D _camera;
 };

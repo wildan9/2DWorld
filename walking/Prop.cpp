@@ -2,7 +2,7 @@
 
 #include "Header.h"
 
-const Rectangle invisible_fences[]
+const Rectangle invisibleFences[]
 {
 	Rectangle{ 980.414f, 280.586f, 150.0f, 560.0f },	
 	Rectangle{ 980.414f + 280.0f, 280.586f + 180.0f, 150.0f, 450.0f },
@@ -20,48 +20,48 @@ public:
 
 	~NaturalObject()
 	{
-		UnloadTexture(m_big_stone);
+		UnloadTexture(_bigStone);
 	}
 
 	Rectangle GetBigStone1Coll()
 	{
 		return Rectangle{
-			static_cast<float>(m_big_stone1_pos.x + 45.0f),
-			static_cast<float>(m_big_stone1_pos.y + 35.0f),
-			static_cast<float>(m_big_stone.width * 0.65f),
-			static_cast<float>(m_big_stone.height * 0.65f)
+			static_cast<float>(_bigStone1Pos.x + 45.0f),
+			static_cast<float>(_bigStone1Pos.y + 35.0f),
+			static_cast<float>(_bigStone.width * 0.65f),
+			static_cast<float>(_bigStone.height * 0.65f)
 		};
 	}
 
 	Rectangle GetBigStone2Coll()
 	{
 		return Rectangle{
-			static_cast<float>(m_big_stone2_pos.x + 45.0f),
-			static_cast<float>(m_big_stone2_pos.y + 35.0f),
-			static_cast<float>(m_big_stone.width * 0.65f),
-			static_cast<float>(m_big_stone.height * 0.65f)
+			static_cast<float>(_bigStone2Pos.x + 45.0f),
+			static_cast<float>(_bigStone2Pos.y + 35.0f),
+			static_cast<float>(_bigStone.width * 0.65f),
+			static_cast<float>(_bigStone.height * 0.65f)
 		};
 	}
 
 	void Draw()
 	{
-		DrawTextureV(m_big_stone, m_big_stone1_pos.ToVector2(), WHITE);
-		DrawTextureV(m_big_stone, m_big_stone2_pos.ToVector2(), WHITE);
+		DrawTextureV(_bigStone, _bigStone1Pos.ToVector2(), WHITE);
+		DrawTextureV(_bigStone, _bigStone2Pos.ToVector2(), WHITE);
 	}
 
 private:
-	Texture2D m_big_stone{ LoadTexture("textures/natural_objects/big_stone.png") };
-	Vector2D m_big_stone1_pos{ 1600.0f, 700.0f };
-	Vector2D m_big_stone2_pos{ 3400.0f, 600.0f };
+	Texture2D _bigStone{ LoadTexture("textures/natural_objects/big_stone.png") };
+	Vector2D _bigStone1Pos{ 1600.0f, 700.0f };
+	Vector2D _bigStone2Pos{ 3400.0f, 600.0f };
 };
 
 
 struct Prop
 {
-	NaturalObject natural_obj;
+	NaturalObject naturalObj;
 
 	void Draw()
 	{
-		natural_obj.Draw();
+		naturalObj.Draw();
 	}
 };

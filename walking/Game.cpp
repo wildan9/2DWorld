@@ -4,9 +4,8 @@
 
 Game::Game()
 {
-	InitWindow(m_window_width, m_window_height, m_window_title.c_str());
+	InitWindow(_windowWidth, _windowHeight, _windowTitle.c_str());
 	InitAudioDevice();
-	SetTargetFPS(60);
 }
 
 Game::~Game()
@@ -19,33 +18,35 @@ enum class GameScreen { LOGO = 0, TITLE, GAMEPLAY };
 
 void Game::Run()
 {
-    GameScreen current_screen{ GameScreen::LOGO };
+    SetTargetFPS(60);
 
-    int frames_counter{ 0 };
+    GameScreen currentScreen{ GameScreen::LOGO };
 
-    GameObject game_obj;
+    int framesCounter{ 0 };
 
-    game_obj.animals.SetBatFlyRadius(game_obj.map.GetDreamlandSize().width * game_obj.map.GetMapScale());
+    GameObject gameObj;
 
-    m_camera.target = game_obj.wildan.GetPosition().ToVector2();
-    m_camera.offset = Vector2D{ m_window_width / 2.0f,  m_window_height / 2.0f }.ToVector2();
-    m_camera.rotation = 0.0f;
-    m_camera.zoom = 1.0f;
+    gameObj.animals.SetBatFlyRadius(gameObj.map.GetDreamlandSize().width * gameObj.map.GetMapScale());
+
+    _camera.target = gameObj.wildan.GetPosition().ToVector2();
+    _camera.offset = Vector2D{ _windowWidth / 2.0f,  _windowHeight / 2.0f }.ToVector2();
+    _camera.rotation = 0.0f;
+    _camera.zoom = 1.0f;
 
     while (!WindowShouldClose())
     {
-        switch (current_screen)
+        switch (currentScreen)
         {
         case GameScreen::LOGO:
         {
-            frames_counter++;
+            framesCounter++;
 
-            if (frames_counter > 180) current_screen = GameScreen::TITLE;
+            if (framesCounter > 180) currentScreen = GameScreen::TITLE;
             
         } break;
         case GameScreen::TITLE:
         {
-            if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) current_screen = GameScreen::GAMEPLAY;
+            if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)) currentScreen = GameScreen::GAMEPLAY;
         } break;
         default: break;
         }
@@ -54,7 +55,7 @@ void Game::Run()
 
         ClearBackground(SKYBLUE);
 
-        switch (current_screen)
+        switch (currentScreen)
         {
         case GameScreen::LOGO:
         {
@@ -69,12 +70,12 @@ void Game::Run()
         } break;
         case GameScreen::GAMEPLAY:
         {
-            m_camera.target = game_obj.wildan.GetPosition().ToVector2();
-            m_camera.BeginMode();
-            game_obj.CheckCollision();
-            game_obj.PlayWalkSound();
-            game_obj.Draw();
-            m_camera.EndMode();
+            _camera.target = gameObj.wildan.GetPosition().ToVector2();
+            _camera.BeginMode();
+            gameObj.CheckCollision();
+            gameObj.PlayWalkSound();
+            gameObj.Draw(GetFrameTime());
+            _camera.EndMode();
 
         } break;
         default: break;
