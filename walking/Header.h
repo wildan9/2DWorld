@@ -5,10 +5,8 @@
 #include <math.h>
 #include <raylib.h>
 
-struct Vector2D
+struct Vector2D : public Vector2
 {
-    float x{};
-    float y{};
     float Length() const;
     float DotProduct(Vector2D vec) const;
     Vector2D Add(Vector2D vec) const;
@@ -41,7 +39,7 @@ inline Vector2D Vector2D::Scale(float scale) const
 
 inline Vector2D Vector2D::Normalize() const
 {
-    Vector2D result{ 0 };
+    Vector2D result{};
 
     float length{ sqrtf((x * x) + (y * y)) };
 
@@ -62,10 +60,10 @@ inline float Vector2D::DotProduct(Vector2D vec) const
 
 inline Vector2D Vector2D::Rotate(float angle) const
 {
-    Vector2D result = { 0 };
+    Vector2D result{};
 
-    float cosres = cosf(angle);
-    float sinres = sinf(angle);
+    float cosres{ cosf(angle) };
+    float sinres{ sinf(angle) };
 
     result.x = x * cosres - y * sinres;
     result.y = x * sinres + y * cosres;
