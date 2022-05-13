@@ -28,8 +28,8 @@ void Game::Run()
 
     gameObj.animals.SetBatFlyRadius(gameObj.map.GetDreamlandSize().width * gameObj.map.GetMapScale());
 
-    _camera.target = gameObj.wildan.GetPosition().ToVector2();
-    _camera.offset = Vector2D{ _windowWidth / 2.0f,  _windowHeight / 2.0f }.ToVector2();
+    _camera.target = gameObj.wildan.GetPosition();
+    _camera.offset = Vector2D{ _windowWidth / 2.0f,  _windowHeight / 2.0f };
     _camera.rotation = 0.0f;
     _camera.zoom = 1.0f;
 
@@ -70,7 +70,7 @@ void Game::Run()
         } break;
         case GameScreen::GAMEPLAY:
         {
-            _camera.target = gameObj.wildan.GetPosition().ToVector2();
+            _camera.target = gameObj.wildan.GetPosition();
             _camera.BeginMode();
             gameObj.CheckCollision();
             gameObj.PlayWalkSound();

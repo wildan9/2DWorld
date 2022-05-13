@@ -30,5 +30,5 @@ void BaseAnimation::Animate(Vector2D& position, Texture2D& texture, const float&
         size * (float)texture.width / row,
         size * (float)texture.height
     };
-    DrawTexturePro(texture, source, dest, Vector2D{}.ToVector2(), rotation, WHITE);
+    DrawTexturePro(texture, source, dest, Vector2D{}, rotation, WHITE);
 }

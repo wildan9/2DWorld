@@ -45,8 +45,8 @@ public:
 
 	void Draw()
 	{
-		DrawTextureV(_bigStone, _bigStone1Pos.ToVector2(), WHITE);
-		DrawTextureV(_bigStone, _bigStone2Pos.ToVector2(), WHITE);
+		DrawTextureV(_bigStone, _bigStone1Pos, WHITE);
+		DrawTextureV(_bigStone, _bigStone2Pos, WHITE);
 	}
 
 private:
@@ -54,7 +54,6 @@ private:
 	Vector2D _bigStone1Pos{ 1600.0f, 700.0f };
 	Vector2D _bigStone2Pos{ 3400.0f, 600.0f };
 };
-
 
 struct Prop
 {

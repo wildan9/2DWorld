@@ -14,7 +14,6 @@ struct Vector2D : public Vector2
     Vector2D Scale(float scale) const;
     Vector2D Normalize() const;
     Vector2D Rotate(float angle) const;
-    Vector2 ToVector2() const;
 };
 
 inline float Vector2D::Length() const
@@ -69,9 +68,4 @@ inline Vector2D Vector2D::Rotate(float angle) const
     result.y = x * sinres + y * cosres;
 
     return result;
-}
-
-inline Vector2 Vector2D::ToVector2() const
-{
-    return Vector2{ x, y };
 }

@@ -50,6 +50,6 @@ float Map::GetMapScale() const
 
 void Map::Draw()
 {
-	DrawTextureEx(_dreamland, _dreamlandPos.ToVector2(), 0.0f, _mapScale, WHITE);
-	DrawTextureEx(_desert, _desertPos.ToVector2(), 0.0f, _mapScale, WHITE);
+	DrawTextureEx(_dreamland, _dreamlandPos, 0.0f, _mapScale, WHITE);
+	DrawTextureEx(_desert, _desertPos, 0.0f, _mapScale, WHITE);
 }
