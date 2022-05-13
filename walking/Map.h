@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "FileUtils.h"
+#include "CoreLib.h"
 
 struct MapSize
 {

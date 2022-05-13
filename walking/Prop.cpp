@@ -1,6 +1,6 @@
 /* by Wildan R. */
 
-#include "FileUtils.h"
+#include "CoreLib.h"
 
 const Rectangle invisibleFences[]
 {

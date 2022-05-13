@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "FileUtils.h"
+#include "CoreLib.h"
 #include "Camera2D.h"
 #include "GameObject.h"
 #include <string>
