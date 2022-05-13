@@ -194,7 +194,7 @@ public:
 		_texture = _textureHurt;
 		_isWalk = 0;
 		
-		_rotate = (_speed < 0.0f) ? 15.f : 350.0f;
+		_rotate = (_speed < 0.0f) ? 10.0f : 355.0f;
 
 		_timer += GetFrameTime();
 		if (_timer >= _updateTime)
