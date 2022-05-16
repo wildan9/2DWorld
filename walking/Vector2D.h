@@ -2,11 +2,14 @@
 
 #pragma once
 
-#include <math.h>
 #include <raylib.h>
+#include <math.h>
 
 struct Vector2D : public Vector2
 {
+    Vector2D(float x, float y);
+    Vector2D(float x);
+    Vector2D();
     float Length() const;
     float DotProduct(Vector2D vec) const;
     Vector2D Add(Vector2D vec) const;
@@ -16,9 +19,20 @@ struct Vector2D : public Vector2
     Vector2D Rotate(float angle) const;
 };
 
+inline Vector2D::Vector2D(float x, float y) : Vector2{ x, y } {}
+
+inline Vector2D::Vector2D(float x) : Vector2{ x, 0.0f } {}
+
+inline Vector2D::Vector2D() : Vector2{ 0.0f, 0.0f } {}
+
 inline float Vector2D::Length() const
 {
     return float{ sqrtf((x * x) + (y * y)) };
+}
+
+inline float Vector2D::DotProduct(Vector2D vec) const
+{
+    return float{ x * vec.x + y * vec.y };
 }
 
 inline Vector2D Vector2D::Add(Vector2D vec) const
@@ -50,11 +64,6 @@ inline Vector2D Vector2D::Normalize() const
     }
 
     return result;
-}
-
-inline float Vector2D::DotProduct(Vector2D vec) const
-{
-    return float{ x * vec.x + y * vec.y };
 }
 
 inline Vector2D Vector2D::Rotate(float angle) const
