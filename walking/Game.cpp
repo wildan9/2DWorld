@@ -14,8 +14,6 @@ Game::~Game()
 	CloseAudioDevice();
 }
 
-enum class GameScreen { LOGO = 0, TITLE, GAMEPLAY };
-
 void Game::Run()
 {
     SetTargetFPS(60);

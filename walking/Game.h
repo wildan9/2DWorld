@@ -20,3 +20,8 @@ private:
 	const std::string& _windowTitle{ "Walking" };
 	raylib::Camera2D _camera;
 };
+
+enum class GameScreen
+{
+	LOGO = 0, TITLE, GAMEPLAY
+};
