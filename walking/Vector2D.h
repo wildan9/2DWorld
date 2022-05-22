@@ -79,8 +79,7 @@ inline Vector2D Vector2D::Rotate(float angle) const
 
 inline String Vector2D::ToString() const
 {
-    String strx{ std::to_string((int)x) };
-    String stry{ std::to_string((int)y) };
+    String str{ "x: " };
 
-    return { strx.append(" ").append(stry) };
+    return { str.append(std::to_string((int)x)).append("  y: ").append(std::to_string((int)y)) };
 }
