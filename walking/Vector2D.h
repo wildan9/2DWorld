@@ -4,13 +4,15 @@
 
 #include <math.h>
 #include <raylib.h>
+#include <string>
+
+using String = std::string;
 
 struct Vector2D : public Vector2
 {
     Vector2D(float x, float y) : Vector2{ x, y } {}
     Vector2D(float x) : Vector2{ x, 0.0f } {}
     Vector2D() : Vector2{ 0.0f, 0.0f } {}
-
     float Length() const;
     float DotProduct(Vector2D vec) const;
     Vector2D Add(Vector2D vec) const;
@@ -18,6 +20,7 @@ struct Vector2D : public Vector2
     Vector2D Scale(float scale) const;
     Vector2D Normalize() const;
     Vector2D Rotate(float angle) const;
+    String ToString() const;
 };
 
 inline float Vector2D::Length() const
@@ -72,4 +75,12 @@ inline Vector2D Vector2D::Rotate(float angle) const
     result.y = x * sinres + y * cosres;
 
     return result;
+}
+
+inline String Vector2D::ToString() const
+{
+    String strx{ std::to_string((int)x) };
+    String stry{ std::to_string((int)y) };
+
+    return { strx.append(" ").append(stry) };
 }

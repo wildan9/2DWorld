@@ -4,7 +4,7 @@
 
 Game::Game()
 {
-	InitWindow(_windowWidth, _windowHeight, _windowTitle.c_str());
+	InitWindow(_windowWidth, _windowHeight, "Walking");
 	InitAudioDevice();
 }
 
@@ -73,8 +73,9 @@ void Game::Run()
             gameObj.CheckCollision();
             gameObj.PlayWalkSound();
             gameObj.Draw(GetFrameTime());
-            DrawText(std::to_string((int)gameObj.wildan.GetPosition().x).append(" ").append(std::to_string((int)gameObj.wildan.GetPosition().y)).c_str(), 
-                (int)GetScreenToWorld2D(Vector2D{}, _camera).x + 20, (int)GetScreenToWorld2D(Vector2D{}, _camera).y + 450, 30, BLACK);
+            DrawText(gameObj.wildan.GetPosition().ToString().c_str(), 
+                (int)GetScreenToWorld2D(Vector2D{}, _camera).x + 20, 
+                (int)GetScreenToWorld2D(Vector2D{}, _camera).y + 450, 30, BLACK);
             _camera.EndMode();
 
         } break;
