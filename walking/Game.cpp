@@ -76,6 +76,7 @@ void Game::Run()
             DrawText(gameObj.wildan.GetPosition().ToString().c_str(), 
                 (int)GetScreenToWorld2D(Vector2D{}, _camera).x + 20, 
                 (int)GetScreenToWorld2D(Vector2D{}, _camera).y + 450, 30, BLACK);
+            DrawFPS((int)GetScreenToWorld2D(Vector2D{}, _camera).x + (_windowWidth - 30), (int)GetScreenToWorld2D(Vector2D{}, _camera).y);
             _camera.EndMode();
 
         } break;
