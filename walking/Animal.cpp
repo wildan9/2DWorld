@@ -248,13 +248,13 @@ private:
 class Animals
 {
 public:
-	Rhino rhino1{ Vector2D{ 800.0f, 120.0f } };
-	Rhino rhino2{ Vector2D{ 950.0f, 80.0f } };
-	Rhino rhino3{ Vector2D{ 650.0f, 100.0f } };
+	Rhino rhino1{ { 800.0f, 120.0f } };
+	Rhino rhino2{ { 950.0f, 80.0f } };
+	Rhino rhino3{ { 650.0f, 100.0f } };
 
-	Bat bat1{ Vector2D{ 111.0f, 111.0f } };
-	Bat bat2{ Vector2D{ 212.0f, 212.0f } };
-	Bat bat3{ Vector2D{ 313.0f, 313.0f } };
+	Bat bat1{ { 111.0f, 111.0f } };
+	Bat bat2{ { 212.0f, 212.0f } };
+	Bat bat3{ { 313.0f, 313.0f } };
 
 	Crocodile crocodile;
 
