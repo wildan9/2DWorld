@@ -6,7 +6,7 @@
 class Rhino : public BaseAnimation
 {
 public:
-	Rhino(Vector2D& pos)
+	Rhino(Vector2D pos)
 	{
 		_texturePos = pos;
 	}
@@ -43,7 +43,7 @@ inline Rectangle Rhino::GetCollision()
 class Bat : public BaseAnimation
 {
 public:
-	Bat(Vector2D& pos)
+	Bat(Vector2D pos)
 	{
 		_texturePos = pos;
 	}
