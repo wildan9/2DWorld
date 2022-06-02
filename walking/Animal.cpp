@@ -6,7 +6,7 @@
 class Rhino : public BaseAnimation
 {
 public:
-	Rhino(Vector2D pos)
+	Rhino(const Vector2D& pos)
 	{
 		_texturePos = pos;
 	}
@@ -43,7 +43,7 @@ inline Rectangle Rhino::GetCollision()
 class Bat : public BaseAnimation
 {
 public:
-	Bat(Vector2D pos)
+	Bat(const Vector2D& pos)
 	{
 		_texturePos = pos;
 	}
@@ -248,13 +248,13 @@ private:
 class Animals
 {
 public:
-	Rhino rhino1{ Vector2D{ 800.0f, 120.0f } };
-	Rhino rhino2{ Vector2D{ 950.0f, 80.0f } };
-	Rhino rhino3{ Vector2D{ 650.0f, 100.0f } };
+	Rhino rhino1{ { 800.0f, 120.0f } };
+	Rhino rhino2{ { 950.0f, 80.0f } };
+	Rhino rhino3{ { 650.0f, 100.0f } };
 
-	Bat bat1{ Vector2D{ 111.0f, 111.0f } };
-	Bat bat2{ Vector2D{ 212.0f, 212.0f } };
-	Bat bat3{ Vector2D{ 313.0f, 313.0f } };
+	Bat bat1{ { 111.0f, 111.0f } };
+	Bat bat2{ { 212.0f, 212.0f } };
+	Bat bat3{ { 313.0f, 313.0f } };
 
 	Crocodile crocodile;
 

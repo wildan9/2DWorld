@@ -4,7 +4,7 @@
 
 // ---------------- Public Functions ------------------------------------------
 
-Player::Player(Vector2D& pos)
+Player::Player(const Vector2D& pos)
 {
 	_texturePos = pos;
 }
@@ -24,7 +24,7 @@ Vector2D Player::GetPosition() const
 	return _texturePos;
 }
 
-void Player::SetPosition(Vector2D& pos)
+void Player::SetPosition(const Vector2D& pos)
 {
 	_texturePos = pos;
 }

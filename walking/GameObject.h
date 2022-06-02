@@ -9,7 +9,7 @@
 
 struct GameObject
 {
-    Player wildan{ Vector2D{ 40.0f, 140.0f } };
+    Player wildan{ { 40.0f, 140.0f } };
     Map map;
     Prop prop;
     Animals animals;
