@@ -7,10 +7,10 @@
 class Player : public BaseAnimation
 {
 public:
-	Player(Vector2D& pos);
+	Player(Vector2D pos);
 	~Player();
 	Vector2D GetPosition() const;
-	void SetPosition(Vector2D& pos);
+	void SetPosition(Vector2D pos);
 	Rectangle GetCollision() const;
 	float GetFacing() const;
 	bool IsPunch() const;
