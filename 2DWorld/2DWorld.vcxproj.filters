@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{261733a4-c690-4b5a-a5e9-e272790c6748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{b0740b1a-0337-4e8a-a397-5292c92b887d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures">
+      <UniqueIdentifier>{baec3555-1d13-474f-a242-15e343631432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sounds">
+      <UniqueIdentifier>{d4a99157-dc84-403b-ac1b-2c6d9847e031}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\character">
+      <UniqueIdentifier>{b896544b-629a-4a82-9b54-8da6a9c04488}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\animals">
+      <UniqueIdentifier>{ea4177f2-6442-43c7-bcb7-ff1e5e6c5a5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\maps">
+      <UniqueIdentifier>{3febeee3-bc1b-4cb0-8c2f-865b3119fa08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\natural_objects">
+      <UniqueIdentifier>{73ad3561-6261-4706-b2e2-8429c26a98ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\screens_bg">
+      <UniqueIdentifier>{d26b858a-d99b-490f-89ab-0ee6c68105f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="icon">
+      <UniqueIdentifier>{4262f2ae-a630-4d01-8a97-4e05d3553b05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\magic_fruit">
+      <UniqueIdentifier>{f12ddb47-44a2-4830-8811-d1185c991a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\natural_objects\carrot">
+      <UniqueIdentifier>{eeed9b20-673b-4f54-82fc-611df138b7fa}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="2DWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Screen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="2DWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Prop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sounds\land_step.wav">
+      <Filter>sounds</Filter>
+    </Media>
+    <Media Include="sounds\water_step.wav">
+      <Filter>sounds</Filter>
+    </Media>
+    <Media Include="sounds\getting_punched.wav">
+      <Filter>sounds</Filter>
+    </Media>
+    <Media Include="sounds\menu_selection_click.wav">
+      <Filter>sounds</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\character\friendly_man_idle.png">
+      <Filter>textures\character</Filter>
+    </Image>
+    <Image Include="textures\character\friendly_man_punch.png">
+      <Filter>textures\character</Filter>
+    </Image>
+    <Image Include="textures\character\friendly_man_walk.png">
+      <Filter>textures\character</Filter>
+    </Image>
+    <Image Include="textures\animals\bat_fly.png">
+      <Filter>textures\animals</Filter>
+    </Image>
+    <Image Include="textures\animals\chicken_walk.png">
+      <Filter>textures\animals</Filter>
+    </Image>
+    <Image Include="textures\animals\crocodile_hurt.png">
+      <Filter>textures\animals</Filter>
+    </Image>
+    <Image Include="textures\animals\crocodile_walk.png">
+      <Filter>textures\animals</Filter>
+    </Image>
+    <Image Include="textures\animals\rhino_idle.png">
+      <Filter>textures\animals</Filter>
+    </Image>
+    <Image Include="textures\map\desert.png">
+      <Filter>textures\maps</Filter>
+    </Image>
+    <Image Include="textures\natural_objects\big_stone.png">
+      <Filter>textures\natural_objects</Filter>
+    </Image>
+    <Image Include="textures\screens_bg\earth.png">
+      <Filter>textures\screens_bg</Filter>
+    </Image>
+    <Image Include="textures\screens_bg\galaxy.png">
+      <Filter>textures\screens_bg</Filter>
+    </Image>
+    <Image Include="textures\screens_bg\helix_nebula.png">
+      <Filter>textures\screens_bg</Filter>
+    </Image>
+    <Image Include="icon\earth_400_400.png">
+      <Filter>icon</Filter>
+    </Image>
+    <Image Include="textures\screens_bg\dusk.png">
+      <Filter>textures\screens_bg</Filter>
+    </Image>
+    <Image Include="textures\magic_fruit\apple.png">
+      <Filter>textures\magic_fruit</Filter>
+    </Image>
+    <Image Include="textures\natural_objects\small_purple_flower.png">
+      <Filter>textures\natural_objects</Filter>
+    </Image>
+    <Image Include="textures\natural_objects\carrot\big.png">
+      <Filter>textures\natural_objects\carrot</Filter>
+    </Image>
+    <Image Include="textures\natural_objects\carrot\medium.png">
+      <Filter>textures\natural_objects\carrot</Filter>
+    </Image>
+    <Image Include="textures\natural_objects\carrot\small.png">
+      <Filter>textures\natural_objects\carrot</Filter>
+    </Image>
+    <Image Include="textures\maps\wildan_empire.png">
+      <Filter>textures\maps</Filter>
+    </Image>
+    <Image Include="textures\natural_objects\trees_1.png">
+      <Filter>textures\natural_objects</Filter>
+    </Image>
+    <Image Include="textures\natural_objects\trees_2.png">
+      <Filter>textures\natural_objects</Filter>
+    </Image>
+    <Image Include="textures\natural_objects\trees_3.png">
+      <Filter>textures\natural_objects</Filter>
+    </Image>
+    <Image Include="textures\natural_objects\trees_4.png">
+      <Filter>textures\natural_objects</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sounds\epic_cinematic_trailer_elite.ogg">
+      <Filter>sounds</Filter>
+    </None>
+    <None Include="sounds\magic_astral_sweep_effect.ogg">
+      <Filter>sounds</Filter>
+    </None>
+    <None Include="sounds\birds-isaiah658.ogg">
+      <Filter>sounds</Filter>
+    </None>
+    <None Include="sounds\harp.ogg">
+      <Filter>sounds</Filter>
+    </None>
+  </ItemGroup>
+</Project>
