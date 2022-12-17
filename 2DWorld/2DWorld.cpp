@@ -93,6 +93,8 @@ void ShutdownAudio();
 inline static bool OnTouch(const Player& player, float targetPosX);
 inline static Vector2D PlantPosition(const Player& player, int px);
 
+static void* LoadDataThread();
+
 void DrawGamePlayScreen();
 
 enum class ApplicationStates
@@ -453,7 +455,20 @@ void InitGame()
 
     InitScreenTexture();
 
-    SetActiveScreen(&logoScreen);
+    if constexpr (DEBUG)
+    {
+        SetActiveScreen(nullptr);
+
+        applicationState = ApplicationStates::GAMEPLAY;
+
+        UnloadMusicStream(logoBGM);
+    }
+    else
+    {
+        applicationState = ApplicationStates::LOGO;
+
+        SetActiveScreen(&logoScreen);
+    }
 
     magicFruit = new MagicFruit;
 
@@ -594,9 +609,9 @@ inline static bool OnTouch(const Player& player, float targetPosX)
 
 inline static Vector2D PlantPosition(const Player& player, int px = 0)
 {
-    Vector2D plantPosition = (staticGameObj->player.GetFacing() == -1.0f)
-        ? Vector2D{ staticGameObj->player.GetPosition().x - 10.0f - px, staticGameObj->player.GetPosition().y + 40.0f }
-        : Vector2D{ staticGameObj->player.GetPosition().x + 40.0f + px, staticGameObj->player.GetPosition().y + 40.0f };
+    Vector2D plantPosition = (player.GetFacing() == -1.0f)
+        ? Vector2D{ player.GetPosition().x - 10.0f - px, player.GetPosition().y + 40.0f }
+        : Vector2D{ player.GetPosition().x + 40.0f + px, player.GetPosition().y + 40.0f };
 
     return plantPosition;
 }

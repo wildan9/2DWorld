@@ -9,7 +9,6 @@ struct MapSize { int width; int height; };
 class Map
 {
 public:
-
 	Map();
 	~Map();
 	void Draw();
