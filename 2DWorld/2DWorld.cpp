@@ -149,6 +149,41 @@ struct MenuButton
 };
 MenuButton menuButton;
 
+struct GameplayButton
+{
+    bool isMenu = 0;
+};
+GameplayButton gameplayButton;
+
+class GameplayScreen : public Screen
+{
+public:
+    void Draw() override
+    {
+        UpdateCamera(*camera, staticGameObj->player);
+
+        BeginMode2D(*camera);
+
+        DrawGamePlayScreen();
+
+        EndMode2D();
+
+        DrawGamePlayHUD(*camera, staticGameObj->player);
+
+        gameplayButton.isMenu = GuiButton({ screenWidth - 165, screenHeight - 120, 120, 35 }, "Menu");
+
+        if (gameplayButton.isMenu)
+        {
+            SetWindowTitle("Menu");
+
+            applicationState = ApplicationStates::MENU;
+
+            PlaySound(clickSound);
+        }
+    }
+};
+GameplayScreen gameplayScreen;
+
 class MenuScreen : public Screen
 {
 public:
@@ -343,7 +378,7 @@ public:
         }
         if (menuButton.isBack)
         {
-            SetActiveScreen(nullptr);
+            SetActiveScreen(&gameplayScreen);
 
             SetWindowTitle("Walking");
 
@@ -456,7 +491,7 @@ void InitGame()
     InitScreenTexture();
 
 #ifdef _DEBUG
-    SetActiveScreen(nullptr);
+    SetActiveScreen(&gameplayScreen);
 
     applicationState = ApplicationStates::GAMEPLAY;
 
@@ -992,12 +1027,6 @@ void UpdateVolumeTimer()
     audioTimer.Update();
 }
 
-struct GameplayButton
-{
-    bool isMenu = 0;
-};
-GameplayButton gameplayButton;
-
 void UpdateGame()
 {
     UpdateAudio();
@@ -1038,7 +1067,7 @@ void UpdateGame()
 
         if (IsKeyPressed(KEY_ENTER))
         {
-            SetActiveScreen(nullptr);
+            SetActiveScreen(&gameplayScreen);
 
             // applicationState = ApplicationStates::GAMEPLAY;
 
@@ -1110,9 +1139,11 @@ void UpdateGame()
 
         PlayMusicStream(menuBGM);
 
+        SetActiveScreen(&menuScreen);
+
         if (IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_ESCAPE))
         {
-            SetActiveScreen(nullptr);
+            SetActiveScreen(&gameplayScreen);
 
             SetWindowTitle("Walking");
 
@@ -1134,7 +1165,7 @@ void UpdateGame()
 
         if (IsKeyPressed(KEY_P))
         {
-            SetActiveScreen(nullptr);
+            SetActiveScreen(&gameplayScreen);
 
             SetWindowTitle("Walking");
 
@@ -1174,39 +1205,39 @@ void UpdateGame()
         DrawRectangleLines(58, 200, 400, 60, DARKGRAY);
     }
 
-    if (applicationState == ApplicationStates::GAMEPLAY)
-    {
-        UpdateCamera(*camera, staticGameObj->player);
+    //if (applicationState == ApplicationStates::GAMEPLAY)
+    //{
+    //    UpdateCamera(*camera, staticGameObj->player);
 
-        // staticGameObj->CheckCollision();
+    //    // staticGameObj->CheckCollision();
 
-        // staticGameObj->PlayWalkSound();
+    //    // staticGameObj->PlayWalkSound();
 
-        // camera->BeginMode();
+    //    // camera->BeginMode();
 
-        BeginMode2D(*camera);
+    //    BeginMode2D(*camera);
 
-        DrawGamePlayScreen();
+    //    DrawGamePlayScreen();
 
-        // camera->EndMode();
+    //    // camera->EndMode();
 
-        EndMode2D();
+    //    EndMode2D();
 
-        gameplayButton.isMenu = GuiButton({ screenWidth - 165, screenHeight - 120, 120, 35 }, "Menu");
+    //    gameplayButton.isMenu = GuiButton({ screenWidth - 165, screenHeight - 120, 120, 35 }, "Menu");
 
-        if (gameplayButton.isMenu)
-        {
-            SetActiveScreen(&menuScreen);
+    //    if (gameplayButton.isMenu)
+    //    {
+    //        SetActiveScreen(&menuScreen);
 
-            SetWindowTitle("Menu");
+    //        SetWindowTitle("Menu");
 
-            applicationState = ApplicationStates::MENU;
+    //        applicationState = ApplicationStates::MENU;
 
-            PlaySound(clickSound);
-        }
+    //        PlaySound(clickSound);
+    //    }
 
-        DrawGamePlayHUD(*camera, staticGameObj->player);
-    }
+    //    DrawGamePlayHUD(*camera, staticGameObj->player);
+    //}
 
     DrawScreen();
 
