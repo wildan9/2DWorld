@@ -162,6 +162,9 @@ float Player::Timer() const
 
 void Player::UpdateTexture()
 {
+#ifdef _DEBUG
+	_stamina = 6.0f;
+#else
 	if (!_isDragonInside)
 	{
 		if (IsKeyDown(KEY_SPACE) && GetDirection().Length() != 0 && _stamina > 0.0f)
@@ -176,6 +179,7 @@ void Player::UpdateTexture()
 			}
 		}
 	}
+#endif
 
 	_textureLastPos = _texturePos;
 

@@ -107,7 +107,7 @@ enum class ApplicationStates
     MENU,
     PAUSE
 };
-ApplicationStates applicationState = ApplicationStates::LOGO;
+ApplicationStates applicationState;
 
 class LogoScreen : public Screen
 {
@@ -455,20 +455,17 @@ void InitGame()
 
     InitScreenTexture();
 
-    if constexpr (DEBUG)
-    {
-        SetActiveScreen(nullptr);
+#ifdef _DEBUG
+    SetActiveScreen(nullptr);
 
-        applicationState = ApplicationStates::GAMEPLAY;
+    applicationState = ApplicationStates::GAMEPLAY;
 
-        UnloadMusicStream(logoBGM);
-    }
-    else
-    {
-        applicationState = ApplicationStates::LOGO;
+    UnloadMusicStream(logoBGM);
+#else
+    applicationState = ApplicationStates::LOGO;
 
-        SetActiveScreen(&logoScreen);
-    }
+    SetActiveScreen(&logoScreen);
+#endif
 
     magicFruit = new MagicFruit;
 
@@ -858,6 +855,10 @@ void DrawGamePlayHUD(const Camera2D& camera, const Player& player)
 
         const char* stamina = (player.GetStamina() == 9.0f) ? "Stamina: Unlimited" : strStamina[(int)player.GetStamina()];
 
+#ifdef _DEBUG
+    stamina = "Stamina: Debug Mode";
+#endif
+
         if (player.GetStamina() == 9.0f)
         {
             DrawText("Press `I` to spit out the magic fruit", 10, screenHeight - 180, 18, RED);
@@ -1125,7 +1126,11 @@ void UpdateGame()
     {
         UpdateMusicStream(mainBGM);
 
-        ResumeMusicStream(mainBGM);
+#ifdef _DEBUG
+    PlayMusicStream(mainBGM);
+#else
+    ResumeMusicStream(mainBGM);
+#endif
 
         if (IsKeyPressed(KEY_P))
         {
