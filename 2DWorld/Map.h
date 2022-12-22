@@ -22,7 +22,7 @@ public:
 	inline Rectangle GetMapLine2() const { return { (float)_wildanEmpire.width * _mapScale * 2.5f, 0.0f, 100.0f, (float)_desert.height * _mapScale }; }
 
 private:
-	const float _mapScale = { 2.0f };
+	const float _mapScale = 2.0f;
 	const Texture2D _wildanEmpire{ LoadTexture("textures/maps/wildan_empire.png") };
 	const Texture2D _desert{ LoadTexture("textures/maps/desert.png") };
 	const Vector2D _wildanEmpirePos{};

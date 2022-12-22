@@ -37,6 +37,9 @@
     <Filter Include="textures\natural_objects\carrot">
       <UniqueIdentifier>{eeed9b20-673b-4f54-82fc-611df138b7fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="textures\HUD">
+      <UniqueIdentifier>{e4f43e3f-5d77-435a-bcac-c5828efe44ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DWorld.h">
@@ -170,6 +173,9 @@
     </Image>
     <Image Include="textures\natural_objects\trees_4.png">
       <Filter>textures\natural_objects</Filter>
+    </Image>
+    <Image Include="textures\HUD\HUD_FillBar05.png">
+      <Filter>textures\HUD</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

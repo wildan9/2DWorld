@@ -4,16 +4,16 @@
 
 // ---------------- Public Functions ------------------------------------------
 
-Player::Player() :
-	_texturePos{ 40.0f, 140.0f },
-	_textures{ std::make_unique<std::vector<Texture2D>>() },
-	_landStep{ LoadSound("sounds/land_step.wav") },
-	_waterStep{ LoadSound("sounds/water_step.wav") },
-	_isWalk{ 0 },
-	_isDragonInside{ 0 },
-	_timer{}, 
-	_facing{ 1.0f }, 
-	_stamina{ 6.0f }
+Player::Player() 
+	: _texturePos{ 40.0f, 140.0f }
+	, _textures{ std::make_unique<std::vector<Texture2D>>() }
+	, _landStep{ LoadSound("sounds/land_step.wav") }
+	, _waterStep{ LoadSound("sounds/water_step.wav") }
+	, _isWalk{ 0 }
+	, _isDragonInside{ 0 }
+	, _timer{}
+	, _facing{ 1.0f }
+	, _stamina{ 6.0f }
 {
 	_textures->push_back(Texture2D{});
 

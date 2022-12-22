@@ -80,8 +80,7 @@ void EndGame();
 void UpdateCamera(Camera2D& camera, const Player& player);
 
 void DrawVolumeBar(const int x = 10);
-void DrawMuteCheckBox();
-void DrawGamePlayHUD(const Camera2D& camera, const Player& player);
+void DrawMuteCheckBoxV(const Vector2D pos);
 
 void UpdateVolumeTimer();
 
@@ -94,8 +93,6 @@ inline static bool OnTouch(const Player& player, float targetPosX);
 inline static Vector2D PlantPosition(const Player& player, int px);
 
 static void* LoadDataThread();
-
-void DrawGamePlayScreen();
 
 enum class ApplicationStates
 {
@@ -137,24 +134,6 @@ public:
 };
 TitleScreen titleScreen;
 
-struct MenuButton
-{
-    bool isBackToMainMenu = 0;
-    bool isBack       = 0;
-    bool isInventory  = 0;
-    bool isOption     = 0;
-    bool isExit       = 0;
-    bool isVolumeUp   = 0;
-    bool isVolumeDown = 0;
-};
-MenuButton menuButton;
-
-struct GameplayButton
-{
-    bool isMenu = 0;
-};
-GameplayButton gameplayButton;
-
 class GameplayScreen : public Screen
 {
 public:
@@ -169,18 +148,29 @@ public:
         EndMode2D();
 
         DrawGamePlayHUD(*camera, staticGameObj->player);
-
-        gameplayButton.isMenu = GuiButton({ screenWidth - 165, screenHeight - 120, 120, 35 }, "Menu");
-
-        if (gameplayButton.isMenu)
-        {
-            SetWindowTitle("Menu");
-
-            applicationState = ApplicationStates::MENU;
-
-            PlaySound(clickSound);
-        }
     }
+
+    void InitTexture()
+    {
+        _HUDFillBar05 = LoadTexture("textures/HUD/HUD_FillBar05.png");
+    }
+
+    void FreeTexture()
+    {
+        UnloadTexture(_HUDFillBar05);
+    }
+
+private:
+    void DrawGamePlayScreen();
+    void DrawGamePlayHUD(const Camera2D& camera, const Player& player);
+
+private:
+    Texture2D _HUDFillBar05{};
+    struct GameplayButton
+    {
+        bool isMenu = 0;
+    };
+    GameplayButton _gameplayButton;
 };
 GameplayScreen gameplayScreen;
 
@@ -195,10 +185,10 @@ public:
         
         if (_menuStates == _MenuStates::MAIN_MENU)
         {
-            menuButton.isInventory = GuiButton({ x, 110 + (float)(45 * 0), 120, 35 }, "Inventory");
-            menuButton.isOption    = GuiButton({ x, 110 + (float)(45 * 1), 120, 35 }, "Option");
-            menuButton.isBack      = GuiButton({ x, 110 + (float)(45 * 2), 120, 35 }, "Back");
-            menuButton.isExit      = GuiButton({ x, 110 + (float)(45 * 3), 120, 35 }, "Exit");
+            _menuButton.isInventory = GuiButton({ x, 110 + (float)(45 * 0), 120, 35 }, "Inventory");
+            _menuButton.isOption    = GuiButton({ x, 110 + (float)(45 * 1), 120, 35 }, "Option");
+            _menuButton.isBack      = GuiButton({ x, 110 + (float)(45 * 2), 120, 35 }, "Back");
+            _menuButton.isExit      = GuiButton({ x, 110 + (float)(45 * 3), 120, 35 }, "Exit");
         }
 
         if (_menuStates == _MenuStates::OPTION)
@@ -257,24 +247,24 @@ public:
                 }
             }
 
-            menuButton.isVolumeUp = GuiButton({ x + 140, 120 + 20, 20, 20 }, "+");
-            menuButton.isVolumeDown = GuiButton({ x + 120, 120 + 20, 20, 20 }, "-");
+            _menuButton.isVolumeUp = GuiButton({ x + 140, 120 + 20, 20, 20 }, "+");
+            _menuButton.isVolumeDown = GuiButton({ x + 120, 120 + 20, 20, 20 }, "-");
 
-            if (menuButton.isVolumeUp && audio.masterVolume <= 0.5f && !audio.muted)
+            if (_menuButton.isVolumeUp && audio.masterVolume <= 0.5f && !audio.muted)
             {
                 audio.masterVolume += 0.1f;
                 audio.currentVolume += 0.1f;
 
                 PlaySound(clickSound);
             }
-            if (menuButton.isVolumeDown && audio.masterVolume >= 0.1f && !audio.muted)
+            if (_menuButton.isVolumeDown && audio.masterVolume >= 0.1f && !audio.muted)
             {
                 audio.masterVolume -= 0.1f;
                 audio.currentVolume -= 0.1f;
 
                 PlaySound(clickSound);
             }
-            if (menuButton.isVolumeUp && audio.muted || menuButton.isVolumeDown && audio.muted)
+            if (_menuButton.isVolumeUp && audio.muted || _menuButton.isVolumeDown && audio.muted)
             {
                 audio.muted = !audio.muted;
                 audio.masterVolume = audio.currentVolume;
@@ -282,13 +272,13 @@ public:
 
             developerMode = GuiCheckBox({ screenWidth - 165, screenHeight - 205, 15, 15 }, "Developer Mode", developerMode);
 
-            menuButton.isBackToMainMenu = GuiButton({ screenWidth - 165, screenHeight - 180, 120, 35 }, "Back");
+            _menuButton.isBackToMainMenu = GuiButton({ screenWidth - 165, screenHeight - 180, 120, 35 }, "Back");
 
             if (IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_ESCAPE))
             {
                 _menuStates = _MenuStates::MAIN_MENU;
 
-                menuButton.isBackToMainMenu = 0;
+                _menuButton.isBackToMainMenu = 0;
             }
         }
 
@@ -318,13 +308,13 @@ public:
 
             DrawText(unplantedCarrots.append(std::to_string(maxSmallFlowers - carrots->size())).c_str(), x + 70, 120 + 30 + yCarrot, 16, DARKGRAY);
 
-            menuButton.isBackToMainMenu = GuiButton({ screenWidth - 165, screenHeight - 180, 120, 35 }, "Back");
+            _menuButton.isBackToMainMenu = GuiButton({ screenWidth - 165, screenHeight - 180, 120, 35 }, "Back");
 
             if (IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_ESCAPE))
             {
                 _menuStates = _MenuStates::MAIN_MENU;
 
-                menuButton.isBackToMainMenu = 0;
+                _menuButton.isBackToMainMenu = 0;
             }
         }
 
@@ -338,9 +328,9 @@ public:
 
         DrawFPS(screenWidth - 80, 8);
 
-        DrawMuteCheckBox();
+        DrawMuteCheckBoxV({ screenWidth - 165, screenHeight - 80 });
 
-        if (menuButton.isOption)
+        if (_menuButton.isOption)
         {
             PlaySound(clickSound);
 
@@ -348,9 +338,9 @@ public:
 
             SetWindowTitle("Option");
 
-            menuButton.isOption = 0;
+            _menuButton.isOption = 0;
         }
-        if (menuButton.isInventory)
+        if (_menuButton.isInventory)
         {
             PlaySound(clickSound);
 
@@ -358,25 +348,25 @@ public:
 
             _menuStates = _MenuStates::INVENTORY;
 
-            menuButton.isInventory = 0;
+            _menuButton.isInventory = 0;
         }
-        if (menuButton.isBackToMainMenu)
+        if (_menuButton.isBackToMainMenu)
         {
             PlaySound(clickSound);
 
             _menuStates = _MenuStates::MAIN_MENU;
 
-            menuButton.isBackToMainMenu = 0;
+            _menuButton.isBackToMainMenu = 0;
 
             SetWindowTitle("Menu");
         }
-        if (menuButton.isExit)
+        if (_menuButton.isExit)
         {
             PlaySound(clickSound);
 
             endGame = 1;
         }
-        if (menuButton.isBack)
+        if (_menuButton.isBack)
         {
             SetActiveScreen(&gameplayScreen);
 
@@ -412,15 +402,19 @@ private:
         OPTION
     };
     _MenuStates _menuStates = _MenuStates::MAIN_MENU;
+    struct MenuButton
+    {
+        bool isBackToMainMenu = 0;
+        bool isBack = 0;
+        bool isInventory = 0;
+        bool isOption = 0;
+        bool isExit = 0;
+        bool isVolumeUp = 0;
+        bool isVolumeDown = 0;
+    };
+    MenuButton _menuButton;
 };
 MenuScreen menuScreen;
-
-struct PauseButton
-{
-    bool isMenu = 0;
-    bool isBack = 0;
-};
-PauseButton pauseButton;
 
 class PauseScreen : public Screen
 {
@@ -433,10 +427,10 @@ public:
 
         DrawVolumeBar();
 
-        pauseButton.isMenu = GuiButton({ screenWidth - 165, screenHeight - 160, 120, 35 }, "Menu");
-        pauseButton.isBack = GuiButton({ screenWidth - 165, screenHeight - 120, 120, 35 }, "Back");
+        _pauseButton.isMenu = GuiButton({ screenWidth - 165, screenHeight - 160, 120, 35 }, "Menu");
+        _pauseButton.isBack = GuiButton({ screenWidth - 165, screenHeight - 120, 120, 35 }, "Back");
 
-        if (pauseButton.isMenu)
+        if (_pauseButton.isMenu)
         {
             SetActiveScreen(&menuScreen);
 
@@ -446,7 +440,7 @@ public:
 
             PlaySound(clickSound);
         }
-        if (pauseButton.isBack)
+        if (_pauseButton.isBack)
         {
             SetActiveScreen(nullptr);
 
@@ -459,6 +453,14 @@ public:
             PlaySound(clickSound);
         }
     }
+
+private:
+    struct PauseButton
+    {
+        bool isMenu = 0;
+        bool isBack = 0;
+    };
+    PauseButton _pauseButton;
 };
 PauseScreen pauseScreen;
 
@@ -559,6 +561,8 @@ void InitGame()
     camera->zoom = 1.0f;
 
     menuScreen.InitTexture();
+    
+    gameplayScreen.InitTexture();
 }
 
 void UpdateCamera(Camera2D& camera, const Player& player)
@@ -663,7 +667,7 @@ inline bool Timer::Done() const
     return _lifeTime <= 0;
 }
 
-void DrawGamePlayScreen()
+void GameplayScreen::DrawGamePlayScreen()
 {
     staticGameObj->map.Draw();
 
@@ -836,7 +840,7 @@ void DrawGamePlayScreen()
     staticGameObj->prop.Draw();
 }
 
-void DrawGamePlayHUD(const Camera2D& camera, const Player& player)
+void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& player)
 {
     if (developerMode)
     {
@@ -917,6 +921,104 @@ void DrawGamePlayHUD(const Camera2D& camera, const Player& player)
         DrawText(strStatus.c_str(), screenWidth - 165, screenHeight - 40, 19, RED);
 
         DrawVolumeBar();
+
+        _gameplayButton.isMenu = GuiButton({ screenWidth - 165, screenHeight - 120, 120, 35 }, "Menu");
+
+        if (_gameplayButton.isMenu)
+        {
+            SetWindowTitle("Menu");
+
+            applicationState = ApplicationStates::MENU;
+
+            PlaySound(clickSound);
+        }
+
+        DrawMuteCheckBoxV({ screenWidth - 165, screenHeight - 80 });
+    } 
+    else
+    {
+        int cameraMode = (cameraNormalMode) ? 1 : 0;
+
+        time_t now = time(0);
+
+        tm* ltm = localtime(&now);
+
+        std::string time = { "Time: " };
+
+        int hour = ltm->tm_hour;
+
+        if (ltm->tm_hour > 12) hour = hour - 12;
+
+        const char* strAmPm = (ltm->tm_hour < 12) ? "AM" : "PM";
+
+        time.append(std::to_string(hour)).append(":").append(std::to_string(ltm->tm_min))
+            .append(":").append(std::to_string(ltm->tm_sec)).append(" ").append(strAmPm);
+
+        Vector2D diff{ player.GetPosition().Subtract(camera.target) };
+
+        DrawTextureV(_HUDFillBar05, { screenWidth - 210, 8 }, WHITE);
+
+        // DrawText(player.GetPosition().ToString().c_str(), 10, screenHeight - 50, 24, BLACK);
+
+        std::string strCameraZoom = { "Camera Zoom: " };
+
+        float cameraZoom = camera.zoom;
+
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(1) << cameraZoom;
+
+        strCameraZoom.append(stream.str());
+
+        DrawText(strCameraZoom.c_str(), 10, screenHeight - 124, 18, BLACK);
+
+        DrawText(strCameraMode[cameraMode], 10, screenHeight - 90, 18, BLACK);
+
+        const char* strStamina[7]{ "Stamina: 0", "Stamina: #", "Stamina: # #", "Stamina: # # #", "Stamina: # # # #", "Stamina: # # # # #", "Stamina: # # # # # #" };
+
+        Color staminaColor = GREEN;
+
+        if ((int)player.GetStamina() == 0) staminaColor = RED;
+        else if ((int)player.GetStamina() > 0 && (int)player.GetStamina() < 4) staminaColor = DARKGREEN;
+        else if ((int)player.GetStamina() > 4) staminaColor = GREEN;
+
+        const char* stamina = (player.GetStamina() == 9.0f) ? "Stamina: Unlimited" : strStamina[(int)player.GetStamina()];
+
+#ifdef _DEBUG
+        stamina = "Stamina: Debug Mode";
+#endif
+
+        if (player.GetStamina() == 9.0f)
+        {
+            DrawText("Press `I` to spit out the magic fruit", 10, screenHeight - 180, 18, RED);
+        }
+
+        DrawText(stamina, 10, screenHeight - 150, 18, staminaColor);
+
+        DrawText(strCameraZoom.c_str(), 10, screenHeight - 124, 18, BLACK);
+
+        if (player.IsInvisible()) DrawText("You are invisible", 10, screenHeight - 260, 20, RED);
+
+        if (diff.Length() > 1000.0f) teleportText.Start(4.0f);
+        teleportText.Update();
+
+        if (!teleportText.Done()) DrawCenteredText(screenHeight - 270, "You are teleported", 24, RED);
+
+        DrawText(time.c_str(), screenWidth - 188, 14, 20, WHITE);
+
+        DrawVolumeBar();
+
+        _gameplayButton.isMenu = GuiButton({ screenWidth - 140, screenHeight - 80, 120, 35 }, "Menu");
+
+        if (_gameplayButton.isMenu)
+        {
+            SetWindowTitle("Menu");
+
+            applicationState = ApplicationStates::MENU;
+
+            PlaySound(clickSound);
+        }
+
+        DrawMuteCheckBoxV({ screenWidth - 140, screenHeight - 40 });
     }
 }
 
@@ -941,17 +1043,15 @@ void DrawVolumeBar(const int x)
 
         DrawText(strVolume[volume], x, 10, 24, volumeColors[volumeColor]);
     }
-
-    DrawMuteCheckBox();
 }
 
-void DrawMuteCheckBox()
+void DrawMuteCheckBoxV(const Vector2D pos)
 {
     const char* strMuteCheckBox = (audio.masterVolume < 0.1f) ? "Muted: True" : "Muted: False";
 
     GuiControlState state = guiState;
     Rectangle textBounds  = { 0 };
-    Rectangle bounds      = { screenWidth - 165, screenHeight - 80, 20, 20 };
+    Rectangle bounds      = { pos.x, pos.y, 20, 20 };
     
     textBounds.width  = (float)GetTextWidth(strMuteCheckBox);
     textBounds.height = (float)GuiGetStyle(DEFAULT, TEXT_SIZE);
@@ -1269,6 +1369,8 @@ void EndGame()
     UnloadSound(clickSound);
 
     menuScreen.FreeTexture();
+
+    gameplayScreen.FreeTexture();
 
     UnloadScreenTexture();
 
