@@ -15,7 +15,7 @@ public:
 
 	void Draw(const float deltaTime);
 
-	Rectangle GetCollision();
+	Rectangle GetRectangle();
 
 private:
 	Texture2D _texture{ LoadTexture("textures/animals/rhino_idle.png") };
@@ -32,7 +32,7 @@ inline void Rhino::Draw(const float deltaTime)
 	Animate(_texturePos, _texture, deltaTime, 2.0f, 8.0f);
 }
 
-inline Rectangle Rhino::GetCollision()
+inline Rectangle Rhino::GetRectangle()
 {
 	return Rectangle{
 		static_cast<float>(_texturePos.x + 12.0f),
@@ -198,7 +198,7 @@ public:
 		}
 	}
 
-	Rectangle GetCollision()
+	Rectangle GetRectangle()
 	{
 		return Rectangle{
 			_texturePos.x, _texturePos.y,

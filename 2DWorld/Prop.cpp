@@ -68,7 +68,7 @@ struct Tree
 		_position = position;
 	}
 
-	Rectangle GetCollision()
+	Rectangle GetRectangle()
 	{
 		return Rectangle{
 			static_cast<float>(_position.x),
@@ -103,7 +103,7 @@ struct MagicFruit
 
     MagicFruit() {}
 
-    Rectangle GetCollision()
+    Rectangle GetRectangle()
     {
         return Rectangle{
             static_cast<float>(_position.x),

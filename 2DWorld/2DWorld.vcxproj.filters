@@ -40,6 +40,9 @@
     <Filter Include="textures\HUD">
       <UniqueIdentifier>{e4f43e3f-5d77-435a-bcac-c5828efe44ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="textures\maps\river">
+      <UniqueIdentifier>{602d8c22-d278-437c-b16e-cda7f2820d81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DWorld.h">
@@ -176,6 +179,18 @@
     </Image>
     <Image Include="textures\HUD\HUD_FillBar05.png">
       <Filter>textures\HUD</Filter>
+    </Image>
+    <Image Include="textures\maps\river\river_1.png">
+      <Filter>textures\maps\river</Filter>
+    </Image>
+    <Image Include="textures\maps\river\river_2.png">
+      <Filter>textures\maps\river</Filter>
+    </Image>
+    <Image Include="textures\maps\river\river_3.png">
+      <Filter>textures\maps\river</Filter>
+    </Image>
+    <Image Include="textures\maps\river\river_4.png">
+      <Filter>textures\maps\river</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

@@ -367,6 +367,10 @@
     <Image Include="textures\character\friendly_man_walk.png" />
     <Image Include="textures\HUD\HUD_FillBar05.png" />
     <Image Include="textures\magic_fruit\apple.png" />
+    <Image Include="textures\maps\river\river_1.png" />
+    <Image Include="textures\maps\river\river_2.png" />
+    <Image Include="textures\maps\river\river_3.png" />
+    <Image Include="textures\maps\river\river_4.png" />
     <Image Include="textures\maps\wildan_empire.png" />
     <Image Include="textures\map\desert.png" />
     <Image Include="textures\natural_objects\big_stone.png" />

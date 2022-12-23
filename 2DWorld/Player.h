@@ -13,7 +13,7 @@ public:
 	~Player();
 	Vector2D GetPosition() const;
 	Vector2D GetDirection() const;
-	Rectangle GetCollision() const;
+	Rectangle GetRectangle() const;
 	bool IsPunch() const;
 	bool IsInvisible() const;
 	float GetFacing() const;

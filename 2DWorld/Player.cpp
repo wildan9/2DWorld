@@ -52,7 +52,7 @@ Vector2D Player::GetDirection() const
 	return direction;
 }
 
-Rectangle Player::GetCollision() const
+Rectangle Player::GetRectangle() const
 {
 	const Texture2D& texture = _textures->at(0);
 

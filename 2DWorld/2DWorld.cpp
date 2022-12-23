@@ -46,9 +46,10 @@ static const char* strCameraMode[2]
 };
 bool cameraNormalMode = 0;
 
-static const Rectangle invisibleFences[18]
+static const Rectangle invisibleFences[19]
 {
     { 0.0f,     1390.0f,    400.0f,     350.0f  },
+    { 472.0f,   380.0f,     10.0f,      10.0f   },
     { 510.0f,   170.0f,     550.0f,     500.0f  },
     { 1790.0f,  929.0f,     970.0f,     750.2f  },
     { 1749.0f,  1982.0f,    530.0f,     450.2f  },
@@ -60,7 +61,7 @@ static const Rectangle invisibleFences[18]
     { 340.0f,   700.0f,     78.0f,      20.2f   },
     { 905.0f,   675.0f,     100.0f,     80.2f   },
     { 1690.0f,  1740.0f,    10.0f,      90.2f   },
-    { 1178.0f,  2751.0f,    78.0f,      78.2f   },
+    { 145.0f,   3590.0f,    78.0f,      78.2f   },
     
     // bridge 1
     { 410.0f,  1210.0f,  5.0f,   260.0f   },
@@ -405,12 +406,12 @@ private:
     struct MenuButton
     {
         bool isBackToMainMenu = 0;
-        bool isBack = 0;
-        bool isInventory = 0;
-        bool isOption = 0;
-        bool isExit = 0;
-        bool isVolumeUp = 0;
-        bool isVolumeDown = 0;
+        bool isBack           = 0;
+        bool isInventory      = 0;
+        bool isOption         = 0;
+        bool isExit           = 0;
+        bool isVolumeUp       = 0;
+        bool isVolumeDown     = 0;
     };
     MenuButton _menuButton;
 };
@@ -675,7 +676,7 @@ void GameplayScreen::DrawGamePlayScreen()
     {
         magicFruit->Draw();
 
-        if (CheckCollisionRecs(staticGameObj->player.GetCollision(), magicFruit->GetCollision()))
+        if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), magicFruit->GetRectangle()))
         {
             staticGameObj->player.SetStamina(1);
 
@@ -736,16 +737,6 @@ void GameplayScreen::DrawGamePlayScreen()
         }
     }
 
-    if (staticGameObj->player.GetPosition().x > (float)staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale() &&
-        staticGameObj->player.GetPosition().x < staticGameObj->map.GetDesertPos().x)
-    {
-        staticGameObj->player.OnWater();
-    }
-    else
-    {
-        staticGameObj->player.OnLand();
-    }
-
     if (staticGameObj->player.GetPosition().x < 0 || staticGameObj->player.GetPosition().y < 0 ||        
         staticGameObj->player.GetPosition().x > staticGameObj->map.GetDesertPos().x + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale() ||
         staticGameObj->player.GetPosition().y > staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale() - 70.0f)
@@ -753,7 +744,7 @@ void GameplayScreen::DrawGamePlayScreen()
         staticGameObj->player.Stop();
     }
 
-    if (CheckCollisionRecs(staticGameObj->player.GetCollision(), staticGameObj->animals.crocodile.GetCollision()) &&
+    if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), staticGameObj->animals.crocodile.GetRectangle()) &&
         staticGameObj->player.IsPunch() && OnTouch(staticGameObj->player, staticGameObj->animals.crocodile.GetPosition().x))
     {
         staticGameObj->animals.crocodile.Hurt();
@@ -763,20 +754,20 @@ void GameplayScreen::DrawGamePlayScreen()
         staticGameObj->animals.crocodile.Walk();
     }
 
-    for (auto& rhino : staticGameObj->animals.rhinos) if (CheckCollisionRecs(staticGameObj->player.GetCollision(), rhino.GetCollision()))
+    for (auto& rhino : staticGameObj->animals.rhinos) if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), rhino.GetRectangle()))
     {
         staticGameObj->player.Stop();
     }
 
-    if (CheckCollisionRecs(staticGameObj->player.GetCollision(), staticGameObj->map.GetMapLine1()) ||
-        CheckCollisionRecs(staticGameObj->player.GetCollision(), staticGameObj->map.GetMapLine2()))
+    if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), staticGameObj->map.GetMapLine1()) ||
+        CheckCollisionRecs(staticGameObj->player.GetRectangle(), staticGameObj->map.GetMapLine2()))
     {
         staticGameObj->player.Stop();
     }
 
     for (const auto& invisibleFence : invisibleFences)
     {
-        if (CheckCollisionRecs(staticGameObj->player.GetCollision(),
+        if (CheckCollisionRecs(staticGameObj->player.GetRectangle(),
             Rectangle{ invisibleFence.x, invisibleFence.y, invisibleFence.width, invisibleFence.height }))
         {
             staticGameObj->player.Stop();
@@ -813,14 +804,34 @@ void GameplayScreen::DrawGamePlayScreen()
         }
     }
 
-    if (CheckCollisionRecs(staticGameObj->player.GetCollision(), staticGameObj->prop.naturalObj.GetBigStone1Coll()))
+    if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), staticGameObj->prop.naturalObj.GetBigStone1Coll()))
     {
         staticGameObj->player.SetPosition({ 5300.0f, 300.0f });
     }
 
-    if (CheckCollisionRecs(staticGameObj->player.GetCollision(), staticGameObj->prop.naturalObj.GetBigStone2Coll()))
+    if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), staticGameObj->prop.naturalObj.GetBigStone2Coll()))
     {
         staticGameObj->player.SetPosition({ 1600.0f - 80.0f, 700.0f });
+    }
+
+    bool onRiver = 0;
+
+    for (auto& river : staticGameObj->map.GetMapRiverRects())
+    {
+        if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), river))
+        {
+            onRiver = 1;
+        }
+    }
+
+    if (staticGameObj->player.GetPosition().x > (float)staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale() &&
+        staticGameObj->player.GetPosition().x < staticGameObj->map.GetDesertPos().x || onRiver)
+    {
+        staticGameObj->player.OnWater();
+    }
+    else
+    {
+        staticGameObj->player.OnLand();
     }
 
     // staticGameObj->animals.Draw(GetFrameTime());
@@ -829,7 +840,7 @@ void GameplayScreen::DrawGamePlayScreen()
 
     for (auto& tree : *trees)
     {
-        if (CheckCollisionRecs(staticGameObj->player.GetCollision(), tree.GetCollision()))
+        if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), tree.GetRectangle()))
         {
             staticGameObj->player.Stop();
         }
