@@ -31,7 +31,7 @@ static std::unique_ptr<StaticObject> staticGameObj = nullptr;
 std::unique_ptr<std::vector<int>> dynamicObjPos = nullptr;
 std::unique_ptr<Camera2D>         camera        = nullptr;
 
-std::unique_ptr<std::array<Tree, 10>> trees = nullptr;
+std::unique_ptr<std::array<Tree, 20>> trees = nullptr;
 
 std::thread loadDataThread;
 
@@ -519,9 +519,62 @@ void InitGame()
 
     clickSound = LoadSound("sounds/menu_selection_click.wav");
 
-    trees = std::make_unique<std::array<Tree, 10>>();
+    trees = std::make_unique<std::array<Tree, 20>>();
 
-    for (auto i = 0; i < 2; i++)
+    float treePos[20][2]
+    {
+        { 14.0f,  1900.0f  },
+        { 240.0f, 2340.0f  },
+        { 720.0f, 2590.0f  },
+        { 380.0f, 2860.0f  },
+        { 880.0f, 3110.0f  },
+
+        { 1490.0f + (360.0f * 0.0f), 75.0f },
+        { 1490.0f + (360.0f * 1.0f), 75.0f },
+        { 1490.0f + (360.0f * 2.0f), 75.0f },
+        { 1490.0f + (360.0f * 3.0f), 75.0f },
+        { 1490.0f + (360.0f * 4.0f), 75.0f },
+        { 1490.0f + (360.0f * 5.0f), 75.0f },
+
+
+        { 1490.0f, 450.0f },
+        { 1945.0f, 640.0f },
+
+        { 2500.0f, 450.0f },
+        { 2840.0f, 800.0f },
+
+        { 3400.0f, 90.0f + (360.0f * 1.0f) },
+        { 3400.0f, 90.0f + (360.0f * 2.0f) },
+        { 3400.0f, 90.0f + (360.0f * 3.0f) },
+        { 3400.0f, 90.0f + (360.0f * 4.0f) },
+
+        { 3400.0f, 2120.0f }
+    };
+
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            treePos[i][j] = (treePos[i][j] + treePos[i][j] + (float)GetRandomValue(0, 30)) / 2;
+        }
+    }
+
+    for (int i = 5; i < 20; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            treePos[i][j] = (treePos[i][j] + treePos[i][j] + (float)GetRandomValue(90, 120)) / 2;
+        }
+    }
+
+    for (int i = 0; i < 20; i++)
+    {
+        trees->at(i).LoadTextureFile();
+
+        trees->at(i).SetPosition({ (treePos[i][0]), (treePos[i][1]) });
+    }
+
+    /*for (auto i = 0; i < 2; i++)
     {
         trees->at(i).LoadTextureFile();
         trees->at(i).SetPosition({ (float)GetRandomValue(2010, 2830), (float)GetRandomValue(50, 740) });
@@ -549,7 +602,7 @@ void InitGame()
     {
         trees->at(i).LoadTextureFile();
         trees->at(i).SetPosition({ (float)GetRandomValue(0, 500), (float)GetRandomValue(2400, 3000) });
-    }
+    }*/
 
     camera = std::make_unique<Camera2D>();
 

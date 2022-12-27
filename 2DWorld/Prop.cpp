@@ -73,8 +73,8 @@ struct Tree
 		return Rectangle{
 			static_cast<float>(_position.x),
 			static_cast<float>(_position.y),
-			static_cast<float>(_texture.width * _textureScale),
-			static_cast<float>(_texture.height * _textureScale)
+			static_cast<float>(_texture.width * 0.9f * _textureScale),
+			static_cast<float>(_texture.height * 0.9f * _textureScale)
 		};
 	}
 
