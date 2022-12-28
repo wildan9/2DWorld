@@ -43,6 +43,9 @@
     <Filter Include="textures\maps\river">
       <UniqueIdentifier>{602d8c22-d278-437c-b16e-cda7f2820d81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="textures\volume_bar">
+      <UniqueIdentifier>{58720b8b-e91b-44be-9b82-1aaa5b10dbd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DWorld.h">
@@ -98,6 +101,9 @@
       <Filter>sounds</Filter>
     </Media>
     <Media Include="sounds\menu_selection_click.wav">
+      <Filter>sounds</Filter>
+    </Media>
+    <Media Include="sounds\horse_step.wav">
       <Filter>sounds</Filter>
     </Media>
   </ItemGroup>
@@ -192,8 +198,14 @@
     <Image Include="textures\maps\river\river_4.png">
       <Filter>textures\maps\river</Filter>
     </Image>
-    <Image Include="textures\icons8-mute-48.png">
-      <Filter>textures</Filter>
+    <Image Include="textures\character\friendly_man_riding_horse.png">
+      <Filter>textures\character</Filter>
+    </Image>
+    <Image Include="textures\character\friendly_man_riding_horse_idle.png">
+      <Filter>textures\character</Filter>
+    </Image>
+    <Image Include="textures\volume_bar\mute.png">
+      <Filter>textures\volume_bar</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

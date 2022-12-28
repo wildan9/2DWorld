@@ -238,6 +238,43 @@ private:
 	Sound _gettingPunched{ LoadSound("sounds/getting_punched.wav") };
 };
 
+class Horse : public BaseAnimation
+{
+public:
+	~Horse()
+	{
+		UnloadTexture(_textureIdle);
+	}
+
+	Rectangle GetRectangle() const
+	{
+		return Rectangle{
+			_position.x, _position.y,
+			2.2f * (float)_textureIdle.width / 13.0f,
+			2.2f * (float)_textureIdle.height
+		};
+	}
+
+	void SetPosition(Vector2D pos)
+	{
+		_position = pos;
+	}
+
+	Vector2D GetPosition()
+	{
+		return _position;
+	}
+
+	void Draw(const float deltaTime)
+	{
+		Animate(_position, _textureIdle, deltaTime, 2.2f, 13.0f, 1.0f, 0.0f, 1, 0.0f);
+	}
+
+private:
+	const Texture2D _textureIdle{ LoadTexture("textures/animals/horse_idle.png") };
+	Vector2D _position{ 1040.0f, 870.0f };
+};
+
 class Animals
 {
 public:

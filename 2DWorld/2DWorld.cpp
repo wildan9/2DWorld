@@ -23,6 +23,8 @@ Sound clickSound   = {};
 
 MagicFruit* magicFruit = nullptr;
 
+Horse* horse = nullptr;
+
 std::unique_ptr<std::vector<std::unique_ptr<Carrot>>> carrots = nullptr;
 std::unique_ptr<std::vector<std::unique_ptr<Flower>>> flowers = nullptr;
 
@@ -397,7 +399,7 @@ public:
     {
         _carrot           = LoadTexture("textures/natural_objects/carrot/big.png");
         _flower           = LoadTexture("textures/natural_objects/small_purple_flower.png");
-        _muteIcon.texture = LoadTexture("textures/icons8-mute-48.png");
+        _muteIcon.texture = LoadTexture("textures/volume_bar/mute.png");
     }
 
     void FreeTexture()
@@ -527,6 +529,8 @@ void InitGame()
 
     magicFruit = new MagicFruit;
 
+    horse = new Horse;
+
     staticGameObj = std::make_unique<StaticObject>();
 
     flowers = std::make_unique<std::vector<std::unique_ptr<Flower>>>();
@@ -534,8 +538,6 @@ void InitGame()
     carrots = std::make_unique<std::vector<std::unique_ptr<Carrot>>>();
 
     dynamicObjPos = std::make_unique<std::vector<int>>();
-
-    magicFruit->LoadTexture(LoadTexture("textures/magic_fruit/apple.png"));
 
     clickSound = LoadSound("sounds/menu_selection_click.wav");
 
@@ -698,6 +700,10 @@ void UpdateCamera(Camera2D& camera, const Player& player)
     {
         camera.target = Vector2D{ camera.target }.Add(diff.Scale(speed * GetFrameTime() / diff.Length()));
     }
+    else if (staticGameObj->player.GetSpeed() == 6.5f)
+    {
+        camera.target = staticGameObj->player.GetPosition();
+    }
 
     if ((GetMouseWheelMove() > 0.0f) && (camera.zoom < 2.0f))
     {
@@ -745,11 +751,17 @@ void GameplayScreen::DrawGamePlayScreen()
 {
     staticGameObj->map.Draw();
 
+    const bool onHorse = (horse == nullptr) ? 1 : 0;
+
     if (magicFruit != nullptr)
     {
         magicFruit->Draw();
 
-        if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), magicFruit->GetRectangle()))
+        if (CheckCollisionRecs(
+            staticGameObj->player.GetRectangle(), 
+            magicFruit->GetRectangle()) &&
+            !onHorse
+            )
         {
             staticGameObj->player.SetStamina(1);
 
@@ -775,8 +787,6 @@ void GameplayScreen::DrawGamePlayScreen()
                 magicFruit = new MagicFruit{
                     { staticGameObj->player.GetPosition().x + 50.0f, staticGameObj->player.GetPosition().y + 40.0f } };
             }
-
-            magicFruit->LoadTexture(LoadTexture("textures/magic_fruit/apple.png"));
         }
     }
 
@@ -810,9 +820,9 @@ void GameplayScreen::DrawGamePlayScreen()
         }
     }
 
-    if (staticGameObj->player.GetPosition().x < 0 || staticGameObj->player.GetPosition().y < 0 ||        
-        staticGameObj->player.GetPosition().x > staticGameObj->map.GetDesertPos().x + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale() ||
-        staticGameObj->player.GetPosition().y > staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale() - 70.0f)
+    if (staticGameObj->player.GetPosition().x < 0 || staticGameObj->player.GetPosition().y < 0 || staticGameObj->player.GetPosition().x > staticGameObj->map.GetDesertPos().x
+        + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale() || staticGameObj->player.GetPosition().y > staticGameObj->map.GetWildanEmpireSize().width 
+        * staticGameObj->map.GetMapScale() - 70.0f)
     {
         staticGameObj->player.Stop();
     }
@@ -827,9 +837,12 @@ void GameplayScreen::DrawGamePlayScreen()
         staticGameObj->animals.crocodile.Walk();
     }
 
-    for (auto& rhino : staticGameObj->animals.rhinos) if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), rhino.GetRectangle()))
+    for (auto& rhino : staticGameObj->animals.rhinos)
     {
-        staticGameObj->player.Stop();
+        if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), rhino.GetRectangle()))
+        {
+            staticGameObj->player.Stop();
+        }
     }
 
     if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), staticGameObj->map.GetMapLine1()) ||
@@ -909,6 +922,66 @@ void GameplayScreen::DrawGamePlayScreen()
 
     // staticGameObj->animals.Draw(GetFrameTime());
 
+    if (horse != nullptr)
+    {
+        horse->Draw(GetFrameTime());
+
+        if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), horse->GetRectangle()))
+        {
+            DrawText(
+                "Press enter to ride the horse", 
+                staticGameObj->player.GetPosition().x, 
+                staticGameObj->player.GetPosition().y - 50.0f,
+                18, 
+                RED
+            );
+
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                staticGameObj->player.OnHorse(1);
+
+                staticGameObj->player.SetPosition(horse->GetPosition());
+
+                delete horse;
+
+                horse = nullptr;
+            }
+        }
+    }
+
+    if (horse == nullptr)
+    {
+        if (IsKeyPressed(KEY_ENTER) && onHorse)
+        {
+            staticGameObj->player.OnHorse(0);
+
+            if (staticGameObj->player.GetFacing() == -1.0f)
+            {
+                horse = new Horse;
+                horse->SetPosition(staticGameObj->player.GetPosition());
+                
+                staticGameObj->player.SetPosition(
+                    {
+                        staticGameObj->player.GetPosition().x - 80.0f,
+                        staticGameObj->player.GetPosition().y
+                    }
+                );
+            }
+            else
+            {
+                horse = new Horse;
+                horse->SetPosition(staticGameObj->player.GetPosition());
+
+                staticGameObj->player.SetPosition(
+                    {
+                        staticGameObj->player.GetPosition().x + 80.0f,
+                        staticGameObj->player.GetPosition().y
+                    }
+                );
+            }
+        }
+    }
+
     staticGameObj->player.Draw();
 
     for (auto& tree : *trees)
@@ -964,11 +1037,32 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
 
         strCameraZoom.append(stream.str());
 
-        DrawText(strCameraZoom.c_str(), 10, screenHeight - 124, 18, BLACK);
+        DrawText(
+            strCameraZoom.c_str(), 
+            10, 
+            screenHeight - 124, 
+            18, 
+            BLACK
+        );
 
-        DrawText(strCameraMode[cameraMode], 10, screenHeight - 90, 18, BLACK);
+        DrawText(
+            strCameraMode[cameraMode], 
+            10, 
+            screenHeight - 90, 
+            18, 
+            BLACK
+        );
 
-        const char* strStamina[7]{ "Stamina: 0", "Stamina: #", "Stamina: # #", "Stamina: # # #", "Stamina: # # # #", "Stamina: # # # # #", "Stamina: # # # # # #" };
+        const char* strStamina[7]
+        { 
+            "Stamina: 0", 
+            "Stamina: #", 
+            "Stamina: # #", 
+            "Stamina: # # #", 
+            "Stamina: # # # #", 
+            "Stamina: # # # # #", 
+            "Stamina: # # # # # #" 
+        };
 
         Color staminaColor = GREEN;
 
@@ -998,7 +1092,13 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
 
         if (!teleportText.Done()) DrawCenteredText(screenHeight - 270, "You are teleported", 24, RED);
 
-        DrawText(strFPS.append(std::to_string(GetFPS())).c_str(), screenWidth - 140, 10, 18, RED);
+        DrawText(
+            strFPS.append(std::to_string(GetFPS())).c_str(), 
+            screenWidth - 140, 
+            10, 
+            18, 
+            RED
+        );
 
         DrawText(time.c_str(), screenWidth - 140, 35, 18, RED);
 
@@ -1057,7 +1157,16 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
 
         DrawText(strCameraMode[cameraMode], 10, screenHeight - 90, 18, BLACK);
 
-        const char* strStamina[7]{ "Stamina: 0", "Stamina: #", "Stamina: # #", "Stamina: # # #", "Stamina: # # # #", "Stamina: # # # # #", "Stamina: # # # # # #" };
+        const char* strStamina[7]
+        { 
+            "Stamina: 0", 
+            "Stamina: #", 
+            "Stamina: # #", 
+            "Stamina: # # #", 
+            "Stamina: # # # #", 
+            "Stamina: # # # # #", 
+            "Stamina: # # # # # #" 
+        };
 
         Color staminaColor = GREEN;
 
@@ -1108,7 +1217,15 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
 
 void DrawVolumeBar(const int x)
 {
-    const char* strVolume[6]{ "Muted", "Volume: #", "Volume: # #", "Volume: # # #", "Volume: # # # #", "Volume: # # # # #" };
+    const char* strVolume[6]
+    { 
+        "Muted", 
+        "Volume: #", 
+        "Volume: # #", 
+        "Volume: # # #", 
+        "Volume: # # # #", 
+        "Volume: # # # # #" 
+    };
 
     const Color volumeColors[4]{ RED, DARKGREEN, LIME, GREEN };
 
@@ -1149,7 +1266,8 @@ void DrawMuteCheckBoxV(const Vector2D pos)
     {
         const Vector2D mousePoint = GetMousePosition();
 
-        Rectangle totalBounds = {
+        Rectangle totalBounds
+        {
             (GuiGetStyle(CHECKBOX, TEXT_ALIGNMENT) == GUI_TEXT_ALIGN_LEFT) ? textBounds.x : bounds.x,
             bounds.y,
             bounds.width + textBounds.width + GuiGetStyle(CHECKBOX, TEXT_PADDING),
@@ -1174,16 +1292,23 @@ void DrawMuteCheckBoxV(const Vector2D pos)
 
     if (audio.muted || audio.masterVolume < 0.1f)
     {
-        Rectangle check = { bounds.x + GuiGetStyle(CHECKBOX, BORDER_WIDTH) + GuiGetStyle(CHECKBOX, CHECK_PADDING),
-                            bounds.y + GuiGetStyle(CHECKBOX, BORDER_WIDTH) + GuiGetStyle(CHECKBOX, CHECK_PADDING),
-                            bounds.width - 2 * (GuiGetStyle(CHECKBOX, BORDER_WIDTH) + GuiGetStyle(CHECKBOX, CHECK_PADDING)),
-                            bounds.height - 2 * (GuiGetStyle(CHECKBOX, BORDER_WIDTH) + GuiGetStyle(CHECKBOX, CHECK_PADDING)) };
+        Rectangle check
+        { 
+            bounds.x + GuiGetStyle(CHECKBOX, BORDER_WIDTH) + GuiGetStyle(CHECKBOX, CHECK_PADDING),
+            bounds.y + GuiGetStyle(CHECKBOX, BORDER_WIDTH) + GuiGetStyle(CHECKBOX, CHECK_PADDING),
+            bounds.width - 2 * (GuiGetStyle(CHECKBOX, BORDER_WIDTH) + GuiGetStyle(CHECKBOX, CHECK_PADDING)),
+            bounds.height - 2 * (GuiGetStyle(CHECKBOX, BORDER_WIDTH) + GuiGetStyle(CHECKBOX, CHECK_PADDING)) 
+        };
         GuiDrawRectangle(check, 0, BLANK, Fade(GetColor(GuiGetStyle(CHECKBOX, TEXT + state * 3)), guiAlpha));
     }
 
-    GuiDrawText(strMuteCheckBox, textBounds,
-        (GuiGetStyle(CHECKBOX, TEXT_ALIGNMENT) == GUI_TEXT_ALIGN_RIGHT) ? GUI_TEXT_ALIGN_LEFT : GUI_TEXT_ALIGN_RIGHT,
-        Fade(GetColor(GuiGetStyle(LABEL, TEXT + (state * 3))), guiAlpha));
+    GuiDrawText(
+            strMuteCheckBox, 
+            textBounds,
+            (GuiGetStyle(CHECKBOX, TEXT_ALIGNMENT) == GUI_TEXT_ALIGN_RIGHT) ? GUI_TEXT_ALIGN_LEFT : GUI_TEXT_ALIGN_RIGHT,
+            Fade(GetColor(GuiGetStyle(LABEL, TEXT + (state * 3))), 
+            guiAlpha)
+    );
 }
 
 static void* LoadDataThread()
@@ -1433,6 +1558,11 @@ void EndGame()
     if (magicFruit != nullptr)
     {
         delete magicFruit;
+    }
+
+    if (horse != nullptr)
+    {
+        delete horse;
     }
 
     if (!flowers->empty())

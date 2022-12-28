@@ -351,6 +351,7 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="sounds\getting_punched.wav" />
+    <Media Include="sounds\horse_step.wav" />
     <Media Include="sounds\land_step.wav" />
     <Media Include="sounds\menu_selection_click.wav" />
     <Media Include="sounds\water_step.wav" />
@@ -364,9 +365,10 @@
     <Image Include="textures\animals\rhino_idle.png" />
     <Image Include="textures\character\friendly_man_idle.png" />
     <Image Include="textures\character\friendly_man_punch.png" />
+    <Image Include="textures\character\friendly_man_riding_horse.png" />
+    <Image Include="textures\character\friendly_man_riding_horse_idle.png" />
     <Image Include="textures\character\friendly_man_walk.png" />
     <Image Include="textures\HUD\HUD_FillBar05.png" />
-    <Image Include="textures\icons8-mute-48.png" />
     <Image Include="textures\magic_fruit\apple.png" />
     <Image Include="textures\maps\river\river_1.png" />
     <Image Include="textures\maps\river\river_2.png" />
@@ -387,6 +389,7 @@
     <Image Include="textures\screens_bg\earth.png" />
     <Image Include="textures\screens_bg\galaxy.png" />
     <Image Include="textures\screens_bg\helix_nebula.png" />
+    <Image Include="textures\volume_bar\mute.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="sounds\birds-isaiah658.ogg" />

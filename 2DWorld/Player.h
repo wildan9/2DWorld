@@ -24,17 +24,17 @@ public:
 	void Stop();
 	void OnLand();
 	void OnWater();
+	void OnHorse(bool isRidingHorse);
 	void Draw();
 
 private:
-	bool _isWalk, _isDragonInside;
+	bool _isWalk, _isDragonInside, _isRidingHorse;
 	float _timer, _facing, _stamina;
 	float Row() const, Timer() const;
 	void UpdateTexture();
 	int LoadTextureFile(const char* texture);
 	const float _updateTime = 0.084f;
 	Vector2D _texturePos, _textureLastPos;
-	Sound _landStep;
-	Sound _waterStep;
+	Sound _landStep, _waterStep, _horseStep;
 	std::unique_ptr<std::vector<Texture2D>> _textures;
 };

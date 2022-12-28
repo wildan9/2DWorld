@@ -113,18 +113,13 @@ struct MagicFruit
         };
     }
 
-    void LoadTexture(Texture2D texture)
-    {
-        _texture = texture;
-    }
-
     void Draw()
     {
         DrawTextureV(_texture, _position, WHITE);
     }
 
 private:
-    Texture2D _texture{};
+    const Texture2D _texture{ LoadTexture("textures/magic_fruit/apple.png") };
     Vector2D _position{ 585.0f, 760.0f };
 };
 
