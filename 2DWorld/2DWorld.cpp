@@ -211,44 +211,56 @@ public:
 
             DrawText("Volume: ", x - 60, 120 + 20, 16, DARKGRAY);
 
-            for (auto i = 0; i < 5; i++)
+            if (volume > 0 && !audio.muted || volume > 0)
             {
-                volumeBarRec = { x + 21 * i, 120 + 20, 20, 20 };
+                for (int i = 0; i < 5; i++)
+                {
+                    volumeBarRec = { x + 21 * i, 120 + 20, 20, 20 };
 
-                if (CheckCollisionRecs({ GetMousePosition().x, GetMousePosition().y, 5, 5 }, volumeBarRec)
-                    && (GetMouseWheelMove() > 0.0f) && audio.masterVolume <= 0.5f && !audio.muted)
-                {
-                    audio.masterVolume += 0.1f;
-                    audio.currentVolume += 0.1f;
-                }
-                if (CheckCollisionRecs({ GetMousePosition().x, GetMousePosition().y, 5, 5 }, volumeBarRec)
-                    && (GetMouseWheelMove() < 0.0f) && audio.masterVolume >= 0.1f && !audio.muted)
-                {
-                    audio.masterVolume -= 0.1f;
-                    audio.currentVolume -= 0.1f;
-                }
-                if (audio.masterVolume > 0.0f)
-                {
-                    if (i < volume)
-                    {
-                        DrawRectangle(volumeBarRec.x, volumeBarRec.y,
-                            volumeBarRec.width, volumeBarRec.height, volumeColors[volumeColor]);
-                    }
-                    DrawRectangleLines(volumeBarRec.x, volumeBarRec.y, volumeBarRec.width, volumeBarRec.height, RED);
-                }
-                else
-                {
-                    if (CheckCollisionRecs({ GetMousePosition().x, GetMousePosition().y, 5, 5 }, { x + 15, 120 + 140, 48 * 2, 28 })
-                        && (GetMouseWheelMove() > 0.0f) && audio.masterVolume <= 0.1f)
+                    if (CheckCollisionPointRec({ GetMousePosition().x, GetMousePosition().y }, volumeBarRec)
+                        && (GetMouseWheelMove() > 0.0f) && audio.masterVolume <= 0.5f && !audio.muted)
                     {
                         audio.masterVolume += 0.1f;
                         audio.currentVolume += 0.1f;
                     }
-                    DrawText("Muted", x + 15, 120 + 20, 28, RED);
+                    if (CheckCollisionPointRec({ GetMousePosition().x, GetMousePosition().y }, volumeBarRec)
+                        && (GetMouseWheelMove() < 0.0f) && audio.masterVolume >= 0.1f && !audio.muted)
+                    {
+                        audio.masterVolume -= 0.1f;
+                        audio.currentVolume -= 0.1f;
+                    }
+                    if (audio.masterVolume > 0.0f)
+                    {
+                        if (i < volume)
+                        {
+                            DrawRectangle(volumeBarRec.x, volumeBarRec.y,
+                                volumeBarRec.width, volumeBarRec.height, volumeColors[volumeColor]);
+                        }
+                        DrawRectangleLines(volumeBarRec.x, volumeBarRec.y, volumeBarRec.width, volumeBarRec.height, RED);
+                    }
                 }
             }
+            else if (volume < 1 && !audio.muted)
+            {
+                if (CheckCollisionPointRec({ GetMousePosition().x, GetMousePosition().y },
+                    { 
+                        _muteIcon.position.x, 
+                        _muteIcon.position.y, 
+                        (float)_muteIcon.texture.width, 
+                        (float)_muteIcon.texture.height 
+                    }) && volume < 1 && (GetMouseWheelMove() > 0.0f))
+                {
+                    audio.masterVolume += 0.1f;
+                    audio.currentVolume += 0.1f;
+                }
+                DrawTextureV(_muteIcon.texture, _muteIcon.position, WHITE);
+            }
+            else if (audio.muted)
+            {
+                DrawTextureV(_muteIcon.texture, _muteIcon.position, WHITE);
+            }
 
-            _menuButton.isVolumeUp = GuiButton({ x + 140, 120 + 20, 20, 20 }, "+");
+            _menuButton.isVolumeUp   = GuiButton({ x + 140, 120 + 20, 20, 20 }, "+");
             _menuButton.isVolumeDown = GuiButton({ x + 120, 120 + 20, 20, 20 }, "-");
 
             if (_menuButton.isVolumeUp && audio.masterVolume <= 0.5f && !audio.muted)
@@ -383,14 +395,16 @@ public:
 
     void InitTexture()
     {
-        _carrot = LoadTexture("textures/natural_objects/carrot/big.png");
-        _flower = LoadTexture("textures/natural_objects/small_purple_flower.png");
+        _carrot           = LoadTexture("textures/natural_objects/carrot/big.png");
+        _flower           = LoadTexture("textures/natural_objects/small_purple_flower.png");
+        _muteIcon.texture = LoadTexture("textures/icons8-mute-48.png");
     }
 
     void FreeTexture()
     {
         UnloadTexture(_carrot);
         UnloadTexture(_flower);
+        UnloadTexture(_muteIcon.texture);
     }
 
 private:
@@ -414,6 +428,12 @@ private:
         bool isVolumeDown     = 0;
     };
     MenuButton _menuButton;
+    struct MuteIcon
+    {
+        Texture2D texture;
+        const Vector2D position{ ((screenWidth / 2) - 50) + 15, 125 };
+    };
+    MuteIcon _muteIcon;
 };
 MenuScreen menuScreen;
 

@@ -192,6 +192,9 @@
     <Image Include="textures\maps\river\river_4.png">
       <Filter>textures\maps\river</Filter>
     </Image>
+    <Image Include="textures\icons8-mute-48.png">
+      <Filter>textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="sounds\epic_cinematic_trailer_elite.ogg">
