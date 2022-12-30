@@ -2,8 +2,8 @@
 
 #include "2DWorld.h"
 
-const int screenWidth  = 512;
-const int screenHeight = 512;
+constexpr int screenWidth  = 512;
+constexpr int screenHeight = 512;
 
 constexpr int8_t maxCarrots      = 12;
 constexpr int8_t maxSmallFlowers = 12;
@@ -432,10 +432,10 @@ private:
     MenuButton _menuButton;
     struct MuteIcon
     {
-        Texture2D texture;
+        Texture2D texture{};
         const Vector2D position{ ((screenWidth / 2) - 50) + 15, 125 };
     };
-    MuteIcon _muteIcon;
+    MuteIcon _muteIcon{};
 };
 MenuScreen menuScreen;
 
@@ -595,36 +595,6 @@ void InitGame()
 
         trees->at(i).SetPosition({ (treePos[i][0]), (treePos[i][1]) });
     }
-
-    /*for (auto i = 0; i < 2; i++)
-    {
-        trees->at(i).LoadTextureFile();
-        trees->at(i).SetPosition({ (float)GetRandomValue(2010, 2830), (float)GetRandomValue(50, 740) });
-    }
-
-    for (auto i = 2; i < 4; i++)
-    {
-        trees->at(i).LoadTextureFile();
-        trees->at(i).SetPosition({ (float)GetRandomValue(2830, 3490), (float)GetRandomValue(1000, 2050) });
-    }
-
-    for (auto i = 4; i < 6; i++)
-    {
-        trees->at(i).LoadTextureFile();
-        trees->at(i).SetPosition({ (float)GetRandomValue(400, 850), (float)GetRandomValue(2100, 2400) });
-    }
-
-    for (auto i = 6; i < 8; i++)
-    {
-        trees->at(i).LoadTextureFile();
-        trees->at(i).SetPosition({ (float)GetRandomValue(0, 400), (float)GetRandomValue(2100, 2400) });
-    }
-
-    for (auto i = 8; i < 10; i++)
-    {
-        trees->at(i).LoadTextureFile();
-        trees->at(i).SetPosition({ (float)GetRandomValue(0, 500), (float)GetRandomValue(2400, 3000) });
-    }*/
 
     camera = std::make_unique<Camera2D>();
 
@@ -796,7 +766,10 @@ void GameplayScreen::DrawGamePlayScreen()
     {
         if (!dynamicObjPos->empty())
         {
-            if (IsKeyPressed(KEY_J) && !std::count(dynamicObjPos->begin(), dynamicObjPos->end(), flowerPos.ConcatXY()))
+            if (IsKeyPressed(KEY_J)
+                && std::find(dynamicObjPos->begin(),
+                    dynamicObjPos->end(),
+                    flowerPos.ConcatXY()) == dynamicObjPos->end())
             {
                 dynamicObjPos->push_back(flowerPos.ConcatXY());
                 flowers->push_back(std::make_unique<Flower>(flowerPos));
@@ -820,8 +793,10 @@ void GameplayScreen::DrawGamePlayScreen()
         }
     }
 
-    if (staticGameObj->player.GetPosition().x < 0 || staticGameObj->player.GetPosition().y < 0 || staticGameObj->player.GetPosition().x > staticGameObj->map.GetDesertPos().x
-        + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale() || staticGameObj->player.GetPosition().y > staticGameObj->map.GetWildanEmpireSize().width 
+    if (staticGameObj->player.GetPosition().x < 0 || staticGameObj->player.GetPosition().y < 0 
+        || staticGameObj->player.GetPosition().x > staticGameObj->map.GetDesertPos().x
+        + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale() 
+        || staticGameObj->player.GetPosition().y > staticGameObj->map.GetWildanEmpireSize().width 
         * staticGameObj->map.GetMapScale() - 70.0f)
     {
         staticGameObj->player.Stop();
@@ -866,7 +841,10 @@ void GameplayScreen::DrawGamePlayScreen()
     {
         if (!dynamicObjPos->empty())
         {
-            if (IsKeyPressed(KEY_G) && !std::count(dynamicObjPos->begin(), dynamicObjPos->end(), carrotPos.ConcatXY()))
+            if (IsKeyPressed(KEY_G)
+                && std::find(dynamicObjPos->begin(),
+                    dynamicObjPos->end(),
+                    carrotPos.ConcatXY()) == dynamicObjPos->end())
             {
                 dynamicObjPos->push_back(carrotPos.ConcatXY());
                 carrots->push_back(std::make_unique<Carrot>(carrotPos));
@@ -1366,7 +1344,6 @@ void UpdateGame()
 
             framesCounter = 0;
         }
-
     } break;
     case ApplicationStates::TITLE:
     {
@@ -1378,15 +1355,12 @@ void UpdateGame()
         {
             SetActiveScreen(&gameplayScreen);
 
-            // applicationState = ApplicationStates::GAMEPLAY;
-
             PauseMusicStream(mainBGM);
 
             loadDataThread = std::thread(std::ref(LoadDataThread));
 
             applicationState = ApplicationStates::LOADING;
         }
-
     } break;
     case ApplicationStates::LOADING:
     {
@@ -1398,7 +1372,6 @@ void UpdateGame()
 
             applicationState = ApplicationStates::LOADING_FINISHED;
         }
-
     } break;
     case ApplicationStates::LOADING_FINISHED:
     {
@@ -1412,7 +1385,6 @@ void UpdateGame()
 
             loadDataThread.join();
         }
-
     } break;
     case ApplicationStates::GAMEPLAY:
     {
@@ -1440,7 +1412,6 @@ void UpdateGame()
 
             PauseMusicStream(birdBGM);
         }
-
     } break;
     case ApplicationStates::MENU:
     {
@@ -1460,7 +1431,6 @@ void UpdateGame()
 
             PauseMusicStream(menuBGM);
         }
-
     } break;
     case ApplicationStates::PAUSE:
     {
@@ -1482,7 +1452,6 @@ void UpdateGame()
 
             PauseMusicStream(mainBGM);
         }
-
     } break;
     default: break;
     }
@@ -1497,15 +1466,16 @@ void UpdateGame()
     {
         DrawRectangle(58, 200, dataProgress, 60, WHITE);
         
-        if ((framesCounter / 15) % 2) DrawText("LOADING DATA...", 105, 210, 40, LIGHTGRAY);
-
+        if ((framesCounter / 15) % 2)
+        {
+            DrawText("LOADING DATA...", 105, 210, 40, LIGHTGRAY);
+        }
     } break;
     case ApplicationStates::LOADING_FINISHED:
     {
         DrawRectangle(58, 200, 400, 60, LIME);
         
         DrawText("DATA LOADED!", 105, 210, 40, GREEN);
-
     } break;
     default: break;
     }
@@ -1513,40 +1483,6 @@ void UpdateGame()
     {
         DrawRectangleLines(58, 200, 400, 60, DARKGRAY);
     }
-
-    //if (applicationState == ApplicationStates::GAMEPLAY)
-    //{
-    //    UpdateCamera(*camera, staticGameObj->player);
-
-    //    // staticGameObj->CheckCollision();
-
-    //    // staticGameObj->PlayWalkSound();
-
-    //    // camera->BeginMode();
-
-    //    BeginMode2D(*camera);
-
-    //    DrawGamePlayScreen();
-
-    //    // camera->EndMode();
-
-    //    EndMode2D();
-
-    //    gameplayButton.isMenu = GuiButton({ screenWidth - 165, screenHeight - 120, 120, 35 }, "Menu");
-
-    //    if (gameplayButton.isMenu)
-    //    {
-    //        SetActiveScreen(&menuScreen);
-
-    //        SetWindowTitle("Menu");
-
-    //        applicationState = ApplicationStates::MENU;
-
-    //        PlaySound(clickSound);
-    //    }
-
-    //    DrawGamePlayHUD(*camera, staticGameObj->player);
-    //}
 
     DrawScreen();
 
