@@ -46,6 +46,21 @@
     <Filter Include="textures\volume_bar">
       <UniqueIdentifier>{58720b8b-e91b-44be-9b82-1aaa5b10dbd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="textures\animals\rhino">
+      <UniqueIdentifier>{d1a31dcd-9450-4952-bff2-db9155896f71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\animals\bat">
+      <UniqueIdentifier>{64f7c8e3-541d-403f-b46d-119796d5c9b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\animals\chicken">
+      <UniqueIdentifier>{1228c63d-fd09-4721-9e65-5372d46c6565}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\animals\crocodile">
+      <UniqueIdentifier>{fa1282e9-0805-4828-809e-fe744c993b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="textures\animals\horse">
+      <UniqueIdentifier>{dee9bc65-35e7-4711-a629-8e96f25a8df0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DWorld.h">
@@ -116,21 +131,6 @@
     </Image>
     <Image Include="textures\character\friendly_man_walk.png">
       <Filter>textures\character</Filter>
-    </Image>
-    <Image Include="textures\animals\bat_fly.png">
-      <Filter>textures\animals</Filter>
-    </Image>
-    <Image Include="textures\animals\chicken_walk.png">
-      <Filter>textures\animals</Filter>
-    </Image>
-    <Image Include="textures\animals\crocodile_hurt.png">
-      <Filter>textures\animals</Filter>
-    </Image>
-    <Image Include="textures\animals\crocodile_walk.png">
-      <Filter>textures\animals</Filter>
-    </Image>
-    <Image Include="textures\animals\rhino_idle.png">
-      <Filter>textures\animals</Filter>
     </Image>
     <Image Include="textures\map\desert.png">
       <Filter>textures\maps</Filter>
@@ -206,6 +206,24 @@
     </Image>
     <Image Include="textures\volume_bar\mute.png">
       <Filter>textures\volume_bar</Filter>
+    </Image>
+    <Image Include="textures\animals\bat\fly.png">
+      <Filter>textures\animals\bat</Filter>
+    </Image>
+    <Image Include="textures\animals\rhino\idle.png">
+      <Filter>textures\animals\rhino</Filter>
+    </Image>
+    <Image Include="textures\animals\chicken\walk.png">
+      <Filter>textures\animals\chicken</Filter>
+    </Image>
+    <Image Include="textures\animals\crocodile\hurt.png">
+      <Filter>textures\animals\crocodile</Filter>
+    </Image>
+    <Image Include="textures\animals\crocodile\walk.png">
+      <Filter>textures\animals\crocodile</Filter>
+    </Image>
+    <Image Include="textures\animals\horse\idle.png">
+      <Filter>textures\animals\horse</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

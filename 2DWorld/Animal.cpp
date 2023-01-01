@@ -18,7 +18,7 @@ public:
 	Rectangle GetRectangle();
 
 private:
-	Texture2D _texture{ LoadTexture("textures/animals/rhino_idle.png") };
+	Texture2D _texture{ LoadTexture("textures/animals/rhino/idle.png") };
 	Vector2D _texturePos{};
 };
 
@@ -57,7 +57,7 @@ public:
 	void Draw(const float deltaTime);
 
 private:
-	Texture2D _texture{ LoadTexture("textures/animals/bat_fly.png") };
+	Texture2D _texture{ LoadTexture("textures/animals/bat/fly.png") };
 	Vector2D _speed{ 1.5f, 1.0f };
 	Vector2D _texturePos{};
 	float _facing{ 1.0f };
@@ -103,7 +103,7 @@ private:
 	const float _speed{ 1.0f };
 	float _facing{ -1.0f };
 	bool _animate{ 0 };
-	Texture2D _texture{ LoadTexture("textures/animals/chicken_walk.png") };
+	Texture2D _texture{ LoadTexture("textures/animals/chicken/walk.png") };
 	Vector2D _texturePos{};
 };
 
@@ -232,10 +232,10 @@ private:
 	float _rotate{ 0.0f };
 	bool _isWalk{};
 	Vector2D _texturePos{};
-	Texture2D _texture{ LoadTexture("textures/animals/crocodile_walk.png") };
-	Texture2D _textureWalk{ LoadTexture("textures/animals/crocodile_walk.png") };
-	Texture2D _textureHurt{ LoadTexture("textures/animals/crocodile_hurt.png") };
-	Sound _gettingPunched{ LoadSound("sounds/getting_punched.wav") };
+	Texture2D _texture{ LoadTexture("textures/animals/crocodile/walk.png") };
+	Texture2D _textureWalk{ LoadTexture("textures/animals/crocodile/walk.png") };
+	Texture2D _textureHurt{ LoadTexture("textures/animals/crocodile/hurt.png") };
+	Sound _gettingPunched{ LoadSound("sounds/getting/punched.wav") };
 };
 
 class Horse : public BaseAnimation
@@ -271,7 +271,7 @@ public:
 	}
 
 private:
-	const Texture2D _textureIdle{ LoadTexture("textures/animals/horse_idle.png") };
+	const Texture2D _textureIdle{ LoadTexture("textures/animals/horse/idle.png") };
 	Vector2D _position{ 1040.0f, 870.0f };
 };
 

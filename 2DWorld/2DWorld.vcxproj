@@ -358,11 +358,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon\earth_400_400.png" />
-    <Image Include="textures\animals\bat_fly.png" />
-    <Image Include="textures\animals\chicken_walk.png" />
-    <Image Include="textures\animals\crocodile_hurt.png" />
-    <Image Include="textures\animals\crocodile_walk.png" />
-    <Image Include="textures\animals\rhino_idle.png" />
+    <Image Include="textures\animals\bat\fly.png" />
+    <Image Include="textures\animals\chicken\walk.png" />
+    <Image Include="textures\animals\crocodile\hurt.png" />
+    <Image Include="textures\animals\crocodile\walk.png" />
+    <Image Include="textures\animals\horse\idle.png" />
+    <Image Include="textures\animals\rhino\idle.png" />
     <Image Include="textures\character\friendly_man_idle.png" />
     <Image Include="textures\character\friendly_man_punch.png" />
     <Image Include="textures\character\friendly_man_riding_horse.png" />

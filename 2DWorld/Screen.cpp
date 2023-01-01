@@ -65,6 +65,6 @@ void DrawScreen()
 
 void DrawCenteredText(int y, const char* text, int fontSize, Color color)
 {
-	int textWidth = MeasureText(text, fontSize);
+	int textWidth(MeasureText(text, fontSize));
 	DrawText(text, GetScreenWidth() / 2 - textWidth / 2, y - fontSize / 2, fontSize, color);
 }

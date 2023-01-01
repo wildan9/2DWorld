@@ -135,8 +135,7 @@ void Player::OnLand()
 		if (_isWalk && _timer >= _updateTime)
 		{
 			_timer = 0.0f;
-			if (_isRidingHorse) PlaySound(_horseStep);
-			else PlaySound(_landStep);
+			PlaySound(_landStep);
 		}
 	}
 }

@@ -625,15 +625,8 @@ void UpdateCamera(Camera2D& camera, const Player& player)
 
     if (cameraNormalMode)
     {
-        if (diff.Length() > 10.0f)
-        {
-            camera.target = Vector2D{ camera.target }
-            .Add(diff.Scale(0.394f * GetFrameTime() / diff.Length()));
-        }
-        else
-        {
-            camera.target = player.GetPosition();
-        }
+        camera.target = (diff.Length() > 10.0f)
+            ? Vector2D{ camera.target }.Add(diff.Scale(0.394f * GetFrameTime() / diff.Length())) : player.GetPosition();
     }
 
     float minX = staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale()
@@ -1508,7 +1501,7 @@ void EndGame()
 
     if (!carrots->empty())
     {
-        flowers->clear();
+        carrots->clear();
     }
 
     if (!dynamicObjPos->empty())
