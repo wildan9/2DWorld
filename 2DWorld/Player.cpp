@@ -81,7 +81,7 @@ float Player::GetStamina() const
 
 float Player::GetSpeed() const
 {
-	if (_isRidingHorse && IsKeyDown(KEY_SPACE) && GetDirection().Length() != 0 && _stamina > 0) return 6.5f;
+	if (_isRidingHorse && IsKeyDown(KEY_SPACE) && GetDirection().Length() != 0) return 6.5f;
 	if (IsKeyDown(KEY_SPACE) && GetDirection().Length() != 0 && _stamina > 0) return 4.0f; // walk fast
 	else return 2.0f; // walk slow
 }
@@ -179,7 +179,7 @@ float Player::Row() const
 		else return 6.0f;
 	}
 
-	if (IsPunch() && !_isWalk) return 3.0f;
+	if (!_isRidingHorse && IsPunch() && !_isWalk) return 3.0f;
 	else if (_isWalk) return 6.0f;
 
 	return 2.0f;
@@ -239,7 +239,7 @@ void Player::UpdateTexture()
 		_textures->at(0) = (_isRidingHorse) ? _textures->at(4) : _textures->at(1);
 	}
 
-	if (IsPunch()) _textures->at(0) = _textures->at(2);
+	if (!_isRidingHorse && IsPunch()) _textures->at(0) = _textures->at(2);
 }
 
 int Player::LoadTextureFile(const char* texture)
