@@ -200,7 +200,7 @@ void Player::UpdateTexture()
 #ifdef _DEBUG
 	_stamina = 6.0f;
 #else
-	if (!_isDragonInside)
+	if (!_isDragonInside && !_isRidingHorse)
 	{
 		if (IsKeyDown(KEY_SPACE) && GetDirection().Length() != 0 && _stamina > 0.0f)
 		{
@@ -208,10 +208,17 @@ void Player::UpdateTexture()
 		}
 		else if (!IsKeyDown(KEY_SPACE) && GetDirection().Length() == 0)
 		{
-			if (_stamina < 6.0f && _stamina > -0.1f)
+			if (_stamina < 6.0f)
 			{
 				_stamina += GetFrameTime();
 			}
+		}
+	}
+	else if (_isRidingHorse)
+	{
+		if (_stamina < 6.0f)
+		{
+			_stamina += GetFrameTime();
 		}
 	}
 #endif
