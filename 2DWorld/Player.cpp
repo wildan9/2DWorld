@@ -12,7 +12,7 @@ Player::Player()
 	, _horseStep{ LoadSound("sounds/horse_step.wav") }
 	, _isWalk{ 0 }
 	, _isDragonInside{ 0 }
-	, _isRidingHorse{ 0 }
+	, _isOnHorse{ 0 }
 	, _timer{}
 	, _facing{ 1.0f }
 	, _stamina{ 6.0f }
@@ -22,8 +22,8 @@ Player::Player()
 	LoadTextureFile("textures/character/friendly_man_idle.png");
 	LoadTextureFile("textures/character/friendly_man_punch.png");
 	LoadTextureFile("textures/character/friendly_man_walk.png");
-	LoadTextureFile("textures/character/friendly_man_riding_horse_idle.png");
-	LoadTextureFile("textures/character/friendly_man_riding_horse.png");
+	LoadTextureFile("textures/character/horse_riding/idle.png");
+	LoadTextureFile("textures/character/horse_riding/walk.png");
 }
 
 Player::~Player()
@@ -81,7 +81,7 @@ float Player::GetStamina() const
 
 float Player::GetSpeed() const
 {
-	if (_isRidingHorse && IsKeyDown(KEY_SPACE) && GetDirection().Length() != 0) return 6.5f;
+	if (_isOnHorse && IsKeyDown(KEY_SPACE) && GetDirection().Length() != 0) return 6.5f;
 	if (IsKeyDown(KEY_SPACE) && GetDirection().Length() != 0 && _stamina > 0) return 4.0f; // walk fast
 	else return 2.0f; // walk slow
 }
@@ -116,7 +116,7 @@ void Player::Stop()
 
 void Player::OnLand()
 {
-	if (_isRidingHorse)
+	if (_isOnHorse)
 	{
 		if (GetSpeed() == 2.0f) _timer += GetFrameTime() * 0.15f;
 		else _timer += GetFrameTime() * 0.21f;
@@ -152,9 +152,9 @@ void Player::OnWater()
 	}
 }
 
-void Player::OnHorse(bool isRidingHorse)
+void Player::OnHorse(bool isOnHorse)
 {
-	_isRidingHorse = isRidingHorse;
+	_isOnHorse = isOnHorse;
 }
 
 void Player::Draw()
@@ -163,7 +163,7 @@ void Player::Draw()
 
 	if (!IsKeyDown(KEY_LEFT_SHIFT))
 	{
-		const float size = (_isRidingHorse) ? 2.0f : 1.5f;
+		const float size = (_isOnHorse) ? 2.0f : 1.5f;
 
 		Animate(_texturePos, _textures->at(0), GetFrameTime(), size, Row(), _facing, Timer());
 	}
@@ -173,13 +173,13 @@ void Player::Draw()
 
 float Player::Row() const
 {
-	if (_isRidingHorse)
+	if (_isOnHorse)
 	{
 		if (!_isWalk) return 13.0f;
 		else return 6.0f;
 	}
 
-	if (!_isRidingHorse && IsPunch() && !_isWalk) return 3.0f;
+	if (!_isOnHorse && IsPunch() && !_isWalk) return 3.0f;
 	else if (_isWalk) return 6.0f;
 
 	return 2.0f;
@@ -187,7 +187,7 @@ float Player::Row() const
 
 float Player::Timer() const
 {
-	if (_isRidingHorse) if (!_isWalk) return -0.09f;
+	if (_isOnHorse && !_isWalk) return -0.09f;
 
 	if (_isWalk) return 0.0f;
 	else if (IsPunch() && !_isWalk) return 0.02f;
@@ -200,26 +200,20 @@ void Player::UpdateTexture()
 #ifdef _DEBUG
 	_stamina = 6.0f;
 #else
-	if (!_isDragonInside && !_isRidingHorse)
+	if (!_isDragonInside && !_isOnHorse)
 	{
 		if (IsKeyDown(KEY_SPACE) && GetDirection().Length() != 0 && _stamina > 0.0f)
 		{
 			_stamina -= GetFrameTime();
 		}
-		else if (!IsKeyDown(KEY_SPACE) && GetDirection().Length() == 0)
-		{
-			if (_stamina < 6.0f)
-			{
-				_stamina += GetFrameTime();
-			}
-		}
-	}
-	else if (_isRidingHorse)
-	{
-		if (_stamina < 6.0f)
+		else if (!IsKeyDown(KEY_SPACE) && GetDirection().Length() == 0 && _stamina < 6.0f)
 		{
 			_stamina += GetFrameTime();
 		}
+	}
+	else if (_isOnHorse && _stamina < 6.0f)
+	{
+		_stamina += GetFrameTime();
 	}
 #endif
 
@@ -234,7 +228,7 @@ void Player::UpdateTexture()
 				.Normalize()
 				.Scale(GetSpeed()));
 
-		_textures->at(0) = (_isRidingHorse) ? _textures->at(5) : _textures->at(3);
+		_textures->at(0) = (_isOnHorse) ? _textures->at(5) : _textures->at(3);
 
 		if (GetDirection().x < 0.0f) _facing = 1.0f;
 		if (GetDirection().x > 0.0f) _facing = -1.0f;
@@ -243,10 +237,10 @@ void Player::UpdateTexture()
 	{
 		_isWalk = 0;
 
-		_textures->at(0) = (_isRidingHorse) ? _textures->at(4) : _textures->at(1);
+		_textures->at(0) = (_isOnHorse) ? _textures->at(4) : _textures->at(1);
 	}
 
-	if (!_isRidingHorse && IsPunch()) _textures->at(0) = _textures->at(2);
+	if (!_isOnHorse && IsPunch()) _textures->at(0) = _textures->at(2);
 }
 
 int Player::LoadTextureFile(const char* texture)

@@ -265,14 +265,20 @@ public:
 		return _position;
 	}
 
+	void SetFacing(const float facing)
+	{
+		_facing = facing;
+	}
+
 	void Draw(const float deltaTime)
 	{
-		Animate(_position, _textureIdle, deltaTime, 2.2f, 13.0f, 1.0f, 0.0f, 1, 0.0f);
+		Animate(_position, _textureIdle, deltaTime, 2.2f, 13.0f, _facing, -0.1f, 1, 0.0f);
 	}
 
 private:
 	const Texture2D _textureIdle{ LoadTexture("textures/animals/horse/idle.png") };
 	Vector2D _position{ 1040.0f, 870.0f };
+	float _facing{ 1.0f };
 };
 
 class Animals

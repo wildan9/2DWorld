@@ -366,9 +366,9 @@
     <Image Include="textures\animals\rhino\idle.png" />
     <Image Include="textures\character\friendly_man_idle.png" />
     <Image Include="textures\character\friendly_man_punch.png" />
-    <Image Include="textures\character\friendly_man_riding_horse.png" />
-    <Image Include="textures\character\friendly_man_riding_horse_idle.png" />
     <Image Include="textures\character\friendly_man_walk.png" />
+    <Image Include="textures\character\horse_riding\idle.png" />
+    <Image Include="textures\character\horse_riding\walk.png" />
     <Image Include="textures\HUD\HUD_FillBar05.png" />
     <Image Include="textures\magic_fruit\apple.png" />
     <Image Include="textures\maps\river\river_1.png" />

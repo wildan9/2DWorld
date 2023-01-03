@@ -24,11 +24,11 @@ public:
 	void Stop();
 	void OnLand();
 	void OnWater();
-	void OnHorse(bool isRidingHorse);
+	void OnHorse(bool isOnHorse);
 	void Draw();
 
 private:
-	bool _isWalk, _isDragonInside, _isRidingHorse;
+	bool _isWalk, _isDragonInside, _isOnHorse;
 	float _timer, _facing, _stamina;
 	float Row() const, Timer() const;
 	void UpdateTexture();

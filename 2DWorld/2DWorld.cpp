@@ -930,10 +930,11 @@ void GameplayScreen::DrawGamePlayScreen()
             {
                 horse = new Horse;
                 horse->SetPosition(staticGameObj->player.GetPosition());
+                horse->SetFacing(staticGameObj->player.GetFacing() * -1.0f);
                 
                 staticGameObj->player.SetPosition(
                     {
-                        staticGameObj->player.GetPosition().x - 80.0f,
+                        staticGameObj->player.GetPosition().x + 120.0f,
                         staticGameObj->player.GetPosition().y
                     }
                 );
@@ -942,10 +943,11 @@ void GameplayScreen::DrawGamePlayScreen()
             {
                 horse = new Horse;
                 horse->SetPosition(staticGameObj->player.GetPosition());
+                horse->SetFacing(staticGameObj->player.GetFacing() * -1.0f);
 
                 staticGameObj->player.SetPosition(
                     {
-                        staticGameObj->player.GetPosition().x + 80.0f,
+                        staticGameObj->player.GetPosition().x - 40.0f,
                         staticGameObj->player.GetPosition().y
                     }
                 );
@@ -975,19 +977,15 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
         std::string strFPS{ "FPS: " };
         std::string strStatus{};
 
-        int cameraMode = (cameraNormalMode) ? 1 : 0;
-
-        time_t now = time(0);
-
-        tm* ltm = localtime(&now);
+        const int cameraMode = (cameraNormalMode) ? 1 : 0;
+        
+        const time_t now = time(0);
+        const tm* ltm    = localtime(&now);
+        
+        const int hour      = (ltm->tm_hour < 12) ? ltm->tm_hour : ltm->tm_hour - 12;
+        const char* strAmPm = (ltm->tm_hour < 12) ? "AM" : "PM";
 
         std::string time = { "Time: " };
-
-        int hour = ltm->tm_hour;
-
-        if (ltm->tm_hour > 12) hour = hour - 12;
-
-        const char* strAmPm = (ltm->tm_hour < 12) ? "AM" : "PM";
 
         time.append(std::to_string(hour)).append(":").append(std::to_string(ltm->tm_min))
             .append(":").append(std::to_string(ltm->tm_sec)).append(" ").append(strAmPm);
@@ -1092,19 +1090,15 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
     } 
     else
     {
-        int cameraMode = (cameraNormalMode) ? 1 : 0;
+        const int cameraMode = (cameraNormalMode) ? 1 : 0;
 
-        time_t now = time(0);
+        const time_t now = time(0);
+        const tm* ltm = localtime(&now);
 
-        tm* ltm = localtime(&now);
+        const int hour = (ltm->tm_hour < 12) ? ltm->tm_hour : ltm->tm_hour - 12;
+        const char* strAmPm = (ltm->tm_hour < 12) ? "AM" : "PM";
 
         std::string time = { "Time: " };
-
-        int hour = ltm->tm_hour;
-
-        if (ltm->tm_hour > 12) hour = hour - 12;
-
-        const char* strAmPm = (ltm->tm_hour < 12) ? "AM" : "PM";
 
         time.append(std::to_string(hour)).append(":").append(std::to_string(ltm->tm_min))
             .append(":").append(std::to_string(ltm->tm_sec)).append(" ").append(strAmPm);

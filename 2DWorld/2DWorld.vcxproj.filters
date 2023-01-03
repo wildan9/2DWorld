@@ -61,6 +61,9 @@
     <Filter Include="textures\animals\horse">
       <UniqueIdentifier>{dee9bc65-35e7-4711-a629-8e96f25a8df0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="textures\character\horse_riding">
+      <UniqueIdentifier>{fec5cdc3-324d-4e79-a2ba-2c759be50455}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DWorld.h">
@@ -198,12 +201,6 @@
     <Image Include="textures\maps\river\river_4.png">
       <Filter>textures\maps\river</Filter>
     </Image>
-    <Image Include="textures\character\friendly_man_riding_horse.png">
-      <Filter>textures\character</Filter>
-    </Image>
-    <Image Include="textures\character\friendly_man_riding_horse_idle.png">
-      <Filter>textures\character</Filter>
-    </Image>
     <Image Include="textures\volume_bar\mute.png">
       <Filter>textures\volume_bar</Filter>
     </Image>
@@ -224,6 +221,12 @@
     </Image>
     <Image Include="textures\animals\horse\idle.png">
       <Filter>textures\animals\horse</Filter>
+    </Image>
+    <Image Include="textures\character\horse_riding\idle.png">
+      <Filter>textures\character\horse_riding</Filter>
+    </Image>
+    <Image Include="textures\character\horse_riding\walk.png">
+      <Filter>textures\character\horse_riding</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
