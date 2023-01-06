@@ -35,7 +35,7 @@ private:
 	const Vector2D _wildanEmpirePos{};
 	const Vector2D _desertPos{ _wildanEmpire.width * _mapScale + 760.0f, 0.0f };
 	const Vector2D _river1Pos{ 0.0f, 1300.0f };
-	const Vector2D _river2Pos{ (_river1.width * _mapScale), 1300.0f };
-	const Vector2D _river3Pos{ ((_river1.width * _mapScale) + (_river2.width * _mapScale)) - 205.0f, 0.0f };
-	const Vector2D _river4Pos{ ((_river1.width * _mapScale) + (_river2.width * _mapScale)) - 205.0f, (_river3.height * _mapScale) - 60.0f };
+	const Vector2D _river2Pos{ _river1.width * _mapScale, 1300.0f };
+	const Vector2D _river3Pos{ _river1.width * _mapScale + _river2.width * _mapScale - 205.0f, 0.0f };
+	const Vector2D _river4Pos{ _river1.width * _mapScale + _river2.width * _mapScale - 205.0f, _river3.height * _mapScale - 60.0f };
 };

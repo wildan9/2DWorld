@@ -31,7 +31,6 @@ std::unique_ptr<std::vector<std::unique_ptr<Flower>>> flowers = nullptr;
 static std::unique_ptr<StaticObject> staticGameObj = nullptr;
 
 std::unique_ptr<std::vector<int>> dynamicObjPos = nullptr;
-std::unique_ptr<Camera2D>         camera        = nullptr;
 
 std::unique_ptr<std::array<Tree, 20>> trees = nullptr;
 
@@ -79,8 +78,6 @@ void SetupWindow();
 void InitGame();
 void UpdateGame();
 void EndGame();
-
-void UpdateCamera(Camera2D& camera, const Player& player);
 
 void DrawVolumeBar(const int x = 10);
 void DrawMuteCheckBoxV(const Vector2D pos);
@@ -142,20 +139,29 @@ class GameplayScreen : public Screen
 public:
     void Draw() override
     {
-        UpdateCamera(*camera, staticGameObj->player);
+        _camera.Update(staticGameObj->player);
 
-        BeginMode2D(*camera);
-
+        _camera.BeginMode();
+        
         DrawGamePlayScreen();
-
-        EndMode2D();
-
-        DrawGamePlayHUD(*camera, staticGameObj->player);
+        
+        _camera.EndMode();
+        
+        DrawGamePlayHUD(_camera, staticGameObj->player);
     }
 
     void InitTexture()
     {
         _HUDFillBar05 = LoadTexture("textures/HUD/HUD_FillBar05.png");
+    }
+
+    void InitCamera()
+    {
+        _camera.target = {};
+        _camera.offset = {};
+
+        _camera.rotation = 0.0f;
+        _camera.zoom     = 1.0f;
     }
 
     void FreeTexture()
@@ -169,11 +175,18 @@ private:
 
 private:
     Texture2D _HUDFillBar05{};
-    struct GameplayButton
+    struct _GameplayButton
     {
         bool isMenu = 0;
     };
-    GameplayButton _gameplayButton;
+    _GameplayButton _gameplayButton;
+    struct _Camera2D : public ::Camera2D
+    {
+        inline Camera2D& BeginMode();
+        inline Camera2D& EndMode();
+        void Update(const Player& player);
+    };
+    _Camera2D _camera;
 };
 GameplayScreen gameplayScreen;
 
@@ -184,7 +197,7 @@ public:
     {
         DrawDusk();
 
-        float x((screenWidth / 2) - 50);
+        float x(screenWidth / 2 - 50);
         
         if (_menuStates == _MenuStates::MAIN_MENU)
         {
@@ -303,8 +316,8 @@ public:
 
             DrawTextureEx(_flower, { x - 40, 105 }, 0.0f, 4.0f, WHITE);
 
-            std::string plantedFlowers{ "Planted flowers : " };
-            std::string unplantedFlowers{ "Unplanted flowers : " };
+            std::string plantedFlowers{ "Planted flowers: " };
+            std::string unplantedFlowers{ "Unplanted flowers: " };
 
             DrawText(plantedFlowers.append(std::to_string(flowers->size())).c_str(), x + 30, 130, 16, DARKGRAY);
 
@@ -316,8 +329,8 @@ public:
 
             DrawTextureEx(_carrot, { x - 28, 134 + yCarrot }, 0.0f, 1.8f, WHITE);
 
-            std::string plantedCarrots{ "Planted carrots : " };
-            std::string unplantedCarrots{ "Unplanted carrots : " };
+            std::string plantedCarrots{ "Planted carrots: " };
+            std::string unplantedCarrots{ "Unplanted carrots: " };
 
             DrawText(plantedCarrots.append(std::to_string(carrots->size())).c_str(), x + 30, 130 + yCarrot, 16, DARKGRAY);
 
@@ -419,7 +432,7 @@ private:
         OPTION
     };
     _MenuStates _menuStates = _MenuStates::MAIN_MENU;
-    struct MenuButton
+    struct _MenuButton
     {
         bool isBackToMainMenu = 0;
         bool isBack           = 0;
@@ -429,13 +442,13 @@ private:
         bool isVolumeUp       = 0;
         bool isVolumeDown     = 0;
     };
-    MenuButton _menuButton;
-    struct MuteIcon
+    _MenuButton _menuButton;
+    struct _MuteIcon
     {
         Texture2D texture{};
-        const Vector2D position{ ((screenWidth / 2) - 50) + 15, 125 };
+        const Vector2D position{ screenWidth / 2 - 35, 125 };
     };
-    MuteIcon _muteIcon{};
+    _MuteIcon _muteIcon{};
 };
 MenuScreen menuScreen;
 
@@ -478,12 +491,12 @@ public:
     }
 
 private:
-    struct PauseButton
+    struct _PauseButton
     {
         bool isMenu = 0;
         bool isBack = 0;
     };
-    PauseButton _pauseButton;
+    _PauseButton _pauseButton;
 };
 PauseScreen pauseScreen;
 
@@ -551,12 +564,12 @@ void InitGame()
         { 380.0f, 2860.0f  },
         { 880.0f, 3110.0f  },
 
-        { 1490.0f + (360.0f * 0.0f), 75.0f },
-        { 1490.0f + (360.0f * 1.0f), 75.0f },
-        { 1490.0f + (360.0f * 2.0f), 75.0f },
-        { 1490.0f + (360.0f * 3.0f), 75.0f },
-        { 1490.0f + (360.0f * 4.0f), 75.0f },
-        { 1490.0f + (360.0f * 5.0f), 75.0f },
+        { 1490.0f + 360.0f * 0.0f, 75.0f },
+        { 1490.0f + 360.0f * 1.0f, 75.0f },
+        { 1490.0f + 360.0f * 2.0f, 75.0f },
+        { 1490.0f + 360.0f * 3.0f, 75.0f },
+        { 1490.0f + 360.0f * 4.0f, 75.0f },
+        { 1490.0f + 360.0f * 5.0f, 75.0f },
 
 
         { 1490.0f, 450.0f },
@@ -565,10 +578,10 @@ void InitGame()
         { 2500.0f, 450.0f },
         { 2840.0f, 800.0f },
 
-        { 3400.0f, 90.0f + (360.0f * 1.0f) },
-        { 3400.0f, 90.0f + (360.0f * 2.0f) },
-        { 3400.0f, 90.0f + (360.0f * 3.0f) },
-        { 3400.0f, 90.0f + (360.0f * 4.0f) },
+        { 3400.0f, 90.0f + 360.0f * 1.0f },
+        { 3400.0f, 90.0f + 360.0f * 2.0f },
+        { 3400.0f, 90.0f + 360.0f * 3.0f },
+        { 3400.0f, 90.0f + 360.0f * 4.0f },
 
         { 3400.0f, 2120.0f }
     };
@@ -596,49 +609,53 @@ void InitGame()
         trees->at(i).SetPosition({ (treePos[i][0]), (treePos[i][1]) });
     }
 
-    camera = std::make_unique<Camera2D>();
-
-    camera->target = {};
-
-    camera->offset = {};
-
-    camera->rotation = 0.0f;
-
-    camera->zoom = 1.0f;
-
     menuScreen.InitTexture();
     
     gameplayScreen.InitTexture();
+
+    gameplayScreen.InitCamera();
 }
 
-void UpdateCamera(Camera2D& camera, const Player& player)
+inline Camera2D& GameplayScreen::_Camera2D::BeginMode()
 {
-    Vector2D diff{ player.GetPosition().Subtract(camera.target) };
+    ::BeginMode2D(*this);
+    return (*this);
+}
+
+inline Camera2D& GameplayScreen::_Camera2D::EndMode()
+{
+    ::EndMode2D();
+    return (*this);
+}
+
+void GameplayScreen::_Camera2D::Update(const Player& player)
+{
+    Vector2D diff{ player.GetPosition().Subtract((*this).target) };
 
     float speed{ player.GetSpeed() };
 
     speed = (speed == 2.0f) ? fmaxf(0.8f * diff.Length(), 70.0f) : fmaxf(0.8f * diff.Length(), 240.0f);
 
-    camera.offset = Vector2D{ screenWidth / 2.0f,  screenHeight / 2.0f };
+    (*this).offset = Vector2D{ screenWidth / 2.0f,  screenHeight / 2.0f };
 
     if (IsKeyPressed(KEY_C)) cameraNormalMode = !cameraNormalMode;
 
     if (cameraNormalMode)
     {
-        camera.target = (diff.Length() > 10.0f)
-            ? Vector2D{ camera.target }.Add(diff.Scale(0.394f * GetFrameTime() / diff.Length())) : player.GetPosition();
+        (*this).target = (diff.Length() > 10.0f)
+            ? Vector2D{ (*this).target }.Add(diff.Scale(0.394f * GetFrameTime() / diff.Length())) : player.GetPosition();
     }
 
     float minX = staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale()
         + 760.0f + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale(),
-        minY = staticGameObj->map.GetWildanEmpireSize().height * staticGameObj->map.GetMapScale(), 
+        minY = staticGameObj->map.GetWildanEmpireSize().height * staticGameObj->map.GetMapScale(),
         maxX = 0, maxY = 0;
 
     Rectangle rect
-    { 
-        0, 
-        0, 
-        staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale() 
+    {
+        0,
+        0,
+        staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale()
         + 760.0f + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale(),
         staticGameObj->map.GetWildanEmpireSize().height * staticGameObj->map.GetMapScale()
     };
@@ -648,33 +665,32 @@ void UpdateCamera(Camera2D& camera, const Player& player)
     minY = fminf(rect.y, minY);
     maxY = fmaxf(rect.y + rect.height, maxY);
 
-    Vector2D max = GetWorldToScreen2D({ maxX, maxY }, camera);
-    Vector2D min = GetWorldToScreen2D({ minX, minY }, camera);
+    Vector2D max = GetWorldToScreen2D({ maxX, maxY }, (*this));
+    Vector2D min = GetWorldToScreen2D({ minX, minY }, (*this));
 
-    if (max.x < screenWidth) camera.offset.x = screenWidth - (max.x - screenWidth / 2);
-    if (max.y < screenHeight) camera.offset.y = screenHeight - (max.y - screenHeight / 2);
-    if (min.x > 0) camera.offset.x = screenWidth / 2 - min.x;
-    if (min.y > 0) camera.offset.y = screenHeight / 2 - min.y;
+    if (max.x < screenWidth) (*this).offset.x = screenWidth - (max.x - screenWidth / 2);
+    if (max.y < screenHeight) (*this).offset.y = screenHeight - (max.y - screenHeight / 2);
+    if (min.x > 0) (*this).offset.x = screenWidth / 2 - min.x;
+    if (min.y > 0) (*this).offset.y = screenHeight / 2 - min.y;
 
-    // don't need cinematic effect when teleporting
-    if (diff.Length() > 1000.0f) camera.target = player.GetPosition();
+    if (diff.Length() > 1000.0f) (*this).target = player.GetPosition();
 
     if (diff.Length() > 10.0f)
     {
-        camera.target = Vector2D{ camera.target }.Add(diff.Scale(speed * GetFrameTime() / diff.Length()));
+        (*this).target = Vector2D{ (*this).target }.Add(diff.Scale(speed * GetFrameTime() / diff.Length()));
     }
     else if (staticGameObj->player.GetSpeed() == 6.5f)
     {
-        camera.target = staticGameObj->player.GetPosition();
+        (*this).target = player.GetPosition();
     }
 
-    if ((GetMouseWheelMove() > 0.0f) && (camera.zoom < 2.0f))
+    if ((GetMouseWheelMove() > 0.0f) && ((*this).zoom < 2.0f))
     {
-        camera.zoom += 0.1f;
+        (*this).zoom += 0.1f;
     }
-    if ((GetMouseWheelMove() < 0.0f) && (camera.zoom > 1.0f))
+    if ((GetMouseWheelMove() < 0.0f) && ((*this).zoom > 1.0f))
     {
-        camera.zoom -= 0.1f;
+        (*this).zoom -= 0.1f;
     }
 }
 
@@ -1093,9 +1109,9 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
         const int cameraMode = (cameraNormalMode) ? 1 : 0;
 
         const time_t now = time(0);
-        const tm* ltm = localtime(&now);
+        const tm* ltm    = localtime(&now);
 
-        const int hour = (ltm->tm_hour < 12) ? ltm->tm_hour : ltm->tm_hour - 12;
+        const int hour      = (ltm->tm_hour < 12) ? ltm->tm_hour : ltm->tm_hour - 12;
         const char* strAmPm = (ltm->tm_hour < 12) ? "AM" : "PM";
 
         std::string time = { "Time: " };
