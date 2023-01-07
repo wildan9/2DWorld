@@ -111,12 +111,12 @@ inline void Chicken::Draw(const float deltaTime)
 {
 	int x = 1, y = 0;
 
-	if (_texturePos.x == 320.0f)
+	if (_texturePos.x == 1140.0f)
 	{
 		x = 0;
 		y = 1;
 	}
-	if (_texturePos.y == 300.0f)
+	if (_texturePos.y == 780.0f)
 	{
 		x = 2;
 		y = 0;

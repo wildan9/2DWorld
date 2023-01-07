@@ -907,7 +907,7 @@ void GameplayScreen::DrawGamePlayScreen()
         staticGameObj->player.OnLand();
     }
 
-    // staticGameObj->animals.Draw(GetFrameTime());
+    staticGameObj->animals.Draw(GetFrameTime());
 
     if (horse != nullptr)
     {
@@ -1356,7 +1356,7 @@ void UpdateGame()
 
         if (IsKeyPressed(KEY_ENTER))
         {
-            SetActiveScreen(&gameplayScreen);
+            SetActiveScreen(nullptr);
 
             PauseMusicStream(mainBGM);
 
@@ -1386,7 +1386,10 @@ void UpdateGame()
 
             applicationState = ApplicationStates::GAMEPLAY;
 
-            loadDataThread.join();
+            if (loadDataThread.joinable())
+            {
+                loadDataThread.join();
+            }
         }
     } break;
     case ApplicationStates::GAMEPLAY:
@@ -1394,6 +1397,8 @@ void UpdateGame()
         UpdateMusicStream(birdBGM);
 
         PlayMusicStream(birdBGM);
+
+        SetActiveScreen(&gameplayScreen);
 
         if (IsKeyPressed(KEY_P))
         {
