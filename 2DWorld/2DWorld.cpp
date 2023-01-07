@@ -884,7 +884,7 @@ void GameplayScreen::DrawGamePlayScreen()
 
     if (CheckCollisionRecs(staticGameObj->player.GetRectangle(), staticGameObj->prop.naturalObj.GetBigStone2Coll()))
     {
-        staticGameObj->player.SetPosition({ 1600.0f - 80.0f, 700.0f });
+        staticGameObj->player.SetPosition({ 1600.0f - 80.0f, 2700.0f });
     }
 
     bool onRiver = 0;

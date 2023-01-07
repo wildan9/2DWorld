@@ -37,7 +37,7 @@ struct NaturalObject
 
 private:
 	Texture2D _bigStone{ LoadTexture("textures/natural_objects/big_stone.png") };
-	Vector2D _bigStone1Pos{ 1600.0f, 700.0f };
+	Vector2D _bigStone1Pos{ 1600.0f, 2700.0f };
 	Vector2D _bigStone2Pos{ 5400.0f, 600.0f };
 };
 
