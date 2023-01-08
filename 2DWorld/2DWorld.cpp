@@ -336,13 +336,21 @@ public:
 
             DrawText(unplantedCarrots.append(std::to_string(maxSmallFlowers - carrots->size())).c_str(), x + 70, 120 + 30 + yCarrot, 16, DARKGRAY);
 
-            _menuButton.isBackToMainMenu = GuiButton({ screenWidth - 165, screenHeight - 180, 120, 35 }, "Back");
+            _menuButton.isReset          = GuiButton({ (float)screenWidth - 165.0f, (float)(screenHeight - 245) + (float)(45 * 0), 120, 35 }, "Reset");
+            _menuButton.isBackToMainMenu = GuiButton({ (float)screenWidth - 165.0f, (float)(screenHeight - 245) + (float)(45 * 1), 120, 35 }, "Back");
 
             if (IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_ESCAPE))
             {
                 _menuStates = _MenuStates::MAIN_MENU;
 
                 _menuButton.isBackToMainMenu = 0;
+            }
+
+            if (_menuButton.isReset)
+            {
+                carrots->clear();
+                flowers->clear();
+                dynamicObjPos->clear();
             }
         }
 
@@ -441,6 +449,7 @@ private:
         bool isExit           = 0;
         bool isVolumeUp       = 0;
         bool isVolumeDown     = 0;
+        bool isReset          = 0;
     };
     _MenuButton _menuButton;
     struct _MuteIcon
