@@ -235,7 +235,7 @@ private:
 	Texture2D _texture{ LoadTexture("textures/animals/crocodile/walk.png") };
 	Texture2D _textureWalk{ LoadTexture("textures/animals/crocodile/walk.png") };
 	Texture2D _textureHurt{ LoadTexture("textures/animals/crocodile/hurt.png") };
-	Sound _gettingPunched{ LoadSound("sounds/getting/punched.wav") };
+	Sound _gettingPunched{ LoadSound("sounds/getting_punched.wav") };
 };
 
 class Horse : public BaseAnimation
@@ -288,7 +288,7 @@ public:
 	{
 		for (auto& rhino : rhinos)
 		{
-			Vector2D rhinoPos{ (float)GetRandomValue(2600, 3500), (float)GetRandomValue(10, 450) };
+			Vector2D rhinoPos{ (float)GetRandomValue(5500, 6000), (float)GetRandomValue(10, 550) };
 
 			rhino.SetPosition(rhinoPos);
 		}
