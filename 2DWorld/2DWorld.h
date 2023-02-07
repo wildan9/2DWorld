@@ -11,9 +11,9 @@
 #include <sstream>
 #include <algorithm>
 
+#include "Map.h"
 #include "Screen.h"
 #include "Math2D.h"
-#include "Map.h"
 #include "Player.h"
 #include "Prop.cpp"
 #include "Animal.cpp"

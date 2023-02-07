@@ -16,7 +16,7 @@ std::array<Texture2D, 4> screenTextures{};
 
 void InitScreenTexture()
 {
-	for (auto i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		screenTextures.at(i) = LoadTexture(strTextureFile[i]);
 	}

@@ -91,17 +91,17 @@ private:
 
 struct MagicFruit
 {
-    ~MagicFruit()
-    {
-        UnloadTexture(_texture);
-    }
-
     MagicFruit(const Vector2D position)
     {
         _position = position;
     }
 
     MagicFruit() {}
+
+    ~MagicFruit()
+    {
+        UnloadTexture(_texture);
+    }
 
     Rectangle GetRectangle()
     {

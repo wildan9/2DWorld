@@ -63,7 +63,7 @@ static const Rectangle invisibleFences[19]
     { 905.0f,   675.0f,     100.0f,     80.2f   },
     { 1690.0f,  1740.0f,    10.0f,      90.2f   },
     { 145.0f,   3590.0f,    78.0f,      78.2f   },
-    
+
     // bridge 1
     { 410.0f,  1210.0f,  5.0f,   260.0f   },
     { 535.0f,  1210.0f,  5.0f,   260.0f   },
@@ -90,7 +90,7 @@ void InitBGM();
 void ShutdownAudio();
 
 inline static bool OnTouch(const Player& player, float targetPosX);
-inline static Vector2D PlantPosition(const Player& player, int px);
+inline static Vector2D PlantPosition(const Player& player, float px = 0);
 
 static void* LoadDataThread();
 
@@ -197,14 +197,14 @@ public:
     {
         DrawDusk();
 
-        float x(screenWidth / 2 - 50);
+        const int x = screenWidth / 2 - 50;
         
         if (_menuStates == _MenuStates::MAIN_MENU)
         {
-            _menuButton.isInventory = GuiButton({ x, 110 + (float)(45 * 0), 120, 35 }, "Inventory");
-            _menuButton.isOption    = GuiButton({ x, 110 + (float)(45 * 1), 120, 35 }, "Option");
-            _menuButton.isBack      = GuiButton({ x, 110 + (float)(45 * 2), 120, 35 }, "Back");
-            _menuButton.isExit      = GuiButton({ x, 110 + (float)(45 * 3), 120, 35 }, "Exit");
+            _menuButton.isInventory = GuiButton({ x, 110 + 45 * 0, 120, 35 }, "Inventory");
+            _menuButton.isOption    = GuiButton({ x, 110 + 45 * 1, 120, 35 }, "Option");
+            _menuButton.isBack      = GuiButton({ x, 110 + 45 * 2, 120, 35 }, "Back");
+            _menuButton.isExit      = GuiButton({ x, 110 + 45 * 3, 120, 35 }, "Exit");
         }
 
         if (_menuStates == _MenuStates::OPTION)
@@ -230,7 +230,7 @@ public:
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    volumeBarRec = { x + 21 * i, 120 + 20, 20, 20 };
+                    volumeBarRec = { (float)x + 21 * i, 120 + 20, 20, 20 };
 
                     if (CheckCollisionPointRec({ GetMousePosition().x, GetMousePosition().y }, volumeBarRec)
                         && (GetMouseWheelMove() > 0.0f) && audio.masterVolume <= 0.5f && !audio.muted)
@@ -275,8 +275,8 @@ public:
                 DrawTextureV(_muteIcon.texture, _muteIcon.position, WHITE);
             }
 
-            _menuButton.isVolumeUp   = GuiButton({ x + 140, 120 + 20, 20, 20 }, "+");
-            _menuButton.isVolumeDown = GuiButton({ x + 120, 120 + 20, 20, 20 }, "-");
+            _menuButton.isVolumeUp   = GuiButton({ x + 140, 140, 20, 20 }, "+");
+            _menuButton.isVolumeDown = GuiButton({ x + 120, 140, 20, 20 }, "-");
 
             if (_menuButton.isVolumeUp && audio.masterVolume <= 0.5f && !audio.muted)
             {
@@ -316,12 +316,20 @@ public:
 
             DrawTextureEx(_flower, { x - 40, 105 }, 0.0f, 4.0f, WHITE);
 
-            std::string plantedFlowers{ "Planted flowers: " };
-            std::string unplantedFlowers{ "Unplanted flowers: " };
+            std::string plantedFlowers   = "Planted flowers: ";
+            std::string unplantedFlowers = "Unplanted flowers: ";
+            std::string plantedCarrots   = "Planted carrots: ";
+            std::string unplantedCarrots = "Unplanted carrots: ";
 
-            DrawText(plantedFlowers.append(std::to_string(flowers->size())).c_str(), x + 30, 130, 16, DARKGRAY);
+            DrawText(
+                plantedFlowers.append(std::to_string(flowers->size())).c_str(), 
+                x + 30, 130, 16, DARKGRAY
+            );
 
-            DrawText(unplantedFlowers.append(std::to_string(maxSmallFlowers - flowers->size())).c_str(), x + 70, 120 + 30, 16, DARKGRAY);
+            DrawText(
+                unplantedFlowers.append(std::to_string(maxSmallFlowers - flowers->size())).c_str(), 
+                x + 70, 120 + 30, 16, DARKGRAY
+            );
 
             const int yCarrot = 74;
 
@@ -329,15 +337,18 @@ public:
 
             DrawTextureEx(_carrot, { x - 28, 134 + yCarrot }, 0.0f, 1.8f, WHITE);
 
-            std::string plantedCarrots{ "Planted carrots: " };
-            std::string unplantedCarrots{ "Unplanted carrots: " };
+            DrawText(
+                plantedCarrots.append(std::to_string(carrots->size())).c_str(), 
+                x + 30, 130 + yCarrot, 16, DARKGRAY
+            );
 
-            DrawText(plantedCarrots.append(std::to_string(carrots->size())).c_str(), x + 30, 130 + yCarrot, 16, DARKGRAY);
+            DrawText(
+                unplantedCarrots.append(std::to_string(maxSmallFlowers - carrots->size())).c_str(), 
+                x + 70, 120 + 30 + yCarrot, 16, DARKGRAY
+            );
 
-            DrawText(unplantedCarrots.append(std::to_string(maxSmallFlowers - carrots->size())).c_str(), x + 70, 120 + 30 + yCarrot, 16, DARKGRAY);
-
-            _menuButton.isReset          = GuiButton({ (float)screenWidth - 165.0f, (float)(screenHeight - 245) + (float)(45 * 0), 120, 35 }, "Reset");
-            _menuButton.isBackToMainMenu = GuiButton({ (float)screenWidth - 165.0f, (float)(screenHeight - 245) + (float)(45 * 1), 120, 35 }, "Back");
+            _menuButton.isReset          = GuiButton({ screenWidth - 165, screenHeight - 245 + 45 * 0, 120, 35 }, "Reset");
+            _menuButton.isBackToMainMenu = GuiButton({ screenWidth - 165, screenHeight - 245 + 45 * 1, 120, 35 }, "Back");
 
             if (IsKeyPressed(KEY_Q) || IsKeyPressed(KEY_ESCAPE))
             {
@@ -573,13 +584,12 @@ void InitGame()
         { 380.0f, 2860.0f  },
         { 880.0f, 3110.0f  },
 
-        { 1490.0f + 360.0f * 0.0f, 75.0f },
-        { 1490.0f + 360.0f * 1.0f, 75.0f },
-        { 1490.0f + 360.0f * 2.0f, 75.0f },
-        { 1490.0f + 360.0f * 3.0f, 75.0f },
-        { 1490.0f + 360.0f * 4.0f, 75.0f },
-        { 1490.0f + 360.0f * 5.0f, 75.0f },
-
+        { 0.0f, 0.0f },
+        { 0.0f, 0.0f },
+        { 0.0f, 0.0f },
+        { 0.0f, 0.0f },
+        { 0.0f, 0.0f },
+        { 0.0f, 0.0f },
 
         { 1490.0f, 450.0f },
         { 1945.0f, 640.0f },
@@ -587,27 +597,30 @@ void InitGame()
         { 2500.0f, 450.0f },
         { 2840.0f, 800.0f },
 
-        { 3400.0f, 90.0f + 360.0f * 1.0f },
-        { 3400.0f, 90.0f + 360.0f * 2.0f },
-        { 3400.0f, 90.0f + 360.0f * 3.0f },
-        { 3400.0f, 90.0f + 360.0f * 4.0f },
+        { 0.0f, 0.0f },
+        { 0.0f, 0.0f },
+        { 0.0f, 0.0f },
+        { 0.0f, 0.0f },
 
         { 3400.0f, 2120.0f }
     };
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 20; i++)
     {
-        for (int j = 0; j < 2; j++)
+        if (i > 4 && i < 11)
         {
-            treePos[i][j] = (treePos[i][j] + treePos[i][j] + (float)GetRandomValue(0, 30)) / 2;
+            treePos[i][0] = 1490.0f + 360.0f * (i - 5);
+            treePos[i][1] = 75.0f;
         }
-    }
-
-    for (int i = 5; i < 20; i++)
-    {
+        if (i > 14 && i < 19)
+        {
+            treePos[i][0] = 3400.0f;
+            treePos[i][1] = 90.0f + 360.0f * (i - 14);
+        }
         for (int j = 0; j < 2; j++)
         {
-            treePos[i][j] = (treePos[i][j] + treePos[i][j] + (float)GetRandomValue(90, 120)) / 2;
+            if (i < 5) treePos[i][j] = (treePos[i][j] + treePos[i][j] + (float)GetRandomValue(0, 30)) / 2;
+            else treePos[i][j] = (treePos[i][j] + treePos[i][j] + (float)GetRandomValue(90, 120)) / 2;
         }
     }
 
@@ -655,17 +668,16 @@ void GameplayScreen::_Camera2D::Update(const Player& player)
             ? Vector2D{ (*this).target }.Add(diff.Scale(0.394f * GetFrameTime() / diff.Length())) : player.GetPosition();
     }
 
-    float minX = staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale()
-        + 760.0f + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale(),
-        minY = staticGameObj->map.GetWildanEmpireSize().height * staticGameObj->map.GetMapScale(),
-        maxX = 0, maxY = 0;
+    float minX = staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale() + 760.0f + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale(),
+          minY = staticGameObj->map.GetWildanEmpireSize().height * staticGameObj->map.GetMapScale(),
+          maxX = 0, 
+          maxY = 0;
 
     Rectangle rect
     {
         0,
         0,
-        staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale()
-        + 760.0f + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale(),
+        staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale() + 760.0f + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale(),
         staticGameObj->map.GetWildanEmpireSize().height * staticGameObj->map.GetMapScale()
     };
 
@@ -711,13 +723,12 @@ inline static bool OnTouch(const Player& player, float targetPosX)
     return 0;
 }
 
-inline static Vector2D PlantPosition(const Player& player, int px = 0)
+inline static Vector2D PlantPosition(const Player& player, float px)
 {
-    Vector2D plantPosition = (player.GetFacing() == -1.0f)
-        ? Vector2D{ player.GetPosition().x - 10.0f - px, player.GetPosition().y + 40.0f }
-        : Vector2D{ player.GetPosition().x + 40.0f + px, player.GetPosition().y + 40.0f };
+    const float dx = (player.GetFacing() == -1.0f) ? player.GetPosition().x - 10.0f - px : player.GetPosition().x + 40.0f + px;
+    const float dy = player.GetPosition().y + 40.0f;
 
-    return plantPosition;
+    return { dx, dy };
 }
 
 inline void Timer::Start(float lifeTime)
@@ -748,8 +759,7 @@ void GameplayScreen::DrawGamePlayScreen()
         if (CheckCollisionRecs(
             staticGameObj->player.GetRectangle(), 
             magicFruit->GetRectangle()) &&
-            !onHorse
-            )
+            !onHorse)
         {
             staticGameObj->player.SetStamina(1);
 
@@ -812,10 +822,8 @@ void GameplayScreen::DrawGamePlayScreen()
     }
 
     if (staticGameObj->player.GetPosition().x < 0 || staticGameObj->player.GetPosition().y < 0 
-        || staticGameObj->player.GetPosition().x > staticGameObj->map.GetDesertPos().x
-        + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale() 
-        || staticGameObj->player.GetPosition().y > staticGameObj->map.GetWildanEmpireSize().width 
-        * staticGameObj->map.GetMapScale() - 70.0f)
+        || staticGameObj->player.GetPosition().x > staticGameObj->map.GetDesertPos().x + staticGameObj->map.GetDesertSize().width * staticGameObj->map.GetMapScale() 
+        || staticGameObj->player.GetPosition().y > staticGameObj->map.GetWildanEmpireSize().width * staticGameObj->map.GetMapScale() - 70.0f)
     {
         staticGameObj->player.Stop();
     }
@@ -935,11 +943,8 @@ void GameplayScreen::DrawGamePlayScreen()
             if (IsKeyPressed(KEY_ENTER))
             {
                 staticGameObj->player.OnHorse(1);
-
                 staticGameObj->player.SetPosition(horse->GetPosition());
-
                 delete horse;
-
                 horse = nullptr;
             }
         }
@@ -1024,7 +1029,7 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
 
         std::string strCameraZoom = { "Camera Zoom: " };
 
-        float cameraZoom = camera.zoom;
+        const float cameraZoom = camera.zoom;
 
         std::stringstream stream;
         stream << std::fixed << std::setprecision(1) << cameraZoom;
@@ -1033,18 +1038,12 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
 
         DrawText(
             strCameraZoom.c_str(), 
-            10, 
-            screenHeight - 124, 
-            18, 
-            BLACK
+            10, screenHeight - 124, 18, BLACK
         );
 
         DrawText(
             strCameraMode[cameraMode], 
-            10, 
-            screenHeight - 90, 
-            18, 
-            BLACK
+            10, screenHeight - 90, 18, BLACK
         );
 
         const char* strStamina[7]
@@ -1088,10 +1087,7 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
 
         DrawText(
             strFPS.append(std::to_string(GetFPS())).c_str(), 
-            screenWidth - 140, 
-            10, 
-            18, 
-            RED
+            screenWidth - 140, 10, 18, RED
         );
 
         DrawText(time.c_str(), screenWidth - 140, 35, 18, RED);
@@ -1136,7 +1132,7 @@ void GameplayScreen::DrawGamePlayHUD(const Camera2D& camera, const Player& playe
 
         std::string strCameraZoom = { "Camera Zoom: " };
 
-        float cameraZoom = camera.zoom;
+        const float cameraZoom = camera.zoom;
 
         std::stringstream stream;
         stream << std::fixed << std::setprecision(1) << cameraZoom;
