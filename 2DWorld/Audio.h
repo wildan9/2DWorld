@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -26,67 +26,45 @@
 
 #pragma once
 
-#include "GameObject.h"
+#include "raylib.h"
 
-class Player : public GameObject
+#include <stdexcept>
+
+class Audio
 {
-public:
-	Player();
-	~Player();
-
-	inline void Stop() 
-	{ 
-		_position.x = _lastPosition.x;
-		_position.y = _lastPosition.y;
-	}
-
-	inline void OnHorse(bool isOnHorse) 
-	{ 
-		_isOnHorse = isOnHorse; 
-	}
-
-	inline bool IsPunch() const 
-	{ 
-		return (IsKeyDown(KEY_E) && !_isWalk); 
-	}
-	
-	inline bool IsOnHorse() const 
-	{ 
-		return _isOnHorse; 
-	}
-	
-	inline bool IsInvisible() const 
-	{ 
-		return IsKeyDown(KEY_LEFT_SHIFT); 
-	}
-	
-	inline float GetStamina() const 
-	{ 
-		return (_isDragonInside) ? 9.0f : _stamina; 
-	}
-
-	inline void SetStamina(bool isDragonInside)
-	{
-		_stamina = 6.0f;
-		_isDragonInside = isDragonInside;
-	}
+	template<typename T>
+	T LoadAudioData(const char* audio);
 
 public:
-	void OnLand();
-	void OnWater();
-	void Start()  override;
-	void Update() override;
-	float GetSpeed() const;
-	Vector2 GetDirection() const;
+	Audio();
+	~Audio();
+	void Update(std::string& bgm);
+	void Load();
+	void Free();
 
 private:
-	int FrameSpeed()  const;
-	float NumFrames() const;
+	void UnloadBGM();
 
 private:
-	bool _isWalk, _isDragonInside, _isOnHorse;
-	Sound _landStep, _waterStep, _horseStep;
-	const float _updateTime = 0.084f;
-	float _timer, _stamina;
-	Vector2 _lastPosition;
+	Music _bgm = {};
 };
+
+template<typename T>
+T Audio::LoadAudioData(const char* audio)
+{
+	if constexpr (std::is_same<T, Music>::value) 
+	{
+		return LoadMusicStream(audio);
+	}
+	else if constexpr (std::is_same<T, Sound>::value) 
+	{
+		return LoadSound(audio);
+	}
+	else 
+	{
+		throw std::runtime_error("Unsupported audio data type!");
+	}
+}
+
+void PlayClickSound();
+float GetMasterVolume();

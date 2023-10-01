@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -26,67 +26,58 @@
 
 #pragma once
 
-#include "GameObject.h"
+#include <cmath>
+#include <string>
+#include "raylib.h"
 
-class Player : public GameObject
+// Addition operator for Vector2
+inline Vector2 operator +(const Vector2& a, const Vector2& b)
 {
-public:
-	Player();
-	~Player();
+	return { a.x + b.x, a.y + b.y };
+}
 
-	inline void Stop() 
-	{ 
-		_position.x = _lastPosition.x;
-		_position.y = _lastPosition.y;
-	}
+// Subtraction operator for Vector2
+inline Vector2 operator -(const Vector2& a, const Vector2& b)
+{
+	return { a.x - b.x, a.y - b.y };
+}
 
-	inline void OnHorse(bool isOnHorse) 
-	{ 
-		_isOnHorse = isOnHorse; 
-	}
+// Convert a Vector2 to a string
+inline std::string Vector2ToString(const Vector2& v)
+{
+	return { "x: " + std::to_string((int)v.x) + "  y: " + std::to_string((int)v.y) };
+}
 
-	inline bool IsPunch() const 
-	{ 
-		return (IsKeyDown(KEY_E) && !_isWalk); 
-	}
+// Calculate the length (magnitude) of a Vector2
+inline float Vector2Length(const Vector2& v)
+{
+	return std::sqrt(v.x * v.x + v.y * v.y);
+}
+
+// Scale a Vector2 by a given factor
+inline Vector2 Vector2Scale(const Vector2& v, float scale)
+{
+	return { v.x * scale, v.y * scale };
+}
+
+// Normalize a Vector2, converting it to a unit vector
+inline Vector2 Vector2Normalize(const Vector2& v)
+{
+	float length = Vector2Length(v);
 	
-	inline bool IsOnHorse() const 
-	{ 
-		return _isOnHorse; 
-	}
-	
-	inline bool IsInvisible() const 
-	{ 
-		return IsKeyDown(KEY_LEFT_SHIFT); 
-	}
-	
-	inline float GetStamina() const 
-	{ 
-		return (_isDragonInside) ? 9.0f : _stamina; 
-	}
-
-	inline void SetStamina(bool isDragonInside)
+	if (length == 0.0f)
 	{
-		_stamina = 6.0f;
-		_isDragonInside = isDragonInside;
+		return { 0.0f, 0.0f }; // Avoid division by zero
 	}
 
-public:
-	void OnLand();
-	void OnWater();
-	void Start()  override;
-	void Update() override;
-	float GetSpeed() const;
-	Vector2 GetDirection() const;
+	return { v.x / length, v.y / length };
+}
 
-private:
-	int FrameSpeed()  const;
-	float NumFrames() const;
+// Calculate the Euclidean distance between two Vector2 points
+inline float Vector2Distance(const Vector2& p1, const Vector2& p2)
+{
+	float dx = p2.x - p1.x;
+	float dy = p2.y - p1.y;
 
-private:
-	bool _isWalk, _isDragonInside, _isOnHorse;
-	Sound _landStep, _waterStep, _horseStep;
-	const float _updateTime = 0.084f;
-	float _timer, _stamina;
-	Vector2 _lastPosition;
-};
+	return std::sqrt(dx * dx + dy * dy);
+}

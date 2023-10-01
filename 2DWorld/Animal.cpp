@@ -1,194 +1,199 @@
-/* by Wildan R. */
+/**********************************************************************************************
+*
+*   LICENSE: MIT
+*
+*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*
+*   Permission is hereby granted, free of charge, to any person obtaining a copy
+*   of this software and associated documentation files (the "Software"), to deal
+*   in the Software without restriction, including without limitation the rights
+*   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+*   copies of the Software, and to permit persons to whom the Software is
+*   furnished to do so, subject to the following conditions:
+*
+*   The above copyright notice and this permission notice shall be included in all
+*   copies or substantial portions of the Software.
+*
+*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+*   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+*   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+*   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+*   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+*   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+*   SOFTWARE.
+*
+**********************************************************************************************/
 
 #include <array>
-#include "Animation.h"
+#include <memory>
 
-class Rhino : public BaseAnimation
+#include "GameObject.h"
+
+class Bat : public GameObject
 {
 public:
-	~Rhino()
+	Bat() : _speed{ 1.5f, 1.0f }, _flyRadius{ (float)GetRandomValue(1000, 1500) }
 	{
-		UnloadTexture(_texture);
+		Start();
 	}
 
-	void SetPosition(const Vector2D& pos);
-
-	void Draw(const float deltaTime);
-
-	Rectangle GetRectangle();
-
-private:
-	Texture2D _texture{ LoadTexture("textures/animals/rhino/idle.png") };
-	Vector2D _texturePos{};
-};
-
-inline void Rhino::SetPosition(const Vector2D& pos)
-{
-	_texturePos = pos;
-}
-
-inline void Rhino::Draw(const float deltaTime)
-{
-	Animate(_texturePos, _texture, deltaTime, 2.0f, 8.0f);
-}
-
-inline Rectangle Rhino::GetRectangle()
-{
-	return Rectangle{
-		static_cast<float>(_texturePos.x + 12.0f),
-		static_cast<float>(_texturePos.y + 25.0f),
-		static_cast<float>(2.0f * _texture.width / 8.0f - 30.0f),
-		static_cast<float>(2.0f * _texture.height - 25.0f)
-	};
-}
-
-class Bat : public BaseAnimation
-{
-public:
 	~Bat()
 	{
-		UnloadTexture(_texture);
+		_textures.Clear();
 	}
 
-	void SetPosition(const Vector2D& pos);
+protected:
+	void Start() override
+	{
+		name = "Bat";
 
-	void SetFlyRadius(const float flyRadius);
+		_position = { (float)GetRandomValue(500, 950), (float)GetRandomValue(50, 155), 4.0f };
+		_facing   = 1.0f;
 
-	void Draw(const float deltaTime);
+		_textures.LoadTextureFile("resources/textures/animals/bat/fly.png");
+	}
+
+	void Update() override
+	{
+		_pCurrentTexture = &_textures[0];
+		_rectangle = { _position.x, _position.y, 28.0f, 28.0f };
+
+		_position.x += _speed.x;
+		_position.y += _speed.y;
+
+		if (_position.x >= _flyRadius || _position.x <= 0)
+		{
+			_speed.x *= -1.0f;
+			_facing *= -1.0f;
+		}
+		if (_position.y >= _flyRadius || _position.y <= 0) _speed.y *= -1.0f;
+
+		Animate(10, 6, 2.0f);
+	}
 
 private:
-	Texture2D _texture{ LoadTexture("textures/animals/bat/fly.png") };
-	Vector2D _speed{ 1.5f, 1.0f };
-	Vector2D _texturePos{};
-	float _facing{ 1.0f };
-	float _flyRadius{};
+	Vector2 _speed;
+	float _flyRadius;
 };
 
-inline void Bat::SetFlyRadius(const float flyRadius)
-{
-	_flyRadius = flyRadius;
-}
-
-inline void Bat::SetPosition(const Vector2D& pos)
-{
-	_texturePos = pos;
-}
-
-inline void Bat::Draw(const float deltaTime)
-{
-	_texturePos.x += _speed.x;
-	_texturePos.y += _speed.y;
-
-	if (_texturePos.x >= _flyRadius || _texturePos.x <= 0)
-	{
-		_speed.x *= -1.0f;
-		_facing *= -1.0f;
-	}
-	if (_texturePos.y >= _flyRadius || _texturePos.y <= 0) _speed.y *= -1.0f;
-
-	Animate(_texturePos, _texture, deltaTime, 2.0f, 6.0f);
-}
-
-class Chicken : public BaseAnimation
+class Chicken : public GameObject
 {
 public:
+	Chicken()
+	{
+		Start();
+	}
+	
 	~Chicken()
 	{
-		UnloadTexture(_texture);
+		_textures.Clear();
 	}
 
-	void Draw(const float deltaTime);
+protected:
+	void Start() override
+	{
+		name = "Chicken";
+
+		_facing     = -1.0f;
+		_animate    = 0;
+		_position.z = 0.0f;
+		_rotation	= 0.0f;
+
+		_textures.LoadTextureFile("resources/textures/animals/chicken/walk.png");
+	
+		_pCurrentTexture = &_textures[0];
+
+		_rectangle = { _position.x, _position.y, 35.0f, 35.0f };
+	}
+
+	void Update() override
+	{
+		Animate(12, 7, 1.0f, _animate);
+
+		int x = 1, y = 0;
+
+		if (_position.x == 545.0f)
+		{
+			x = 0;
+			y = 1;
+		}
+		if (_position.y == 372.0f)
+		{
+			x = 2;
+			y = 0;
+		}
+		if (_position.x < 0.0f)
+		{
+			x = 1;
+			y = 2;
+		}
+
+		switch (x)
+		{
+		case 1:
+			_position.x += _speed;
+			_facing = -1.0f;
+			break;
+		case 2:
+			_position.x -= _speed;
+			_facing = 1.0f;
+			break;
+		default:
+			break;
+		}
+
+		switch (y)
+		{
+		case 1:
+			_position.y += _speed;
+			break;
+		case 2:
+			_position.y -= _speed;
+			break;
+		default:
+			break;
+		}
+
+		if (_position.y != 0.0f) _animate = 1;
+
+		_rectangle = { _position.x, _position.y, 35.0f, 35.0f };
+	}
 
 private:
-	const float _speed{ 1.0f };
-	float _facing{ -1.0f };
-	bool _animate{ 0 };
-	Texture2D _texture{ LoadTexture("textures/animals/chicken/walk.png") };
-	Vector2D _texturePos{};
+	bool _animate;
+	const float _speed = 1.0f;
 };
 
-inline void Chicken::Draw(const float deltaTime)
-{
-	int x = 1, y = 0;
-
-	if (_texturePos.x == 1140.0f)
-	{
-		x = 0;
-		y = 1;
-	}
-	if (_texturePos.y == 780.0f)
-	{
-		x = 2;
-		y = 0;
-	}
-	if (_texturePos.x < 0.0f)
-	{
-		x = 1;
-		y = 2;
-	}
-
-	switch (x)
-	{
-	case 1:
-		_texturePos.x += _speed;
-		_facing = -1.0f;
-		break;
-	case 2:
-		_texturePos.x -= _speed;
-		_facing = 1.0f;
-		break;
-	default:
-		break;
-	}
-
-	switch (y)
-	{
-	case 1:
-		_texturePos.y += _speed;
-		break;
-	case 2:
-		_texturePos.y -= _speed;
-		break;
-	default:
-		break;
-	}
-
-	if (_texturePos.y != 0.0f) _animate = 1;
-
-	Animate(_texturePos, _texture, deltaTime, 1.2f, 7.0f, _facing, 0.0f, _animate);
-}
-
-class Crocodile : public BaseAnimation
+class Crocodile : public GameObject
 {
 public:
-	~Crocodile()
+	Crocodile()
 	{
-		UnloadTexture(_texture);
-		UnloadTexture(_textureWalk);
-		UnloadTexture(_textureHurt);
-		UnloadSound(_gettingPunched);
+		Start();
 	}
 
-	Vector2D GetPosition()
+	~Crocodile()
 	{
-		return _texturePos;
+		_textures.Clear();
+		UnloadSound(_gettingPunched);
 	}
 
 	void Walk()
 	{
-		_row = 12.0f;
-		_texture = _textureWalk;
-		_isWalk = 1;
-		_rotate = 0.0f;
+		_textures[0] = _textures[1];
+		
+		_isWalk    = 1;
+		_rotation  = 0.0f;
+		_numFrames = 12.0f;
 	}
 
 	void Hurt()
 	{
-		_row = 1.0f;
-		_texture = _textureHurt;
+		_numFrames = 1.0f;
+		_textures[0] = _textures[2];
 		_isWalk = 0;
 
-		_rotate = (_speed < 0.0f) ? 10.0f : 355.0f;
+		_rotation = (_speed < 0.0f) ? 10.0f : 355.0f;
 
 		_timer += GetFrameTime();
 		if (_timer >= _updateTime)
@@ -198,130 +203,231 @@ public:
 		}
 	}
 
-	Rectangle GetRectangle()
+public:
+	void Start() override
 	{
-		return Rectangle{
-			_texturePos.x, _texturePos.y,
-			1.2f * (float)_texture.width / _row,
-			1.2f * (float)_texture.height
-		};
+		_facing     = 1.0f;
+		_speed      = 1.0f;
+		_position.z = 1.0f;
+		
+		_numFrames = 0;
+		_timer     = 0;
+		_rotation  = 0;
+		_isWalk    = 0;
+		
+		_gettingPunched = LoadSound("resources/sounds/getting_punched.wav");
+
+		_textures.push_back(Texture2D());
+		_textures.LoadTextureFile("resources/textures/animals/crocodile/walk.png");
+		_textures.LoadTextureFile("resources/textures/animals/crocodile/hurt.png");
+
+		_pCurrentTexture = &_textures[0];
+
+		name = "Crocodile";
 	}
 
-	void Draw(const float deltaTime)
+	void Update() override 
 	{
 		if (_isWalk)
 		{
-			_texturePos.x += _speed;
+			_position.x += _speed;
 
-			if (_texturePos.x >= 1400.0f || _texturePos.x <= 0)
+			if (_position.x >= 1400.0f || _position.x <= 0)
 			{
 				_speed *= -1.0f;
 				_facing *= -1.0f;
 			}
 		}
 
-		Animate(_texturePos, _texture, deltaTime, 2.0f, _row, _facing, 0.0f, 1, _rotate);
+		_rectangle = {
+			_position.x + 4.0f, _position.y + 15.0f,
+			1.2f * (float)_pCurrentTexture->width / _numFrames,
+			1.2f * (float)_pCurrentTexture->height
+		};
+
+		Animate(12, _numFrames, 1.8f);
 	}
 
 private:
-	float _speed{ 1.0f };
-	float _row{};
-	float _timer{};
-	float _facing{ 1.0f };
-	float _updateTime{ 0.0834f };
-	float _rotate{ 0.0f };
-	bool _isWalk{};
-	Vector2D _texturePos{};
-	Texture2D _texture{ LoadTexture("textures/animals/crocodile/walk.png") };
-	Texture2D _textureWalk{ LoadTexture("textures/animals/crocodile/walk.png") };
-	Texture2D _textureHurt{ LoadTexture("textures/animals/crocodile/hurt.png") };
-	Sound _gettingPunched{ LoadSound("sounds/getting_punched.wav") };
+	float _speed;
+	float _numFrames;
+	float _timer;
+	float _rotation;
+	bool _isWalk;
+	Sound _gettingPunched;
+	const float _updateTime = 0.0834f;
 };
 
-class Horse : public BaseAnimation
+class Rhino : public GameObject
 {
 public:
+	Rhino()
+	{
+		Start();
+	}
+
+	~Rhino()
+	{
+		_textures.Clear();
+	}
+
+protected:
+	void Start() override
+	{
+		name = "Rhino";
+
+		_textures.LoadTextureFile("resources/textures/animals/rhino/idle.png");
+		_textures.LoadTextureFile("resources/textures/animals/rhino/walk.png");
+
+		_position = { 220.0f, 500.0f, 3.0f };
+
+		_rectangle = { _position.x, _position.y, 100.0f, 70.0f };
+	}
+
+	void Update() override 
+	{
+		if (isOnTriger)
+		{
+			_numFrames = 6;
+			_pCurrentTexture = &_textures[1];
+		}
+		else
+		{
+			_numFrames = 8;
+			_pCurrentTexture = &_textures[0];
+		}
+
+		_rectangle = { _position.x, _position.y, 100.0f, 70.0f };
+
+		Animate(10, _numFrames, 2.0f);
+	}
+
+private:
+	float _numFrames = 8;
+};
+
+class Horse : public GameObject
+{
+public:
+	Horse()
+	{
+		Start();
+	}
+
 	~Horse()
 	{
-		UnloadTexture(_textureIdle);
+		_textures.Clear();
 	}
 
-	Rectangle GetRectangle() const
+protected:
+	void Start() override
 	{
-		return Rectangle{
-			_position.x, _position.y,
-			2.2f * (float)_textureIdle.width / 13.0f,
-			2.2f * (float)_textureIdle.height
-		};
+		name = "Horse";
+
+		_textures.LoadTextureFile("resources/textures/animals/horse/idle.png");
+
+		_position = { 240.0f, 400.0f, 3.0f };
+		_facing   = 1.0f;
+
+		_pCurrentTexture = &_textures[0];
+
+		_rectangle = { _position.x, _position.y, 80.0f, 60.0f };
 	}
 
-	void SetPosition(Vector2D pos)
+	void Update() override 
 	{
-		_position = pos;
+		Animate(6, 13, 1.5f);
 	}
-
-	Vector2D GetPosition()
-	{
-		return _position;
-	}
-
-	void SetFacing(const float facing)
-	{
-		_facing = facing;
-	}
-
-	void Draw(const float deltaTime)
-	{
-		Animate(_position, _textureIdle, deltaTime, 2.2f, 13.0f, _facing, -0.1f, 1, 0.0f);
-	}
-
-private:
-	const Texture2D _textureIdle{ LoadTexture("textures/animals/horse/idle.png") };
-	Vector2D _position{ 1040.0f, 870.0f };
-	float _facing{ 1.0f };
 };
 
-class Animals
+//class Cat : public GameObject
+//{
+//public:
+//	Cat() 
+//	{
+//		Start();
+//
+//		_position = { 38.0f, 184.0f, 2.0f };
+//	}
+//
+//	~Cat()
+//	{
+//		_textures.Clear();
+//	}
+//
+//	void UpdatePosition(float dx, float dy)
+//	{
+//		transform.x = dx;
+//		transform.y = dy;
+//
+//		SetPosition(transform);
+//	}
+//
+//	std::vector<Vector2> path;
+//	Vector2 transform = { 0.0f, 0.0f };
+//	bool animate = 0;
+//
+//protected:
+//	void Start() override
+//	{
+//		_textures.LoadTextureFile("resources/textures/animals/cat/walk.png");
+//	}
+//
+//	void Update() override {}
+//};
+
+struct Animals
 {
-public:
 	Animals()
+	{
+		horse     = std::make_shared<Horse>();
+		chicken   = std::make_shared<Chicken>();
+		crocodile = std::make_shared<Crocodile>();
+	}
+
+	void Start(std::vector<std::shared_ptr<GameObject>>& gameObjectsVec)
+	{
+		for (auto& rhino : rhinos) rhino = std::make_shared<Rhino>();
+
+		rhinos[0]->SetPosition({ 24.0f,  105.0f });
+		rhinos[1]->SetPosition({ 168.0f, 143.0f });
+		rhinos[2]->SetPosition({ 67.0f,  263.0f });
+
+		rhinos[1]->SetFacing(rhinos[1]->GetFacing() * -1.0f);
+
+		for (auto& rhino : rhinos)
+		{
+			gameObjectsVec.push_back(rhino);
+		}
+
+		for (int i = 0; i < 15; i++)
+		{
+			gameObjectsVec.push_back(std::make_shared<Bat>());
+		}
+	}
+
+	void Update(const float playerSpeed, Vector2 playerDirection, const float playerFacing)
 	{
 		for (auto& rhino : rhinos)
 		{
-			Vector2D rhinoPos{ (float)GetRandomValue(5500, 6000), (float)GetRandomValue(10, 550) };
-
-			rhino.SetPosition(rhinoPos);
+			if (rhino->isOnTriger)
+			{
+				// Check if playerDirection is not zero before using it
+				if (Vector2Length(playerDirection) > 0.0f)
+				{
+					rhino->SetPosition(rhino->GetPosition() - Vector2Scale(Vector2Normalize(playerDirection), playerSpeed));
+					rhino->SetFacing(playerFacing * -1.0f);
+				}
+			}
 		}
 
-		for (auto& bat : _bats)
-		{
-			Vector2D batPos{ (float)GetRandomValue(500, 950), (float)GetRandomValue(50, 155) };
-
-			bat.SetPosition(batPos);
-
-			bat.SetFlyRadius((float)GetRandomValue(1000, 1500));
-		}
+		if (crocodile->isOnTriger) crocodile->Hurt();
+		else crocodile->Walk();
 	}
 
-public:
-	Crocodile crocodile;
-	Chicken chicken;
+	std::shared_ptr<Horse> horse;
+	std::shared_ptr<Chicken> chicken;
+	std::shared_ptr<Crocodile> crocodile;
 
-	std::array<Rhino, 3> rhinos{};
-
-	void Draw(const float deltaTime);
-
-private:
-	std::array<Bat, 16> _bats{};
+	std::array<std::shared_ptr<Rhino>, 3> rhinos;
 };
-
-inline void Animals::Draw(const float deltaTime)
-{
-	for (auto& rhino : rhinos) rhino.Draw(deltaTime);
-
-	for (auto& bat : _bats) bat.Draw(deltaTime);
-
-	crocodile.Draw(deltaTime);
-
-	chicken.Draw(deltaTime);
-}

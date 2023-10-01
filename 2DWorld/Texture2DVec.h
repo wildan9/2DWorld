@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -26,67 +26,39 @@
 
 #pragma once
 
-#include "GameObject.h"
+#include <vector>
+#include "raylib.h"
 
-class Player : public GameObject
+struct Texture2DVec : public std::vector<Texture2D>
 {
-public:
-	Player();
-	~Player();
+	// Clear the vector of textures
+	void Clear();
 
-	inline void Stop() 
-	{ 
-		_position.x = _lastPosition.x;
-		_position.y = _lastPosition.y;
-	}
+	// Destructor to clear the vector of textures
+	~Texture2DVec();
 
-	inline void OnHorse(bool isOnHorse) 
-	{ 
-		_isOnHorse = isOnHorse; 
-	}
-
-	inline bool IsPunch() const 
-	{ 
-		return (IsKeyDown(KEY_E) && !_isWalk); 
-	}
-	
-	inline bool IsOnHorse() const 
-	{ 
-		return _isOnHorse; 
-	}
-	
-	inline bool IsInvisible() const 
-	{ 
-		return IsKeyDown(KEY_LEFT_SHIFT); 
-	}
-	
-	inline float GetStamina() const 
-	{ 
-		return (_isDragonInside) ? 9.0f : _stamina; 
-	}
-
-	inline void SetStamina(bool isDragonInside)
-	{
-		_stamina = 6.0f;
-		_isDragonInside = isDragonInside;
-	}
-
-public:
-	void OnLand();
-	void OnWater();
-	void Start()  override;
-	void Update() override;
-	float GetSpeed() const;
-	Vector2 GetDirection() const;
-
-private:
-	int FrameSpeed()  const;
-	float NumFrames() const;
-
-private:
-	bool _isWalk, _isDragonInside, _isOnHorse;
-	Sound _landStep, _waterStep, _horseStep;
-	const float _updateTime = 0.084f;
-	float _timer, _stamina;
-	Vector2 _lastPosition;
+	// Load a texture from a file
+	int LoadTextureFile(const char* texture);
 };
+
+inline void Texture2DVec::Clear()
+{
+	for (const auto& texture : *this)
+	{
+		UnloadTexture(texture);
+	}
+
+	clear();
+}
+
+inline Texture2DVec::~Texture2DVec()
+{
+	Clear();
+}
+
+inline int Texture2DVec::LoadTextureFile(const char* texture)
+{
+	push_back(LoadTexture(texture));
+	return int(size() - 1);
+}
+

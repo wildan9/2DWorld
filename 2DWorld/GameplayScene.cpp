@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -24,69 +24,43 @@
 *
 **********************************************************************************************/
 
-#pragma once
+#include "GameplayScene.h"
 
-#include "GameObject.h"
-
-class Player : public GameObject
+void GameplayScene::Start()
 {
-public:
-	Player();
-	~Player();
+    RLReadTileMap("resources/maps/empire/wildan_empire.tmx", _tileMap);
 
-	inline void Stop() 
-	{ 
-		_position.x = _lastPosition.x;
-		_position.y = _lastPosition.y;
-	}
+    for (std::map<int, RLTileSheet>::iterator itr = _tileMap.Sheets.begin(); itr != _tileMap.Sheets.end(); itr++)
+    {
+        itr->second.SheetSource = "resources/" + itr->second.SheetSource;
+    }
 
-	inline void OnHorse(bool isOnHorse) 
-	{ 
-		_isOnHorse = isOnHorse; 
-	}
+    _rendererMap = std::make_unique< RLTileRenderer>(_tileMap);
+    _rendererMap->Setup();
+}
 
-	inline bool IsPunch() const 
-	{ 
-		return (IsKeyDown(KEY_E) && !_isWalk); 
-	}
-	
-	inline bool IsOnHorse() const 
-	{ 
-		return _isOnHorse; 
-	}
-	
-	inline bool IsInvisible() const 
-	{ 
-		return IsKeyDown(KEY_LEFT_SHIFT); 
-	}
-	
-	inline float GetStamina() const 
-	{ 
-		return (_isDragonInside) ? 9.0f : _stamina; 
-	}
+void GameplayScene::Update()
+{
+    Rectangle mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
 
-	inline void SetStamina(bool isDragonInside)
-	{
-		_stamina = 6.0f;
-		_isDragonInside = isDragonInside;
-	}
+    _camera.Update({}, mapRec, GetScreenWidth(), GetScreenHeight(), 1);
+}
 
-public:
-	void OnLand();
-	void OnWater();
-	void Start()  override;
-	void Update() override;
-	float GetSpeed() const;
-	Vector2 GetDirection() const;
+void GameplayScene::LoadResources()
+{
 
-private:
-	int FrameSpeed()  const;
-	float NumFrames() const;
+}
 
-private:
-	bool _isWalk, _isDragonInside, _isOnHorse;
-	Sound _landStep, _waterStep, _horseStep;
-	const float _updateTime = 0.084f;
-	float _timer, _stamina;
-	Vector2 _lastPosition;
-};
+void GameplayScene::FreeResources()
+{
+
+}
+
+void GameplayScene::Draw()
+{
+    _camera.BeginMode();
+    _rendererMap->Draw(_camera);
+    _camera.EndMode();
+
+    DrawFPS(0, 0);
+}

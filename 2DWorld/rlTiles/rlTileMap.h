@@ -1,8 +1,12 @@
 /**********************************************************************************************
 *
+*   raylibExtras * Utilities and Shared Components for Raylib
+*
+*   RLTiles * Tiled map rendering
+*
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2022 Jeffery Myers
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -24,69 +28,75 @@
 *
 **********************************************************************************************/
 
+
 #pragma once
 
-#include "GameObject.h"
+#include "raylib.h"
 
-class Player : public GameObject
+#include <vector>
+#include <map>
+#include <string>
+
+class RLTileSheet
 {
 public:
-	Player();
-	~Player();
+    int ID = 0;
 
-	inline void Stop() 
-	{ 
-		_position.x = _lastPosition.x;
-		_position.y = _lastPosition.y;
-	}
+    std::string SheetSource;
+    int StartFrame = 0;
 
-	inline void OnHorse(bool isOnHorse) 
-	{ 
-		_isOnHorse = isOnHorse; 
-	}
+    std::vector<Rectangle> Tiles;
 
-	inline bool IsPunch() const 
-	{ 
-		return (IsKeyDown(KEY_E) && !_isWalk); 
-	}
-	
-	inline bool IsOnHorse() const 
-	{ 
-		return _isOnHorse; 
-	}
-	
-	inline bool IsInvisible() const 
-	{ 
-		return IsKeyDown(KEY_LEFT_SHIFT); 
-	}
-	
-	inline float GetStamina() const 
-	{ 
-		return (_isDragonInside) ? 9.0f : _stamina; 
-	}
+    inline Rectangle GetFrame(int tileID)
+    {
+        size_t index = tileID - StartFrame;
+        if (index >= 0 && index < Tiles.size())
+            return Tiles[index];
 
-	inline void SetStamina(bool isDragonInside)
-	{
-		_stamina = 6.0f;
-		_isDragonInside = isDragonInside;
-	}
-
-public:
-	void OnLand();
-	void OnWater();
-	void Start()  override;
-	void Update() override;
-	float GetSpeed() const;
-	Vector2 GetDirection() const;
-
-private:
-	int FrameSpeed()  const;
-	float NumFrames() const;
-
-private:
-	bool _isWalk, _isDragonInside, _isOnHorse;
-	Sound _landStep, _waterStep, _horseStep;
-	const float _updateTime = 0.084f;
-	float _timer, _stamina;
-	Vector2 _lastPosition;
+        return Rectangle{ 0,0,0,0 };
+    }
 };
+
+enum class RLTiledMapTypes
+{
+    Orthographic,
+    Isometric,
+};
+
+struct RLTile
+{
+    bool FlipX = false;
+    bool FilpY = false;
+    bool FlipDiag = false;
+
+    int16_t TileID = -1;
+};
+
+class RLTileLayer
+{
+public:
+    int ID = 0;
+    int Width = 0;
+    int Height = 0;
+    int TileWidth = 0;
+    int TileHeight = 0;
+
+    std::vector<RLTile> Tiles;
+
+    Vector2 GetDisplayLocation(int x, int y, RLTiledMapTypes mode);
+};
+
+class RLTileMap
+{
+public:
+    std::map<int, RLTileSheet> Sheets;
+    std::map<int, RLTileLayer> Layers;
+
+    RLTiledMapTypes MapType = RLTiledMapTypes::Orthographic;
+
+    RLTile GetTile(int x, int y, int layerID);
+};
+
+bool RLReadTileMap(const std::string& filename, RLTileMap& map);
+bool RLReadTileMapFromMemory(void* buffer, size_t bufferSize, RLTileMap& map);
+

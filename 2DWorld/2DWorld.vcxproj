@@ -47,49 +47,49 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug.DLL|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug.DLL|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release.DLL|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release.DLL|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -334,69 +334,35 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animal.cpp" />
-    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="2DWorld.cpp" />
-    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameplayScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Prop.cpp" />
-    <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="rlCamera2D\rlCamera2D.cpp" />
+    <ClCompile Include="rlTiles\PUGIXML\pugixml.cpp" />
+    <ClCompile Include="rlTiles\rlTileMap.cpp" />
+    <ClCompile Include="rlTiles\rlTileMapIO.cpp" />
+    <ClCompile Include="rlTiles\rlTileMapRenderer.cpp" />
+    <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
     <ClInclude Include="2DWorld.h" />
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="Audio.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameplayScene.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Screen.h" />
-    <ClInclude Include="Math2D.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="sounds\getting_punched.wav" />
-    <Media Include="sounds\horse_step.wav" />
-    <Media Include="sounds\land_step.wav" />
-    <Media Include="sounds\menu_selection_click.wav" />
-    <Media Include="sounds\water_step.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="icon\earth_400_400.png" />
-    <Image Include="textures\animals\bat\fly.png" />
-    <Image Include="textures\animals\chicken\walk.png" />
-    <Image Include="textures\animals\crocodile\hurt.png" />
-    <Image Include="textures\animals\crocodile\walk.png" />
-    <Image Include="textures\animals\horse\idle.png" />
-    <Image Include="textures\animals\rhino\idle.png" />
-    <Image Include="textures\character\friendly_man_idle.png" />
-    <Image Include="textures\character\friendly_man_punch.png" />
-    <Image Include="textures\character\friendly_man_walk.png" />
-    <Image Include="textures\character\horse_riding\idle.png" />
-    <Image Include="textures\character\horse_riding\walk.png" />
-    <Image Include="textures\HUD\HUD_FillBar05.png" />
-    <Image Include="textures\magic_fruit\apple.png" />
-    <Image Include="textures\maps\river\river_1.png" />
-    <Image Include="textures\maps\river\river_2.png" />
-    <Image Include="textures\maps\river\river_3.png" />
-    <Image Include="textures\maps\river\river_4.png" />
-    <Image Include="textures\maps\wildan_empire.png" />
-    <Image Include="textures\map\desert.png" />
-    <Image Include="textures\natural_objects\big_stone.png" />
-    <Image Include="textures\natural_objects\carrot\big.png" />
-    <Image Include="textures\natural_objects\carrot\medium.png" />
-    <Image Include="textures\natural_objects\carrot\small.png" />
-    <Image Include="textures\natural_objects\small_purple_flower.png" />
-    <Image Include="textures\natural_objects\trees_1.png" />
-    <Image Include="textures\natural_objects\trees_2.png" />
-    <Image Include="textures\natural_objects\trees_3.png" />
-    <Image Include="textures\natural_objects\trees_4.png" />
-    <Image Include="textures\screens_bg\dusk.png" />
-    <Image Include="textures\screens_bg\earth.png" />
-    <Image Include="textures\screens_bg\galaxy.png" />
-    <Image Include="textures\screens_bg\helix_nebula.png" />
-    <Image Include="textures\volume_bar\mute.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="sounds\birds-isaiah658.ogg" />
-    <None Include="sounds\epic_cinematic_trailer_elite.ogg" />
-    <None Include="sounds\harp.ogg" />
-    <None Include="sounds\magic_astral_sweep_effect.ogg" />
+    <ClInclude Include="rlCamera2D\rlCamera2D.h" />
+    <ClInclude Include="rlTiles\PUGIXML\pugiconfig.hpp" />
+    <ClInclude Include="rlTiles\PUGIXML\pugixml.hpp" />
+    <ClInclude Include="rlTiles\rlTileMap.h" />
+    <ClInclude Include="rlTiles\rlTileMapRenderer.h" />
+    <ClInclude Include="rlTiles\rlTiles.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Texture2DVec.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="VectorMath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

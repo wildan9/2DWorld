@@ -7,81 +7,60 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{b0740b1a-0337-4e8a-a397-5292c92b887d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="textures">
-      <UniqueIdentifier>{baec3555-1d13-474f-a242-15e343631432}</UniqueIdentifier>
+    <Filter Include="rlTiles">
+      <UniqueIdentifier>{f106dd3d-b8af-4d36-9fbc-33ace61ff53f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sounds">
-      <UniqueIdentifier>{d4a99157-dc84-403b-ac1b-2c6d9847e031}</UniqueIdentifier>
+    <Filter Include="rlTiles\PUGIXML">
+      <UniqueIdentifier>{0eb2c5e2-49c4-47a0-99d5-da60326a9705}</UniqueIdentifier>
     </Filter>
-    <Filter Include="textures\character">
-      <UniqueIdentifier>{b896544b-629a-4a82-9b54-8da6a9c04488}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\animals">
-      <UniqueIdentifier>{ea4177f2-6442-43c7-bcb7-ff1e5e6c5a5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\maps">
-      <UniqueIdentifier>{3febeee3-bc1b-4cb0-8c2f-865b3119fa08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\natural_objects">
-      <UniqueIdentifier>{73ad3561-6261-4706-b2e2-8429c26a98ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\screens_bg">
-      <UniqueIdentifier>{d26b858a-d99b-490f-89ab-0ee6c68105f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="icon">
-      <UniqueIdentifier>{4262f2ae-a630-4d01-8a97-4e05d3553b05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\magic_fruit">
-      <UniqueIdentifier>{f12ddb47-44a2-4830-8811-d1185c991a91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\natural_objects\carrot">
-      <UniqueIdentifier>{eeed9b20-673b-4f54-82fc-611df138b7fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\HUD">
-      <UniqueIdentifier>{e4f43e3f-5d77-435a-bcac-c5828efe44ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\maps\river">
-      <UniqueIdentifier>{602d8c22-d278-437c-b16e-cda7f2820d81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\volume_bar">
-      <UniqueIdentifier>{58720b8b-e91b-44be-9b82-1aaa5b10dbd7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\animals\rhino">
-      <UniqueIdentifier>{d1a31dcd-9450-4952-bff2-db9155896f71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\animals\bat">
-      <UniqueIdentifier>{64f7c8e3-541d-403f-b46d-119796d5c9b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\animals\chicken">
-      <UniqueIdentifier>{1228c63d-fd09-4721-9e65-5372d46c6565}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\animals\crocodile">
-      <UniqueIdentifier>{fa1282e9-0805-4828-809e-fe744c993b1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\animals\horse">
-      <UniqueIdentifier>{dee9bc65-35e7-4711-a629-8e96f25a8df0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="textures\character\horse_riding">
-      <UniqueIdentifier>{fec5cdc3-324d-4e79-a2ba-2c759be50455}</UniqueIdentifier>
+    <Filter Include="rlCamera2D">
+      <UniqueIdentifier>{ae2db644-1804-4f81-b552-407ec09c17ed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Math2D.h">
+    <ClInclude Include="rlTiles\PUGIXML\pugiconfig.hpp">
+      <Filter>rlTiles\PUGIXML</Filter>
+    </ClInclude>
+    <ClInclude Include="rlTiles\PUGIXML\pugixml.hpp">
+      <Filter>rlTiles\PUGIXML</Filter>
+    </ClInclude>
+    <ClInclude Include="rlTiles\rlTileMap.h">
+      <Filter>rlTiles</Filter>
+    </ClInclude>
+    <ClInclude Include="rlTiles\rlTileMapRenderer.h">
+      <Filter>rlTiles</Filter>
+    </ClInclude>
+    <ClInclude Include="rlTiles\rlTiles.h">
+      <Filter>rlTiles</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Screen.h">
+    <ClInclude Include="rlCamera2D\rlCamera2D.h">
+      <Filter>rlCamera2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameplayScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2DVec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,8 +68,23 @@
     <ClCompile Include="2DWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rlTiles\PUGIXML\pugixml.cpp">
+      <Filter>rlTiles\PUGIXML</Filter>
+    </ClCompile>
+    <ClCompile Include="rlTiles\rlTileMap.cpp">
+      <Filter>rlTiles</Filter>
+    </ClCompile>
+    <ClCompile Include="rlTiles\rlTileMapIO.cpp">
+      <Filter>rlTiles</Filter>
+    </ClCompile>
+    <ClCompile Include="rlTiles\rlTileMapRenderer.cpp">
+      <Filter>rlTiles</Filter>
+    </ClCompile>
+    <ClCompile Include="rlCamera2D\rlCamera2D.cpp">
+      <Filter>rlCamera2D</Filter>
     </ClCompile>
     <ClCompile Include="Animal.cpp">
       <Filter>Source Files</Filter>
@@ -98,149 +92,17 @@
     <ClCompile Include="Prop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
+    <ClCompile Include="Audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Screen.cpp">
+    <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="sounds\land_step.wav">
-      <Filter>sounds</Filter>
-    </Media>
-    <Media Include="sounds\water_step.wav">
-      <Filter>sounds</Filter>
-    </Media>
-    <Media Include="sounds\getting_punched.wav">
-      <Filter>sounds</Filter>
-    </Media>
-    <Media Include="sounds\menu_selection_click.wav">
-      <Filter>sounds</Filter>
-    </Media>
-    <Media Include="sounds\horse_step.wav">
-      <Filter>sounds</Filter>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="textures\character\friendly_man_idle.png">
-      <Filter>textures\character</Filter>
-    </Image>
-    <Image Include="textures\character\friendly_man_punch.png">
-      <Filter>textures\character</Filter>
-    </Image>
-    <Image Include="textures\character\friendly_man_walk.png">
-      <Filter>textures\character</Filter>
-    </Image>
-    <Image Include="textures\map\desert.png">
-      <Filter>textures\maps</Filter>
-    </Image>
-    <Image Include="textures\natural_objects\big_stone.png">
-      <Filter>textures\natural_objects</Filter>
-    </Image>
-    <Image Include="textures\screens_bg\earth.png">
-      <Filter>textures\screens_bg</Filter>
-    </Image>
-    <Image Include="textures\screens_bg\galaxy.png">
-      <Filter>textures\screens_bg</Filter>
-    </Image>
-    <Image Include="textures\screens_bg\helix_nebula.png">
-      <Filter>textures\screens_bg</Filter>
-    </Image>
-    <Image Include="icon\earth_400_400.png">
-      <Filter>icon</Filter>
-    </Image>
-    <Image Include="textures\screens_bg\dusk.png">
-      <Filter>textures\screens_bg</Filter>
-    </Image>
-    <Image Include="textures\magic_fruit\apple.png">
-      <Filter>textures\magic_fruit</Filter>
-    </Image>
-    <Image Include="textures\natural_objects\small_purple_flower.png">
-      <Filter>textures\natural_objects</Filter>
-    </Image>
-    <Image Include="textures\natural_objects\carrot\big.png">
-      <Filter>textures\natural_objects\carrot</Filter>
-    </Image>
-    <Image Include="textures\natural_objects\carrot\medium.png">
-      <Filter>textures\natural_objects\carrot</Filter>
-    </Image>
-    <Image Include="textures\natural_objects\carrot\small.png">
-      <Filter>textures\natural_objects\carrot</Filter>
-    </Image>
-    <Image Include="textures\maps\wildan_empire.png">
-      <Filter>textures\maps</Filter>
-    </Image>
-    <Image Include="textures\natural_objects\trees_1.png">
-      <Filter>textures\natural_objects</Filter>
-    </Image>
-    <Image Include="textures\natural_objects\trees_2.png">
-      <Filter>textures\natural_objects</Filter>
-    </Image>
-    <Image Include="textures\natural_objects\trees_3.png">
-      <Filter>textures\natural_objects</Filter>
-    </Image>
-    <Image Include="textures\natural_objects\trees_4.png">
-      <Filter>textures\natural_objects</Filter>
-    </Image>
-    <Image Include="textures\HUD\HUD_FillBar05.png">
-      <Filter>textures\HUD</Filter>
-    </Image>
-    <Image Include="textures\maps\river\river_1.png">
-      <Filter>textures\maps\river</Filter>
-    </Image>
-    <Image Include="textures\maps\river\river_2.png">
-      <Filter>textures\maps\river</Filter>
-    </Image>
-    <Image Include="textures\maps\river\river_3.png">
-      <Filter>textures\maps\river</Filter>
-    </Image>
-    <Image Include="textures\maps\river\river_4.png">
-      <Filter>textures\maps\river</Filter>
-    </Image>
-    <Image Include="textures\volume_bar\mute.png">
-      <Filter>textures\volume_bar</Filter>
-    </Image>
-    <Image Include="textures\animals\bat\fly.png">
-      <Filter>textures\animals\bat</Filter>
-    </Image>
-    <Image Include="textures\animals\rhino\idle.png">
-      <Filter>textures\animals\rhino</Filter>
-    </Image>
-    <Image Include="textures\animals\chicken\walk.png">
-      <Filter>textures\animals\chicken</Filter>
-    </Image>
-    <Image Include="textures\animals\crocodile\hurt.png">
-      <Filter>textures\animals\crocodile</Filter>
-    </Image>
-    <Image Include="textures\animals\crocodile\walk.png">
-      <Filter>textures\animals\crocodile</Filter>
-    </Image>
-    <Image Include="textures\animals\horse\idle.png">
-      <Filter>textures\animals\horse</Filter>
-    </Image>
-    <Image Include="textures\character\horse_riding\idle.png">
-      <Filter>textures\character\horse_riding</Filter>
-    </Image>
-    <Image Include="textures\character\horse_riding\walk.png">
-      <Filter>textures\character\horse_riding</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="sounds\epic_cinematic_trailer_elite.ogg">
-      <Filter>sounds</Filter>
-    </None>
-    <None Include="sounds\magic_astral_sweep_effect.ogg">
-      <Filter>sounds</Filter>
-    </None>
-    <None Include="sounds\birds-isaiah658.ogg">
-      <Filter>sounds</Filter>
-    </None>
-    <None Include="sounds\harp.ogg">
-      <Filter>sounds</Filter>
-    </None>
+    <ClCompile Include="GameplayScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

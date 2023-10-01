@@ -1,8 +1,12 @@
 /**********************************************************************************************
 *
+*   raylibExtras * Utilities and Shared Components for Raylib
+*
+*   RLTiles * Tiled map rendering
+*
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2022 Jeffery Myers
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -24,69 +28,32 @@
 *
 **********************************************************************************************/
 
-#pragma once
+#include "rlTileMap.h"
 
-#include "GameObject.h"
 
-class Player : public GameObject
+Vector2 RLTileLayer::GetDisplayLocation(int x, int y, RLTiledMapTypes mapType)
 {
-public:
-	Player();
-	~Player();
+    if (mapType == RLTiledMapTypes::Orthographic)
+        return Vector2{ static_cast<float>(x * TileWidth), static_cast<float>(y * TileHeight) };
 
-	inline void Stop() 
-	{ 
-		_position.x = _lastPosition.x;
-		_position.y = _lastPosition.y;
-	}
+    float halfWidth = TileWidth * 0.5f;
+    float halfHeight = TileHeight * 0.5f;
+    float quarterHeight = TileHeight * 0.25f;
 
-	inline void OnHorse(bool isOnHorse) 
-	{ 
-		_isOnHorse = isOnHorse; 
-	}
+    return Vector2{ x * halfWidth - y * halfWidth - halfWidth, y * halfHeight + (x * halfHeight) };
+}
 
-	inline bool IsPunch() const 
-	{ 
-		return (IsKeyDown(KEY_E) && !_isWalk); 
-	}
-	
-	inline bool IsOnHorse() const 
-	{ 
-		return _isOnHorse; 
-	}
-	
-	inline bool IsInvisible() const 
-	{ 
-		return IsKeyDown(KEY_LEFT_SHIFT); 
-	}
-	
-	inline float GetStamina() const 
-	{ 
-		return (_isDragonInside) ? 9.0f : _stamina; 
-	}
+RLTile RLTileMap::GetTile(int x, int y, int layerID)
+{
+    std::map<int, RLTileLayer>::iterator itr = Layers.find(layerID);
+    if (itr == Layers.end())
+        return RLTile();
 
-	inline void SetStamina(bool isDragonInside)
-	{
-		_stamina = 6.0f;
-		_isDragonInside = isDragonInside;
-	}
+    RLTileLayer &layer = itr->second;
 
-public:
-	void OnLand();
-	void OnWater();
-	void Start()  override;
-	void Update() override;
-	float GetSpeed() const;
-	Vector2 GetDirection() const;
+    if (x < 0 || x >= layer.Width || y < 0 || y >= layer.Height)
+        return RLTile();
 
-private:
-	int FrameSpeed()  const;
-	float NumFrames() const;
-
-private:
-	bool _isWalk, _isDragonInside, _isOnHorse;
-	Sound _landStep, _waterStep, _horseStep;
-	const float _updateTime = 0.084f;
-	float _timer, _stamina;
-	Vector2 _lastPosition;
-};
+    int index = y * layer.Width + x;
+    return layer.Tiles[index];
+}

@@ -1,8 +1,13 @@
 /**********************************************************************************************
 *
+*   raylibExtras * Utilities and Shared Components for Raylib
+*
+*   RLTiles * Tiled map rendering
+*
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2022 Jeffery Myers
+*   Edited by Wildan Wijanarko in 2023
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -24,69 +29,55 @@
 *
 **********************************************************************************************/
 
+
 #pragma once
 
-#include "GameObject.h"
+#include "rlTileMap.h"
+#include "../rlCamera2D/rlCamera2D.h"
 
-class Player : public GameObject
+typedef struct RLRenderTile
+{
+    Rectangle SourceRect = { 0 };
+    Vector2 DestinationPos = { 0 };
+    bool Rotate = false;
+    Texture* SourceTexture = nullptr;
+} RLRenderTile;
+
+class RLTileRenderLayer
 {
 public:
-	Player();
-	~Player();
+    Vector2 TileSize = { 0,0 };
+    std::vector<RLRenderTile> RenderTiles;
+};
 
-	inline void Stop() 
-	{ 
-		_position.x = _lastPosition.x;
-		_position.y = _lastPosition.y;
-	}
-
-	inline void OnHorse(bool isOnHorse) 
-	{ 
-		_isOnHorse = isOnHorse; 
-	}
-
-	inline bool IsPunch() const 
-	{ 
-		return (IsKeyDown(KEY_E) && !_isWalk); 
-	}
-	
-	inline bool IsOnHorse() const 
-	{ 
-		return _isOnHorse; 
-	}
-	
-	inline bool IsInvisible() const 
-	{ 
-		return IsKeyDown(KEY_LEFT_SHIFT); 
-	}
-	
-	inline float GetStamina() const 
-	{ 
-		return (_isDragonInside) ? 9.0f : _stamina; 
-	}
-
-	inline void SetStamina(bool isDragonInside)
-	{
-		_stamina = 6.0f;
-		_isDragonInside = isDragonInside;
-	}
-
+class RLTileRenderer
+{
 public:
-	void OnLand();
-	void OnWater();
-	void Start()  override;
-	void Update() override;
-	float GetSpeed() const;
-	Vector2 GetDirection() const;
+    RLTileMap& TileMap;
 
-private:
-	int FrameSpeed()  const;
-	float NumFrames() const;
+    std::map<int, RLTileRenderLayer> RenderLayers;
+    std::map<std::pair<int, int>, std::pair<Texture, RLTileSheet*>> TextureCache;
 
-private:
-	bool _isWalk, _isDragonInside, _isOnHorse;
-	Sound _landStep, _waterStep, _horseStep;
-	const float _updateTime = 0.084f;
-	float _timer, _stamina;
-	Vector2 _lastPosition;
+    RLTileRenderer(RLTileMap& map) : TileMap(map) {}
+    ~RLTileRenderer();
+
+    inline void Clear()
+    {
+        for (const auto& texture : TextureCache)
+        {
+            UnloadTexture(texture.second.first);
+        }
+
+        TextureCache.clear();
+        RenderLayers.clear();
+    }
+
+    void Setup();
+    void Draw(const RLCamera2D& camera);
+    void DrawGrid(const Rectangle& playerRec);
+
+protected:
+    bool TileInView(RLRenderTile& tile);
+
+    Rectangle CurrentViewRect = { 0,0,0,0 };
 };

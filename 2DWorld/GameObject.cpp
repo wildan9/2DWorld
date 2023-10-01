@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -24,69 +24,36 @@
 *
 **********************************************************************************************/
 
-#pragma once
-
 #include "GameObject.h"
 
-class Player : public GameObject
+GameObject::GameObject() = default;
+
+GameObject::~GameObject() = default;
+
+void GameObject::Animate(float frameSpeed, float numFrames, float size, const bool animate)
 {
-public:
-	Player();
-	~Player();
+    assert(_pCurrentTexture != nullptr);
 
-	inline void Stop() 
-	{ 
-		_position.x = _lastPosition.x;
-		_position.y = _lastPosition.y;
-	}
+    _source = {
+        _currentFrame * (float)_pCurrentTexture->width / numFrames,
+        0.0f, _facing * (float)_pCurrentTexture->width / numFrames,
+        (float)_pCurrentTexture->height
+    };
 
-	inline void OnHorse(bool isOnHorse) 
-	{ 
-		_isOnHorse = isOnHorse; 
-	}
+    _dest = {
+        _position.x, _position.y,
+        size * (float)_pCurrentTexture->width / numFrames,
+        size * (float)_pCurrentTexture->height
+    };
 
-	inline bool IsPunch() const 
-	{ 
-		return (IsKeyDown(KEY_E) && !_isWalk); 
-	}
-	
-	inline bool IsOnHorse() const 
-	{ 
-		return _isOnHorse; 
-	}
-	
-	inline bool IsInvisible() const 
-	{ 
-		return IsKeyDown(KEY_LEFT_SHIFT); 
-	}
-	
-	inline float GetStamina() const 
-	{ 
-		return (_isDragonInside) ? 9.0f : _stamina; 
-	}
-
-	inline void SetStamina(bool isDragonInside)
-	{
-		_stamina = 6.0f;
-		_isDragonInside = isDragonInside;
-	}
-
-public:
-	void OnLand();
-	void OnWater();
-	void Start()  override;
-	void Update() override;
-	float GetSpeed() const;
-	Vector2 GetDirection() const;
-
-private:
-	int FrameSpeed()  const;
-	float NumFrames() const;
-
-private:
-	bool _isWalk, _isDragonInside, _isOnHorse;
-	Sound _landStep, _waterStep, _horseStep;
-	const float _updateTime = 0.084f;
-	float _timer, _stamina;
-	Vector2 _lastPosition;
-};
+    if (animate)
+    {
+        _frameCounter++;
+        if (_frameCounter >= (GetFPS() / frameSpeed))
+        {
+            _frameCounter = 0;
+            _currentFrame++;
+            if (_currentFrame > numFrames) _currentFrame = 0;
+        }
+    }
+}
