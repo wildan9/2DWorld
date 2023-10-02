@@ -29,11 +29,9 @@
 // Define an atomic flag to control the collision checking thread
 std::atomic<bool> collisionThreadRunning(1);
 
-RLCamera2D* pCamera = nullptr;
+std::shared_ptr<GameplayScene> pCurrentScene = nullptr;
 
-std::shared_ptr<Scene> pCurrentScene = nullptr;
-
-bool isDebug = 0, worldCollision = 0;
+bool worldCollision = 0;
 
 void CollisionChecking(const std::shared_ptr<Player>& player, std::vector<std::shared_ptr<GameObject>>& gameObjects);
 
@@ -46,58 +44,17 @@ int main()
     InitWindow(screenWidth, screenHeight, "2DWorld");
 
     pCurrentScene = std::make_shared<GameplayScene>();
-
-    //RLTileMap tileMap;
-
-    //Animals animals;
-
-    //auto player = std::make_shared<Player>();
-
-    //auto house1 = std::make_shared<House>();
-    //auto house2 = std::make_shared<House>();
-    //auto house3 = std::make_shared<House>();
-    //auto house4 = std::make_shared<House>();
-
-    //std::vector<std::shared_ptr<GameObject>> gameObjectsVec
-    //{ 
-    //    // Player
-    //    player, 
-    //    
-    //    // Animals
-    //    animals.chicken,
-    //    animals.horse,
-    //    animals.crocodile,
-
-    //    // House
-    //    house1,
-    //    house2,
-    //    house3,
-    //    house4
-
-    //    // TODO: Add NPC?
-    //};
-
-    //animals.Start(gameObjectsVec);
-
-    //house2->SetPosition({ 1340.0f, 458.0f, });
-    //house3->SetPosition({ 1730.0f, 170.0f, });
-    //house4->SetPosition({ 1730.0f, 458.0f, });
-
-    //RLCamera2D camera;
-
-    //pCamera = &camera;
-
-    //Rectangle mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
+    pCurrentScene->Start();
 
     SetTargetFPS(60);
 
     // Sort the game objects based on their Z-component using merge sort
-    // MergeSort(gameObjectsVec, 0, gameObjectsVec.size() - 1);
+    MergeSort(pCurrentScene->gameObjectsVec, 0, pCurrentScene->gameObjectsVec.size() - 1);
 
     // Create a thread for collision checking
-    // std::thread collisionThread(CollisionChecking, player, gameObjectsVec);
+    std::thread collisionThread(CollisionChecking, pCurrentScene->GetPlayer(), pCurrentScene->gameObjectsVec);
 
-    pCurrentScene->Start();
+    worldCollision = 1;
 
     while (!WindowShouldClose())
     {
@@ -105,17 +62,17 @@ int main()
 
         BeginDrawing();
         ClearBackground(WHITE);
-        
+
         pCurrentScene->Draw();
 
         EndDrawing();
     }
 
     // Signal the collision checking thread to stop
-    //collisionThreadRunning = 0;
+    collisionThreadRunning = 0;
 
     // Wait for the collision checking thread to finish
-    ///collisionThread.join();
+    collisionThread.join();
 
     CloseWindow();
 
@@ -168,7 +125,7 @@ void CollisionChecking(const std::shared_ptr<Player>& player, std::vector<std::s
 {
     while (collisionThreadRunning)
     {
-        if (worldCollision)
+        if (pCurrentScene != nullptr && worldCollision)
         {
             for (auto& gameObject : gameObjects)
             {

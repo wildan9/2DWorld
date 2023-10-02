@@ -29,10 +29,14 @@
 #include <vector>
 #include "Scene.h"
 
+#include "Player.h"
 #include "GameObject.h"
 #include "rlTiles/rlTiles.h"
 #include "rlCamera2D/rlCamera2D.h"
 #include "rlTiles/PUGIXML/pugixml.hpp"
+
+#include "Prop.cpp"
+#include "Animal.cpp"
 
 class GameplayScene : public Scene
 {
@@ -43,15 +47,19 @@ public:
 	void FreeResources() override;
 	void Draw() override;
 
-	inline std::vector<std::shared_ptr<GameObject>> GetGameObjects() const
+	std::vector<std::shared_ptr<GameObject>> gameObjectsVec;
+
+	inline std::shared_ptr<Player> GetPlayer() const
 	{
-		return _gameObjects;
+		assert(_player != nullptr);
+
+		return _player;
 	}
 
 private:
-	std::vector<std::shared_ptr<GameObject>> _gameObjects;
-	std::unique_ptr<RLTileRenderer> _rendererMap;
-	RLTileMap _tileMap;
+	RLTileMap _tileMap = {};
 	RLCamera2D _camera = {};
+	std::shared_ptr<Player>  _player = nullptr;
+	std::shared_ptr<Animals> _animals = nullptr;
+	std::unique_ptr<RLTileRenderer> _rendererMap = {};
 };
-

@@ -37,12 +37,8 @@
 #include <sstream>
 
 #include "Audio.h"
-#include "Player.h"
 #include "VectorMath.h"
 #include "GameplayScene.h"
-
-#include "Prop.cpp"
-#include "Animal.cpp"
 
 #include "rlTiles/rlTiles.h"
 #include "rlCamera2D/rlCamera2D.h"
@@ -51,7 +47,7 @@
 #define RAYGUI_IMPLEMENTATION
 #include "extras/raygui.h"
 
-static const int screenWidth  = 512;
+static const int screenWidth = 512;
 static const int screenHeight = 512;
 
 std::string currentBGM = {};
