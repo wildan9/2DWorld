@@ -347,6 +347,7 @@
     <ClCompile Include="rlTiles\rlTileMapRenderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DWorld.h" />
@@ -364,6 +365,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Texture2DVec.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="VectorMath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

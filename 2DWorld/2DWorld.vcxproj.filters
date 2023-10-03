@@ -66,6 +66,9 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DWorld.cpp">
@@ -108,6 +111,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

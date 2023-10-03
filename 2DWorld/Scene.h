@@ -41,3 +41,5 @@ public:
 	virtual void LoadResources() {}
 	virtual void FreeResources() {}
 };
+
+void DrawCenteredText(int y, const char* text, int fontSize, Color color);

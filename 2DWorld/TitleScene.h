@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -26,30 +26,18 @@
 
 #pragma once
 
-#include <ctime>
-#include <queue>
-#include <list>
-#include <vector>
-#include <atomic>
-#include <thread>
-#include <string>
-#include <iomanip>
-#include <sstream>
+#include "Scene.h"
 
-#include "Audio.h"
-#include "VectorMath.h"
-#include "TitleScene.h"
-#include "SceneManager.h"
-#include "GameplayScene.h"
+class TitleScene : public Scene
+{
+public:
+	void Start() override;
+	void Update() override;
+	void LoadResources() override;
+	void FreeResources() override;
+	void Draw() override;
 
-#include "rlTiles/rlTiles.h"
-#include "rlCamera2D/rlCamera2D.h"
-#include "rlTiles/PUGIXML/pugixml.hpp"
+private:
+	Texture2D _earthTexture;
+};
 
-#define RAYGUI_IMPLEMENTATION
-#include "extras/raygui.h"
-
-static const int screenWidth = 512;
-static const int screenHeight = 512;
-
-std::string currentBGM = {};

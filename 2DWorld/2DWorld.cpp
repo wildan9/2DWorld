@@ -26,6 +26,14 @@
 
 #include "2DWorld.h"
 
+enum class WorldStates
+{
+    TITLE = 0,
+    GAMEPLAY,
+    NULL_STATE
+};
+WorldStates worldState;
+
 // Define an atomic flag to control the collision checking thread
 std::atomic<bool> collisionThreadRunning(1);
 
@@ -39,19 +47,38 @@ int main()
 {
     InitWindow(screenWidth, screenHeight, "2DWorld");
 
-    std::shared_ptr<GameplayScene> gameplayScene = std::make_shared<GameplayScene>();
+    std::shared_ptr<GameplayScene> gameplayScene = nullptr;
 
     SetTargetFPS(60);
 
-    SetActiveScene(gameplayScene);
+    SetActiveScene(std::make_shared<TitleScene>());
 
     // Create a thread for collision checking
-    std::thread collisionThread(CollisionChecking, gameplayScene->GetPlayer(), gameplayScene->gameObjectsVec);
+    //std::thread collisionThread(CollisionChecking, gameplayScene->GetPlayer(), gameplayScene->gameObjectsVec);
 
     worldCollision = 1;
 
     while (!WindowShouldClose())
     {
+        switch (worldState)
+        {
+        case WorldStates::TITLE:
+        {
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                SetActiveScene(std::make_shared<GameplayScene>());
+
+                worldState = WorldStates::GAMEPLAY;
+            }
+        } break;
+        case WorldStates::GAMEPLAY:
+        {
+            worldState = WorldStates::NULL_STATE;
+        } break;
+        default:
+            break;
+        }
+
         UpdateScene();
 
         BeginDrawing();
@@ -63,10 +90,10 @@ int main()
     }
 
     // Signal the collision checking thread to stop
-    collisionThreadRunning = 0;
+    //collisionThreadRunning = 0;
 
     // Wait for the collision checking thread to finish
-    collisionThread.join();
+    //collisionThread.join();
 
     CloseWindow();
 

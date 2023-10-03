@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -24,32 +24,32 @@
 *
 **********************************************************************************************/
 
-#pragma once
-
-#include <ctime>
-#include <queue>
-#include <list>
-#include <vector>
-#include <atomic>
-#include <thread>
-#include <string>
-#include <iomanip>
-#include <sstream>
-
-#include "Audio.h"
-#include "VectorMath.h"
 #include "TitleScene.h"
-#include "SceneManager.h"
-#include "GameplayScene.h"
 
-#include "rlTiles/rlTiles.h"
-#include "rlCamera2D/rlCamera2D.h"
-#include "rlTiles/PUGIXML/pugixml.hpp"
+void TitleScene::Start()
+{
+	LoadResources();
+}
 
-#define RAYGUI_IMPLEMENTATION
-#include "extras/raygui.h"
+void TitleScene::Update()
+{
 
-static const int screenWidth = 512;
-static const int screenHeight = 512;
+}
 
-std::string currentBGM = {};
+void TitleScene::LoadResources()
+{
+	_earthTexture = LoadTexture("resources/textures/screens_bg/earth.png");
+}
+
+void TitleScene::FreeResources()
+{
+	UnloadTexture(_earthTexture);
+}
+
+void TitleScene::Draw()
+{
+	DrawTextureV(_earthTexture, {}, WHITE);
+	DrawText("Walking", 15, 20, 40, GREEN);
+	DrawCenteredText(164, "Welcome to 2DWorld!", 24, GREEN);
+	DrawCenteredText(220, "PRESS ENTER to Walking!", 19, GREEN);
+}
