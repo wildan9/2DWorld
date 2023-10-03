@@ -28,10 +28,15 @@
 
 bool isDebug = 0;
 
+void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right);
+void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int right);
+
 void GameplayScene::Start()
 {
     LoadResources();
     _rendererMap->Setup();
+
+    MergeSort(gameObjectsVec, 0, gameObjectsVec.size() - 1);
 }
 
 void GameplayScene::Update()
@@ -156,4 +161,38 @@ void GameplayScene::Draw()
     _camera.EndMode();
 
     DrawFPS(0, 0);
+}
+
+void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right)
+{
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    std::vector<std::shared_ptr<GameObject>> leftVec(n1);
+    std::vector<std::shared_ptr<GameObject>> rightVec(n2);
+
+    for (int i = 0; i < n1; i++) leftVec[i] = vec[left + i];
+    for (int i = 0; i < n2; i++) rightVec[i] = vec[mid + 1 + i];
+
+    int i = 0, j = 0, k = left;
+
+    while (i < n1 && j < n2)
+    {
+        if (leftVec[i]->GetZ() <= rightVec[j]->GetZ()) vec[k++] = leftVec[i++];
+        else vec[k++] = rightVec[j++];
+    }
+
+    while (i < n1) vec[k++] = leftVec[i++];
+    while (j < n2) vec[k++] = rightVec[j++];
+}
+
+void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int right)
+{
+    if (left < right)
+    {
+        int mid = left + (right - left) / 2;
+        MergeSort(vec, left, mid);
+        MergeSort(vec, mid + 1, right);
+        Merge(vec, left, mid, right);
+    }
 }
