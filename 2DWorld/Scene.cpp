@@ -26,32 +26,9 @@
 
 #include "Scene.h"
 
-std::shared_ptr<Scene> currentScene = nullptr;
-
 Scene::Scene() = default;
 
 Scene::~Scene()
 {
 	FreeResources();
-}
-
-void SetActiveScene(std::shared_ptr<Scene> scene)
-{
-	currentScene = scene;
-}
-
-void UpdateScene()
-{
-	if (currentScene != nullptr)
-	{
-		currentScene->Update();
-	}
-}
-
-void DrawScene()
-{
-	if (currentScene != nullptr)
-	{
-		currentScene->Draw();
-	}
 }

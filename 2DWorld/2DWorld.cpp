@@ -29,8 +29,6 @@
 // Define an atomic flag to control the collision checking thread
 std::atomic<bool> collisionThreadRunning(1);
 
-std::shared_ptr<GameplayScene> pCurrentScene = nullptr;
-
 bool worldCollision = 0;
 
 void CollisionChecking(const std::shared_ptr<Player>& player, std::vector<std::shared_ptr<GameObject>>& gameObjects);
@@ -43,27 +41,28 @@ int main()
 {
     InitWindow(screenWidth, screenHeight, "2DWorld");
 
-    pCurrentScene = std::make_shared<GameplayScene>();
-    pCurrentScene->Start();
+    std::shared_ptr<GameplayScene> gameplayScene = std::make_shared<GameplayScene>();
 
     SetTargetFPS(60);
 
+    SetActiveScene(gameplayScene);
+
     // Sort the game objects based on their Z-component using merge sort
-    MergeSort(pCurrentScene->gameObjectsVec, 0, pCurrentScene->gameObjectsVec.size() - 1);
+    MergeSort(gameplayScene->gameObjectsVec, 0, gameplayScene->gameObjectsVec.size() - 1);
 
     // Create a thread for collision checking
-    std::thread collisionThread(CollisionChecking, pCurrentScene->GetPlayer(), pCurrentScene->gameObjectsVec);
+    std::thread collisionThread(CollisionChecking, gameplayScene->GetPlayer(), gameplayScene->gameObjectsVec);
 
     worldCollision = 1;
 
     while (!WindowShouldClose())
     {
-        pCurrentScene->Update();
+        UpdateScene();
 
         BeginDrawing();
         ClearBackground(WHITE);
 
-        pCurrentScene->Draw();
+        DrawScene();
 
         EndDrawing();
     }
@@ -125,7 +124,7 @@ void CollisionChecking(const std::shared_ptr<Player>& player, std::vector<std::s
 {
     while (collisionThreadRunning)
     {
-        if (pCurrentScene != nullptr && worldCollision)
+        if (worldCollision)
         {
             for (auto& gameObject : gameObjects)
             {

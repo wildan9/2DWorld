@@ -346,6 +346,7 @@
     <ClCompile Include="rlTiles\rlTileMapIO.cpp" />
     <ClCompile Include="rlTiles\rlTileMapRenderer.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DWorld.h" />
@@ -360,6 +361,7 @@
     <ClInclude Include="rlTiles\rlTileMapRenderer.h" />
     <ClInclude Include="rlTiles\rlTiles.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Texture2DVec.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="VectorMath.h" />

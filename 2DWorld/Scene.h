@@ -41,7 +41,3 @@ public:
 	virtual void LoadResources() {}
 	virtual void FreeResources() {}
 };
-
-void SetActiveScene(std::shared_ptr<Scene> scene);
-void UpdateScene();
-void DrawScene();

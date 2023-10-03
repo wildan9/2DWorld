@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -24,31 +24,30 @@
 *
 **********************************************************************************************/
 
-#pragma once
-
-#include <ctime>
-#include <queue>
-#include <list>
-#include <vector>
-#include <atomic>
-#include <thread>
-#include <string>
-#include <iomanip>
-#include <sstream>
-
-#include "Audio.h"
-#include "VectorMath.h"
 #include "SceneManager.h"
-#include "GameplayScene.h"
 
-#include "rlTiles/rlTiles.h"
-#include "rlCamera2D/rlCamera2D.h"
-#include "rlTiles/PUGIXML/pugixml.hpp"
+std::shared_ptr<Scene> currentScene = nullptr;
 
-#define RAYGUI_IMPLEMENTATION
-#include "extras/raygui.h"
+void SetActiveScene(std::shared_ptr<Scene> scene)
+{
+	currentScene.reset();
+	currentScene = scene;
 
-static const int screenWidth = 512;
-static const int screenHeight = 512;
+	currentScene->Start();
+}
 
-std::string currentBGM = {};
+void UpdateScene()
+{
+	if (currentScene != nullptr)
+	{
+		currentScene->Update();
+	}
+}
+
+void DrawScene()
+{
+	if (currentScene != nullptr)
+	{
+		currentScene->Draw();
+	}
+}
