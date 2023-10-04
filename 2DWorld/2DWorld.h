@@ -49,7 +49,22 @@
 #define RAYGUI_IMPLEMENTATION
 #include "extras/raygui.h"
 
-static const int screenWidth = 512;
+static const int screenWidth  = 512;
 static const int screenHeight = 512;
 
-std::string currentBGM = {};
+class Engine
+{
+public:
+	void Start();
+	void Update();
+	void Render();
+	void ShutDown();
+
+private:
+	Audio _audio;
+	std::shared_ptr<GameplayScene> _gameplayScene = nullptr;
+	std::atomic<bool> _collisionThreadRunning = 0;
+	std::atomic<bool> _isEngineShutDown = 0;
+	std::vector<std::thread> _threads = {};
+	std::string _currentBGM = {};
+};

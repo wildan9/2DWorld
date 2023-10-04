@@ -33,66 +33,70 @@ enum class WorldStates
 };
 WorldStates worldState;
 
-int main()
+void Engine::Start()
 {
     InitWindow(screenWidth, screenHeight, "2DWorld");
-
-    std::shared_ptr<GameplayScene> gameplayScene = nullptr;
-
+    InitAudioDevice();
     SetTargetFPS(60);
-
     SetActiveScene(std::make_shared<TitleScene>());
 
-    // Define an atomic flag to control the collision checking thread
-    std::atomic<bool> collisionThreadRunning(0);
+    _audio.Load();
 
-    std::vector<std::thread> threads = {};
+    _threads.push_back(std::thread(&Audio::Update, _audio, std::ref(_currentBGM), std::ref(_isEngineShutDown)));
+}
 
-    while (!WindowShouldClose())
+void Engine::Update()
+{
+    switch (worldState)
     {
-        switch (worldState)
+    case WorldStates::TITLE:
+    {
+        if (IsKeyPressed(KEY_ENTER))
         {
-        case WorldStates::TITLE:
-        {
-            if (IsKeyPressed(KEY_ENTER))
-            {
-                gameplayScene = std::make_shared<GameplayScene>();
-                
-                SetActiveScene(gameplayScene);
+            _gameplayScene = std::make_shared<GameplayScene>();
 
-                worldState = WorldStates::GAMEPLAY;
+            SetActiveScene(_gameplayScene);
 
-                collisionThreadRunning = 1;
+            worldState = WorldStates::GAMEPLAY;
 
-                threads.push_back(std::thread(&GameplayScene::CollisionChecking, gameplayScene, std::ref(collisionThreadRunning)));
-            }
+            _collisionThreadRunning = 1;
 
-            GetCurrentScene()->Update();
-
-        } break;
-        case WorldStates::GAMEPLAY:
-        {
-            GetCurrentScene()->Update();
-        } break;
-        default:
-            break;
+            _threads.push_back(std::thread(&GameplayScene::CollisionChecking, _gameplayScene, std::ref(_collisionThreadRunning)));
         }
 
-        BeginDrawing();
-        ClearBackground(WHITE);
+        GetCurrentScene()->Update();
 
-        if (GetCurrentScene != nullptr)
-        {
-            GetCurrentScene()->Draw();
-        }
+    } break;
+    case WorldStates::GAMEPLAY:
+    {
+        GetCurrentScene()->Update();
+    } break;
+    default:
+        break;
+    }
+}
 
-        EndDrawing();
+void Engine::Render()
+{
+    BeginDrawing();
+    ClearBackground(WHITE);
+
+    if (GetCurrentScene != nullptr)
+    {
+        GetCurrentScene()->Draw();
     }
 
-    // Signal the collision checking thread to stop
-    collisionThreadRunning = 0;
+    EndDrawing();
+}
 
-    for (auto& thread : threads)
+void Engine::ShutDown()
+{
+    _isEngineShutDown = 1;
+
+    // Signal the collision checking thread to stop
+    _collisionThreadRunning = 0;
+
+    for (auto& thread : _threads)
     {
         if (thread.joinable())
         {
@@ -100,7 +104,26 @@ int main()
         }
     }
 
+    _threads.clear();
+
+    _audio.Free();
+
+    CloseAudioDevice();
     CloseWindow();
+}
+
+int main()
+{
+    Engine engine;
+    engine.Start();
+
+    while (!WindowShouldClose())
+    {
+        engine.Update();
+        engine.Render();
+    }
+
+    engine.ShutDown();
 
     return 0;
 }

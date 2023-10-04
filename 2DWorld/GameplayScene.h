@@ -30,8 +30,8 @@
 #include <thread>
 #include <atomic>
 #include <vector>
-#include "Scene.h"
 
+#include "Scene.h"
 #include "Player.h"
 #include "GameObject.h"
 #include "rlTiles/rlTiles.h"

@@ -72,9 +72,8 @@ void GameplayScene::Update()
 
 void GameplayScene::LoadResources()
 {
+    _player  = std::make_shared<Player>();
     _animals = std::make_shared<Animals>();
-
-    _player = std::make_shared<Player>();
 
     auto house1 = std::make_shared<House>();
     auto house2 = std::make_shared<House>();
@@ -246,4 +245,3 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
 
     return nullptr;
 }
-

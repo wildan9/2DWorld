@@ -28,6 +28,8 @@
 
 #include "raylib.h"
 
+#include <thread>
+#include <atomic>
 #include <stdexcept>
 
 class Audio
@@ -36,9 +38,7 @@ class Audio
 	T LoadAudioData(const char* audio);
 
 public:
-	Audio();
-	~Audio();
-	void Update(std::string& bgm);
+	void Update(std::string& bgm, std::atomic<bool>& isEngineShutDown);
 	void Load();
 	void Free();
 

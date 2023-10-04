@@ -45,71 +45,64 @@ Volume volume;
 
 Sound clickSound = {};
 
-Audio::Audio()
-{
-	InitAudioDevice();
-	Load();
-}
-
-Audio::~Audio()
-{
-	Free();
-	CloseAudioDevice();
-}
-
 void Audio::Load()
 {
 	_bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
 	clickSound = LoadAudioData<Sound>("resources/sounds/menu_selection_click.wav");
 }
 
-void Audio::Update(std::string& bgm)
+void Audio::Update(std::string& bgm, std::atomic<bool>& isEngineShutDown)
 {
-	switch (bgmState)
+	while (!isEngineShutDown)
 	{
-	case BGMStates::LOAD_BIRD:
-	{
-		UnloadBGM();
-		_bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
-		_bgm.looping = 1;
-		bgm = "";
-	} break;
-	case BGMStates::LOAD_HARP:
-	{
-		UnloadBGM();
-		_bgm = LoadAudioData<Music>("resources/sounds/harp.ogg");
-		_bgm.looping = 1;
-		bgm = "";
-	} break;
-	default:
-		break;
+		switch (bgmState)
+		{
+		case BGMStates::LOAD_BIRD:
+		{
+			UnloadBGM();
+			_bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
+			_bgm.looping = 1;
+			bgm = "";
+		} break;
+		case BGMStates::LOAD_HARP:
+		{
+			UnloadBGM();
+			_bgm = LoadAudioData<Music>("resources/sounds/harp.ogg");
+			_bgm.looping = 1;
+			bgm = "";
+		} break;
+		default:
+			break;
+		}
+
+		if (bgm == "bird") bgmState = BGMStates::LOAD_BIRD;
+		else if (bgm == "harp") bgmState = BGMStates::LOAD_HARP;
+		else if (bgm == "") bgmState = BGMStates::IDLE;
+
+		UpdateMusicStream(_bgm);
+		PlayMusicStream(_bgm);
+
+		if (IsKeyPressed(KEY_L) && volume.master < 1.0f && !volume.muted)
+		{
+			volume.current += 0.1f;
+			volume.master  += 0.1f;
+		}
+
+		if (IsKeyPressed(KEY_K) && volume.master > 0.0f && !volume.muted)
+		{
+			volume.current -= 0.1f;
+			volume.master  -= 0.1f;
+		}
+
+		if (IsKeyPressed(KEY_M)) volume.muted = !volume.muted;
+
+		if (volume.muted && IsKeyPressed(KEY_M) || volume.muted)  volume.master = 0.0f;
+		if (!volume.muted && IsKeyPressed(KEY_M) || !volume.muted) volume.master = volume.current;
+
+		SetMasterVolume(volume.master);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	}
-
-	if (bgm == "bird") bgmState = BGMStates::LOAD_BIRD;
-	else if (bgm == "harp") bgmState = BGMStates::LOAD_HARP;
-	else if (bgm == "") bgmState = BGMStates::IDLE;
-
-	UpdateMusicStream(_bgm);
-	PlayMusicStream(_bgm);
-
-	if (IsKeyPressed(KEY_L) && volume.master < 1.0f && !volume.muted)
-	{
-		volume.current += 0.1f;
-		volume.master  += 0.1f;
-	}
-		
-	if (IsKeyPressed(KEY_K) && volume.master > 0.0f && !volume.muted)
-	{
-		volume.current -= 0.1f;
-		volume.master  -= 0.1f;
-	}
-
-	if (IsKeyPressed(KEY_M)) volume.muted = !volume.muted;
-
-	if (volume.muted && IsKeyPressed(KEY_M)  || volume.muted)  volume.master = 0.0f;
-	if (!volume.muted && IsKeyPressed(KEY_M) || !volume.muted) volume.master = volume.current;
-
-	SetMasterVolume(volume.master);
 }
 
 void Audio::Free()
