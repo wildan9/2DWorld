@@ -29,8 +29,7 @@
 enum class WorldStates
 {
     TITLE = 0,
-    GAMEPLAY,
-    NULL_STATE
+    GAMEPLAY
 };
 WorldStates worldState;
 
@@ -70,21 +69,25 @@ int main()
 
                 worldState = WorldStates::GAMEPLAY;
             }
+
+            GetCurrentScene()->Update();
+
         } break;
         case WorldStates::GAMEPLAY:
         {
-            worldState = WorldStates::NULL_STATE;
+            GetCurrentScene()->Update();
         } break;
         default:
             break;
         }
 
-        UpdateScene();
-
         BeginDrawing();
         ClearBackground(WHITE);
 
-        DrawScene();
+        if (GetCurrentScene != nullptr)
+        {
+            GetCurrentScene()->Draw();
+        }
 
         EndDrawing();
     }

@@ -29,5 +29,4 @@
 #include "Scene.h"
 
 void SetActiveScene(std::shared_ptr<Scene> scene);
-void UpdateScene();
-void DrawScene();
+std::shared_ptr<Scene> GetCurrentScene();

@@ -36,18 +36,7 @@ void SetActiveScene(std::shared_ptr<Scene> scene)
 	currentScene->Start();
 }
 
-void UpdateScene()
+std::shared_ptr<Scene> GetCurrentScene()
 {
-	if (currentScene != nullptr)
-	{
-		currentScene->Update();
-	}
-}
-
-void DrawScene()
-{
-	if (currentScene != nullptr)
-	{
-		currentScene->Draw();
-	}
+	return currentScene;
 }
