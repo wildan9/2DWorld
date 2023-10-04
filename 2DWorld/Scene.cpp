@@ -26,13 +26,6 @@
 
 #include "Scene.h"
 
-Scene::Scene() = default;
-
-Scene::~Scene()
-{
-	FreeResources();
-}
-
 void DrawCenteredText(int y, const char* text, int fontSize, Color color)
 {
 	int textWidth(MeasureText(text, fontSize));

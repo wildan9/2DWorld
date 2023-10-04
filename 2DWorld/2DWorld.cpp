@@ -33,15 +33,6 @@ enum class WorldStates
 };
 WorldStates worldState;
 
-// Define an atomic flag to control the collision checking thread
-std::atomic<bool> collisionThreadRunning(1);
-
-bool worldCollision = 0;
-
-void CollisionChecking(const std::shared_ptr<Player>& player, std::vector<std::shared_ptr<GameObject>>& gameObjects);
-
-bool OnTouch(const Player& player, float targetPosX);
-
 int main()
 {
     InitWindow(screenWidth, screenHeight, "2DWorld");
@@ -52,10 +43,10 @@ int main()
 
     SetActiveScene(std::make_shared<TitleScene>());
 
-    // Create a thread for collision checking
-    //std::thread collisionThread(CollisionChecking, gameplayScene->GetPlayer(), gameplayScene->gameObjectsVec);
+    // Define an atomic flag to control the collision checking thread
+    std::atomic<bool> collisionThreadRunning(0);
 
-    worldCollision = 1;
+    std::vector<std::thread> threads = {};
 
     while (!WindowShouldClose())
     {
@@ -65,9 +56,15 @@ int main()
         {
             if (IsKeyPressed(KEY_ENTER))
             {
-                SetActiveScene(std::make_shared<GameplayScene>());
+                gameplayScene = std::make_shared<GameplayScene>();
+                
+                SetActiveScene(gameplayScene);
 
                 worldState = WorldStates::GAMEPLAY;
+
+                collisionThreadRunning = 1;
+
+                threads.push_back(std::thread(&GameplayScene::CollisionChecking, gameplayScene, std::ref(collisionThreadRunning)));
             }
 
             GetCurrentScene()->Update();
@@ -93,56 +90,17 @@ int main()
     }
 
     // Signal the collision checking thread to stop
-    //collisionThreadRunning = 0;
+    collisionThreadRunning = 0;
 
-    // Wait for the collision checking thread to finish
-    //collisionThread.join();
+    for (auto& thread : threads)
+    {
+        if (thread.joinable())
+        {
+            thread.join();
+        }
+    }
 
     CloseWindow();
 
     return 0;
-}
-
-bool OnTouch(const Player& player, float targetPosX)
-{
-    if (player.GetFacing() == 1.0f && player.GetPosition().x < targetPosX) return 1;
-    else if (player.GetFacing() == -1.0f && player.GetPosition().x > targetPosX) return 1;
-
-    return 0;
-}
-
-void CollisionChecking(const std::shared_ptr<Player>& player, std::vector<std::shared_ptr<GameObject>>& gameObjects)
-{
-    while (collisionThreadRunning)
-    {
-        if (worldCollision)
-        {
-            for (auto& gameObject : gameObjects)
-            {
-                if (gameObject->isInView)
-                {
-                    gameObject->isOnTriger = 0;
-                    if (gameObject->name == "Rhino")
-                    {
-                        if (CheckCollisionRecs(player->GetRectangle(), gameObject->GetRectangle()) &&
-                            IsKeyDown(KEY_ENTER) && Vector2Length(player->GetDirection()) > 0.0f)
-                        {
-                            gameObject->isOnTriger = 1;
-                        }
-                    }
-                    else if (gameObject->name == "Crocodile")
-                    {
-                        if (CheckCollisionRecs(player->GetRectangle(), gameObject->GetRectangle()) &&
-                            player->IsPunch() && OnTouch(*player, gameObject->GetPosition().x))
-                        {
-                            gameObject->isOnTriger = 1;
-                        }
-                    }
-                }
-            }
-        }
-
-        // Sleep for a short duration to control the update rate of collision checking
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
 }

@@ -26,6 +26,9 @@
 
 #pragma once
 
+#include <mutex>
+#include <thread>
+#include <atomic>
 #include <vector>
 #include "Scene.h"
 
@@ -46,20 +49,14 @@ public:
 	void LoadResources() override;
 	void FreeResources() override;
 	void Draw() override;
-
-	std::vector<std::shared_ptr<GameObject>> gameObjectsVec;
-
-	inline std::shared_ptr<Player> GetPlayer() const
-	{
-		assert(_player != nullptr);
-
-		return _player;
-	}
+	void* CollisionChecking(const std::atomic<bool>& collisionThreadRunning);
 
 private:
 	RLTileMap _tileMap = {};
 	RLCamera2D _camera = {};
-	std::shared_ptr<Player>  _player = nullptr;
-	std::shared_ptr<Animals> _animals = nullptr;
+	std::mutex _collisionMutex = {};
+	std::shared_ptr<Player>  _player  = {};
+	std::shared_ptr<Animals> _animals = {};
 	std::unique_ptr<RLTileRenderer> _rendererMap = {};
+	std::vector<std::shared_ptr<GameObject>> _gameObjectsVec = {};
 };

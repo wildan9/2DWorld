@@ -26,17 +26,18 @@
 
 #include "GameplayScene.h"
 
-bool isDebug = 0;
+bool isDebug = 0, worldCollision = 1;
 
 void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right);
 void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int right);
+bool OnTouch(const Player& player, float targetPosX);
 
 void GameplayScene::Start()
 {
     LoadResources();
     _rendererMap->Setup();
 
-    MergeSort(gameObjectsVec, 0, gameObjectsVec.size() - 1);
+    MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
 }
 
 void GameplayScene::Update()
@@ -47,7 +48,7 @@ void GameplayScene::Update()
     _animals->Update(_player->GetSpeed(), _player->GetDirection(), _player->GetFacing());
 
     // Update the game objects
-    for (const auto& gameObject : gameObjectsVec)
+    for (const auto& gameObject : _gameObjectsVec)
     {
         gameObject->isInView = 0;
         if (CheckCollisionRecs(_camera.GetRectangle(), gameObject->GetRectangle()))
@@ -80,7 +81,7 @@ void GameplayScene::LoadResources()
     auto house3 = std::make_shared<House>();
     auto house4 = std::make_shared<House>();
 
-    gameObjectsVec =
+    _gameObjectsVec =
     {
         // Player
         _player,
@@ -108,7 +109,7 @@ void GameplayScene::LoadResources()
 
     _rendererMap = std::make_unique< RLTileRenderer>(_tileMap);
 
-    _animals->Start(gameObjectsVec);
+    _animals->Start(_gameObjectsVec);
 
     house2->SetPosition({ 1340.0f, 458.0f, });
     house3->SetPosition({ 1730.0f, 170.0f, });
@@ -117,7 +118,7 @@ void GameplayScene::LoadResources()
 
 void GameplayScene::FreeResources()
 {
-
+    
 }
 
 void GameplayScene::Draw()
@@ -126,7 +127,7 @@ void GameplayScene::Draw()
     _rendererMap->Draw(_camera);
 
     // Draw the game objects in sorted order
-    for (const auto& gameObject : gameObjectsVec)
+    for (const auto& gameObject : _gameObjectsVec)
     {
         if (gameObject->isInView)
         {
@@ -196,3 +197,53 @@ void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int righ
         Merge(vec, left, mid, right);
     }
 }
+
+bool OnTouch(const Player& player, float targetPosX)
+{
+    if (player.GetFacing() == 1.0f && player.GetPosition().x < targetPosX) return 1;
+    else if (player.GetFacing() == -1.0f && player.GetPosition().x > targetPosX) return 1;
+
+    return 0;
+}
+
+void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadRunning)
+{
+    while (collisionThreadRunning)
+    {
+        if (worldCollision)
+        {
+            // Lock the mutex to protect shared data?
+            std::lock_guard<std::mutex> lock(_collisionMutex);
+
+            for (auto& gameObject : _gameObjectsVec)
+            {
+                if (gameObject->isInView)
+                {
+                    gameObject->isOnTriger = 0;
+                    if (gameObject->name == "Rhino")
+                    {
+                        if (CheckCollisionRecs(_player->GetRectangle(), gameObject->GetRectangle()) &&
+                            IsKeyDown(KEY_ENTER) && Vector2Length(_player->GetDirection()) > 0.0f)
+                        {
+                            gameObject->isOnTriger = 1;
+                        }
+                    }
+                    else if (gameObject->name == "Crocodile")
+                    {
+                        if (CheckCollisionRecs(_player->GetRectangle(), gameObject->GetRectangle()) &&
+                            _player->IsPunch() && OnTouch(*_player, gameObject->GetPosition().x))
+                        {
+                            gameObject->isOnTriger = 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Sleep for a short duration to control the update rate of collision checking
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+
+    return nullptr;
+}
+
