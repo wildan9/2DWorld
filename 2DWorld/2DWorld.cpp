@@ -38,6 +38,11 @@ void Engine::Start()
     InitWindow(screenWidth, screenHeight, "2DWorld");
     InitAudioDevice();
     SetTargetFPS(60);
+    Image icon = LoadImage("resources/icon/earth_400_400.png");
+    ImageFormat(&icon, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    ImageColorReplace(&icon, BLACK, BLANK);
+    SetWindowIcon(icon);
+    UnloadImage(icon);
     SetActiveScene(std::make_shared<TitleScene>());
 
     _audio.Load();
@@ -81,7 +86,7 @@ void Engine::Render()
     BeginDrawing();
     ClearBackground(WHITE);
 
-    if (GetCurrentScene != nullptr)
+    if (GetCurrentScene() != nullptr)
     {
         GetCurrentScene()->Draw();
     }
