@@ -26,6 +26,11 @@
 
 #include "TitleScene.h"
 
+TitleScene::~TitleScene()
+{
+	FreeResources();
+}
+
 void TitleScene::Start()
 {
 	LoadResources();

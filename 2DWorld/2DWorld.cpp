@@ -91,6 +91,8 @@ void Engine::Render()
         GetCurrentScene()->Draw();
     }
 
+    DrawVolumeBar();
+
     EndDrawing();
 }
 

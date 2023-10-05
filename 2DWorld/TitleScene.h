@@ -31,6 +31,8 @@
 class TitleScene : public Scene
 {
 public:
+	~TitleScene();
+
 	void Start() override;
 	void Update() override;
 	void LoadResources() override;
@@ -40,4 +42,3 @@ public:
 private:
 	Texture2D _earthTexture;
 };
-

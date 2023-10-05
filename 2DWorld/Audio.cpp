@@ -44,6 +44,7 @@ struct Volume
 Volume volume;
 
 Sound clickSound = {};
+Timer volumeBarTimer = {};
 
 void Audio::Load()
 {
@@ -128,4 +129,39 @@ void PlayClickSound()
 float GetMasterVolume()
 {
 	return volume.master;
+}
+
+void DrawVolumeBar()
+{
+	const char* strVolumeArr[11] =
+	{
+		"Muted", "Volume: #", "Volume: # #", "Volume: # # #",
+		"Volume: # # # #", "Volume: # # # # #", "Volume: # # # # # #",
+		"Volume: # # # # # # #", "Volume: # # # # # # # #",
+		"Volume: # # # # # # # # #", "Volume: # # # # # # # # # #"
+	};
+
+	const Color volumeColors[]{ RED, DARKGREEN, GREEN };
+
+	const unsigned volume = GetMasterVolume() * 10;
+
+	if (volume < 0.1f || !IsTimerDone(volumeBarTimer))
+	{
+		UpdateTimer(volumeBarTimer);
+
+		int volumeColor = 2;
+
+		if (volume < 1) volumeColor = 0;
+		else if (volume > 1 && volume < 8) volumeColor = 1;
+		else if (volume > 8) volumeColor = 2;
+
+		const char* strVolume = strVolumeArr[volume];
+
+		DrawText(strVolume, GetScreenWidth() - 320, 10, 21, volumeColors[volumeColor]);
+	}
+
+	if (IsKeyPressed(KEY_M) || IsKeyPressed(KEY_L) || IsKeyPressed(KEY_K))
+	{
+		StartTimer(volumeBarTimer, 4.0f);
+	}
 }

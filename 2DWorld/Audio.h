@@ -26,6 +26,7 @@
 
 #pragma once
 
+#include "Timer.h"
 #include "raylib.h"
 
 #include <thread>
@@ -66,5 +67,6 @@ T Audio::LoadAudioData(const char* audio)
 	}
 }
 
-void PlayClickSound();
+void  DrawVolumeBar();
+void  PlayClickSound();
 float GetMasterVolume();
