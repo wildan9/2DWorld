@@ -40,8 +40,8 @@ class Audio
 
 public:
 	void Update(std::string& bgm, std::atomic<bool>& isEngineShutDown);
-	void Load();
-	void Free();
+	void LoadResources();
+	void FreeResources();
 
 private:
 	void UnloadBGM();

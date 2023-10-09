@@ -45,7 +45,7 @@ void Engine::Start()
     UnloadImage(icon);
     SetActiveScene(std::make_shared<TitleScene>());
 
-    _audio.Load();
+    _audio.LoadResources();
 
     _threads.push_back(std::thread(&Audio::Update, _audio, std::ref(_currentBGM), std::ref(_isEngineShutDown)));
 }
@@ -113,7 +113,7 @@ void Engine::ShutDown()
 
     _threads.clear();
 
-    _audio.Free();
+    _audio.FreeResources();
 
     CloseAudioDevice();
     CloseWindow();

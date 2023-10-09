@@ -46,7 +46,7 @@ Volume volume;
 Sound clickSound = {};
 Timer volumeBarTimer = {};
 
-void Audio::Load()
+void Audio::LoadResources()
 {
 	_bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
 	clickSound = LoadAudioData<Sound>("resources/sounds/menu_selection_click.wav");
@@ -106,7 +106,7 @@ void Audio::Update(std::string& bgm, std::atomic<bool>& isEngineShutDown)
 	}
 }
 
-void Audio::Free()
+void Audio::FreeResources()
 {
 	UnloadBGM();
 	UnloadSound(clickSound);
