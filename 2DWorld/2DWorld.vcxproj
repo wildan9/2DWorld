@@ -351,6 +351,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2DWorld.h" />
+    <ClInclude Include="Animal.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameplayScene.h" />

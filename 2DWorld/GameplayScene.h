@@ -33,13 +33,13 @@
 
 #include "Scene.h"
 #include "Player.h"
+#include "Animal.h"
 #include "GameObject.h"
 #include "rlTiles/rlTiles.h"
 #include "rlCamera2D/rlCamera2D.h"
 #include "rlTiles/PUGIXML/pugixml.hpp"
 
 #include "Prop.cpp"
-#include "Animal.cpp"
 
 class GameplayScene : public Scene
 {
@@ -52,11 +52,13 @@ public:
 	void* CollisionChecking(const std::atomic<bool>& collisionThreadRunning);
 
 private:
-	RLTileMap _tileMap = {};
-	RLCamera2D _camera = {};
+	RLTileMap _tileMap  = {};
+	RLCamera2D _camera  = {};
+	float _batsLifetime = 15.0f;
 	std::mutex _collisionMutex = {};
 	std::shared_ptr<Player>  _player  = {};
 	std::shared_ptr<Animals> _animals = {};
+	std::vector<std::shared_ptr<Bat>> _batsVec = {};
 	std::unique_ptr<RLTileRenderer> _rendererMap = {};
 	std::vector<std::shared_ptr<GameObject>> _gameObjectsVec = {};
 };

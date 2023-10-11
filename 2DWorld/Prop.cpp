@@ -84,13 +84,18 @@ protected:
 
         _position = { 1340.0f, 170.0f, 3.0f };
 
-        _rectangle = { _position.x, _position.y, 120.0f, 180.0f };
+        _rectangle = { _position.x, _position.y, 90.0f, 135.0f };
+
+        name = "House";
     }
 
     void Update() override
     {
-        _rectangle = { _position.x, _position.y, 120.0f, 180.0f };
+        _rectangle = { _position.x + 10.0f, _position.y + 40.0f, 90.0f, 135.0f };
 
         Animate(1, 1, 0.8f, 0);
+
+        if (isOnTriger) _position.z = 1.0f;
+        else _position.z = 3.0f;
     }
 };

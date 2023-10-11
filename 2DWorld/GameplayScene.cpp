@@ -28,6 +28,9 @@
 
 bool isDebug = 0, worldCollision = 1;
 
+Rectangle GetRecBottomSide(const Rectangle& rec);
+std::vector<std::shared_ptr<Bat>> CreateBatsVector(unsigned n);
+bool IsSorted(const std::vector<std::shared_ptr<GameObject>>& vec);
 void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right);
 void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int right);
 bool OnTouch(const Player& player, float targetPosX);
@@ -38,6 +41,8 @@ void GameplayScene::Start()
     _rendererMap->Setup();
 
     MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
+
+    _batsVec = CreateBatsVector(5);
 }
 
 void GameplayScene::Update()
@@ -57,9 +62,32 @@ void GameplayScene::Update()
             gameObject->isInView = 1;
         }
         // Updated each frame
-        else if (gameObject->name == "Crocodile" || gameObject->name == "Bat" || gameObject->name == "Chicken")
+        else if (gameObject->name == "Crocodile" || gameObject->name == "Chicken")
         {
             gameObject->Update();
+        }
+    }
+
+    if (!IsSorted(_gameObjectsVec))
+    {
+        MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
+    }
+    
+    if (_batsLifetime >= 0)
+    {
+        _batsLifetime -= GetFrameTime();
+    }
+ 
+    if (!_batsVec.empty())
+    {
+        for (const auto& bat : _batsVec)
+        {
+            bat->Update();
+
+            if (_batsLifetime < 5.0f)
+            {
+                bat->Death();
+            }
         }
     }
 
@@ -106,7 +134,7 @@ void GameplayScene::LoadResources()
         itr->second.SheetSource = "resources/" + itr->second.SheetSource;
     }
 
-    _rendererMap = std::make_unique< RLTileRenderer>(_tileMap);
+    _rendererMap = std::make_unique<RLTileRenderer>(_tileMap);
 
     _animals->Start(_gameObjectsVec);
 
@@ -124,6 +152,17 @@ void GameplayScene::Draw()
 {
     _camera.BeginMode();
     _rendererMap->Draw(_camera);
+
+    if (!_batsVec.empty())
+    {
+        if (IsBatDeath())
+        {
+            for (const auto& bat : _batsVec)
+            {
+                bat->Draw();
+            }
+        }
+    }
 
     // Draw the game objects in sorted order
     for (const auto& gameObject : _gameObjectsVec)
@@ -154,6 +193,17 @@ void GameplayScene::Draw()
                 );
 
                 DrawRectangleLinesEx(_camera.GetRectangle(), 2.2f, RED);
+            }
+        }
+    }
+
+    if (!_batsVec.empty())
+    {
+        if (!IsBatDeath())
+        {
+            for (const auto& bat : _batsVec)
+            {
+                bat->Draw();
             }
         }
     }
@@ -226,6 +276,10 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
                         {
                             gameObject->isOnTriger = 1;
                         }
+                        else if (CheckCollisionRecs(_player->GetRectangle(), GetRecBottomSide(gameObject->GetRectangle())))
+                        {
+                            _player->Stop();
+                        }
                     }
                     else if (gameObject->name == "Crocodile")
                     {
@@ -235,13 +289,66 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
                             gameObject->isOnTriger = 1;
                         }
                     }
+                    else if (gameObject->name == "House")
+                    {
+                        if (CheckCollisionRecs(_player->GetRectangle(), GetRecBottomSide(gameObject->GetRectangle())))
+                        {
+                            gameObject->isOnTriger = 1;
+                        }
+                        const Rectangle houseBounds =
+                        {
+                            gameObject->GetRectangle().x,
+                            gameObject->GetRectangle().y,
+                            GetRecBottomSide(gameObject->GetRectangle()).width,
+                            gameObject->GetRectangle().height - GetRecBottomSide(gameObject->GetRectangle()).height,
+                        };
+                        if (CheckCollisionRecs(_player->GetRectangle(), houseBounds))
+                        {
+                            _player->Stop();
+                        }
+                    }
                 }
             }
         }
 
         // Sleep for a short duration to control the update rate of collision checking
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 
     return nullptr;
+}
+
+bool IsSorted(const std::vector<std::shared_ptr<GameObject>>& vec)
+{
+    for (int i = 1; i < vec.size(); i++)
+    {
+        if (vec[i]->GetZ() < vec[i - 1]->GetZ()) 
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+inline Rectangle GetRecBottomSide(const Rectangle& rec)
+{
+    float fullArea = rec.width * rec.height;
+    float bottomArea = fullArea - (fullArea * 0.85f);
+
+    float y = rec.y + ((fullArea - bottomArea) / rec.width);
+
+    return { rec.x, y, rec.width, bottomArea / rec.width };
+}
+
+std::vector<std::shared_ptr<Bat>> CreateBatsVector(unsigned n)
+{
+    std::vector<std::shared_ptr<Bat>> batsVector;
+
+    for (unsigned i = 0; i < n; i++)
+    {
+        batsVector.push_back(std::make_shared<Bat>());
+    }
+
+    return batsVector;
 }
