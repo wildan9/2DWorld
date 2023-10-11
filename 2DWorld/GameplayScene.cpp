@@ -84,7 +84,7 @@ void GameplayScene::Update()
         {
             bat->Update();
 
-            if (_batsLifetime < 5.0f)
+            if (_batsLifetime < 0)
             {
                 bat->Death();
             }
