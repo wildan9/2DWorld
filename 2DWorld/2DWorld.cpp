@@ -93,6 +93,10 @@ void Engine::Render()
 
     DrawVolumeBar();
 
+#ifdef _DEBUG
+    DrawFPS(0, 0);
+#endif
+
     EndDrawing();
 }
 

@@ -26,10 +26,10 @@
 
 #include "GameplayScene.h"
 
-bool isDebug = 0, worldCollision = 1;
+bool showGrid = 0, worldCollision = 1;
 
 Rectangle GetRecBottomSide(const Rectangle& rec);
-std::vector<std::shared_ptr<Bat>> CreateBatsVector(unsigned n);
+std::vector<std::shared_ptr<Bat>> CreateBatsVec(unsigned n);
 bool IsSorted(const std::vector<std::shared_ptr<GameObject>>& vec);
 void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right);
 void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int right);
@@ -42,7 +42,7 @@ void GameplayScene::Start()
 
     MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
 
-    _batsVec = CreateBatsVector(5);
+    _batsVec = CreateBatsVec(5);
 }
 
 void GameplayScene::Update()
@@ -80,8 +80,13 @@ void GameplayScene::Update()
  
     if (!_batsVec.empty())
     {
-        for (const auto& bat : _batsVec)
+        for (auto& bat : _batsVec)
         {
+            bat->isInView = 0;
+            if (CheckCollisionRecs(_camera.GetRectangle(), bat->GetRectangle()))
+            {
+                bat->isInView = 1;
+            }
             bat->Update();
 
             if (_batsLifetime < 0)
@@ -94,7 +99,7 @@ void GameplayScene::Update()
     // Our debug button
     if (IsKeyPressed(KEY_H))
     {
-        isDebug = !isDebug;
+        showGrid = !showGrid;
     }
 }
 
@@ -159,7 +164,10 @@ void GameplayScene::Draw()
         {
             for (const auto& bat : _batsVec)
             {
-                bat->Draw();
+                if (bat->isInView)
+                {
+                    bat->Draw();
+                }
             }
         }
     }
@@ -171,7 +179,7 @@ void GameplayScene::Draw()
         {
             gameObject->Draw();
 
-            if (isDebug)
+            if (showGrid)
             {
                 _rendererMap->DrawGrid(_player->GetRectangle());
                 DrawRectangleLinesEx(gameObject->GetRectangle(), 1.2f, GREEN);
@@ -203,14 +211,15 @@ void GameplayScene::Draw()
         {
             for (const auto& bat : _batsVec)
             {
-                bat->Draw();
+                if (bat->isInView)
+                {
+                    bat->Draw();
+                }
             }
         }
     }
 
     _camera.EndMode();
-
-    DrawFPS(0, 0);
 }
 
 void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right)
@@ -341,14 +350,14 @@ inline Rectangle GetRecBottomSide(const Rectangle& rec)
     return { rec.x, y, rec.width, bottomArea / rec.width };
 }
 
-std::vector<std::shared_ptr<Bat>> CreateBatsVector(unsigned n)
+std::vector<std::shared_ptr<Bat>> CreateBatsVec(unsigned n)
 {
-    std::vector<std::shared_ptr<Bat>> batsVector;
+    std::vector<std::shared_ptr<Bat>> batsVec;
 
     for (unsigned i = 0; i < n; i++)
     {
-        batsVector.push_back(std::make_shared<Bat>());
+        batsVec.push_back(std::make_shared<Bat>());
     }
 
-    return batsVector;
+    return batsVec;
 }

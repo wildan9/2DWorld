@@ -62,7 +62,7 @@ public:
 		_position.y = position.y; 
 	}
 
-	Rectangle GetRectangle() const
+	inline Rectangle GetRectangle() const
 	{
 		return _rectangle;
 	}
