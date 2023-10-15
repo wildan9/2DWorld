@@ -40,7 +40,13 @@ void Bat::Update()
 
 	if (_isDeath && _fallTimer >= 0) _fallTimer -= GetFrameTime();
 
-	if (_fallTimer < 0) _animate = 0;
+	if (_fallTimer < 0)
+	{
+		if (GetCurrentFrame() == _numFrames - 1)
+		{
+			_animate = 0;
+		}
+	}
 
 	isBatDeath = _isDeath;
 

@@ -90,6 +90,11 @@ public:
 
 protected:
 	void Animate(float frameSpeed, float numFrames, float size, const bool animate = 1);
+	
+	inline int GetCurrentFrame()
+	{
+		return _currentFrame;
+	}
 
 protected:
 	Rectangle _source = { 0, 0, 0, 0 };
