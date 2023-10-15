@@ -89,9 +89,16 @@ void GameplayScene::Update()
             }
             bat->Update();
 
-            if (_batsLifetime < 0)
+            if (_batsLifetime < 0 && !bat->IsDead() && !bat->healed)
             {
                 bat->Death();
+            }
+            if (_batsLifetime < 0 && bat->IsDead())
+            {
+                if (bat->isOnTriger == 1)
+                {
+                    bat->Heal();
+                }
             }
         }
     }
@@ -160,7 +167,7 @@ void GameplayScene::Draw()
 
     if (!_batsVec.empty())
     {
-        if (IsBatDeath())
+        if (IsBatDead())
         {
             for (const auto& bat : _batsVec)
             {
@@ -207,7 +214,7 @@ void GameplayScene::Draw()
 
     if (!_batsVec.empty())
     {
-        if (!IsBatDeath())
+        if (!IsBatDead())
         {
             for (const auto& bat : _batsVec)
             {
@@ -315,6 +322,18 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
                         {
                             _player->Stop();
                         }
+                    }
+                }
+            }
+
+            for (auto& bat : _batsVec)
+            {
+                if (bat->isInView)
+                {
+                    bat->isOnTriger = 0;
+                    if (CheckCollisionRecs(_player->GetRectangle(), bat->GetRectangle()) && IsKeyDown(KEY_ENTER))
+                    {
+                        bat->isOnTriger = 1;
                     }
                 }
             }

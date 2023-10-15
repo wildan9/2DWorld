@@ -31,7 +31,7 @@
 
 #include "GameObject.h"
 
-bool IsBatDeath();
+bool IsBatDead();
 
 class Bat : public GameObject
 {
@@ -59,18 +59,36 @@ public:
 
 	void Update() override;
 
+	void Heal()
+	{
+		_speed  = { 1.5f, 1.0f };
+		_isDead = 0;
+		_numFrames  = 6;
+		_frameSpeed = 10;
+		_facing *= -1;
+		
+		healed = 1;
+	}
+
 	void Death()
 	{
-		_speed = { 0.0f, 0.0f };
-		_isDeath = 1;
-		_numFrames = 5;
+		_speed  = { 0.0f, 0.0f };
+		_isDead = 1;
+		_numFrames  = 5;
 		_frameSpeed = 6;
 	}
+
+	bool IsDead() const
+	{
+		return _isDead;
+	}
+
+	bool healed = 0;
 
 private:
 	Vector2 _speed;
 	float _flyRadius;
-	bool _isDeath = 0;
+	bool _isDead = 0;
 	bool _animate = 1;
 	float _numFrames = 6;
 	float _frameSpeed = 10;

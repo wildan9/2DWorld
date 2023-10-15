@@ -26,11 +26,11 @@
 
 #include "Animal.h"
 
-bool isBatDeath = 0;
+bool isBatDead = 0;
 
 void Bat::Update()
 {
-	if (_isDeath) _pCurrentTexture = &_textures[1];
+	if (_isDead) _pCurrentTexture = &_textures[1];
 	else _pCurrentTexture = &_textures[0];
 
 	_rectangle = { _position.x, _position.y, 28.0f, 28.0f };
@@ -38,17 +38,21 @@ void Bat::Update()
 	_position.x += _speed.x;
 	_position.y += _speed.y;
 
-	if (_isDeath && _fallTimer >= 0) _fallTimer -= GetFrameTime();
+	if (_isDead && _fallTimer >= 0) _fallTimer -= GetFrameTime();
 
-	if (_fallTimer < 0)
+	if (_fallTimer < 0 && !healed)
 	{
 		if (GetCurrentFrame() == _numFrames - 1)
 		{
 			_animate = 0;
 		}
 	}
+	else if (healed)
+	{
+		_animate = 1;
+	}
 
-	isBatDeath = _isDeath;
+	isBatDead = _isDead;
 
 	if (_position.x >= _flyRadius || _position.x <= 0)
 	{
@@ -60,7 +64,7 @@ void Bat::Update()
 	Animate(_frameSpeed, _numFrames, 2.0f, _animate);
 }
 
-bool IsBatDeath()
+bool IsBatDead()
 {
-	return isBatDeath;
+	return isBatDead;
 }
