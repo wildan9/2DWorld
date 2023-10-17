@@ -84,16 +84,54 @@ protected:
 
         _position = { 1340.0f, 170.0f, 3.0f };
 
-        _rectangle = { _position.x, _position.y, 90.0f, 135.0f };
+        _rectangle = { _position.x, _position.y, 90.0f, 140.0f };
 
         name = "House";
     }
 
     void Update() override
     {
-        _rectangle = { _position.x + 10.0f, _position.y + 40.0f, 90.0f, 135.0f };
+        _rectangle = { _position.x + 10.0f, _position.y + 40.0f, 90.0f, 140.0f };
 
         Animate(1, 1, 0.8f, 0);
+
+        if (isOnTriger) _position.z = 1.0f;
+        else _position.z = 3.0f;
+    }
+};
+
+class Ark : public GameObject
+{
+public:
+    Ark()
+    {
+        Start();
+    }
+
+    ~Ark()
+    {
+        _textures.Clear();
+    }
+
+protected:
+    void Start() override
+    {
+        _textures.LoadTextureFile("resources/textures/ark/ark.png");
+
+        _pCurrentTexture = &_textures[0];
+
+        _position = { -10.0f, 900.0f, 3.0f };
+
+        _rectangle = { _position.x, _position.y, 440.0f, 200.0f };
+
+        name = "Ark";
+    }
+
+    void Update() override
+    {
+        _rectangle = { _position.x, _position.y + 30.0f, 440.0f, 200.0f };
+
+        Animate(1, 1, 0.4f, 0);
 
         if (isOnTriger) _position.z = 1.0f;
         else _position.z = 3.0f;

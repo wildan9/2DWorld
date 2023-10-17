@@ -26,7 +26,8 @@
 
 #include "GameplayScene.h"
 
-bool showGrid = 0, worldCollision = 1;
+bool showGrid = 0, worldCollision = 1, createBats = 0;
+float batsCleaner = 20.0f;
 
 Rectangle GetRecBottomSide(const Rectangle& rec);
 std::vector<std::shared_ptr<Bat>> CreateBatsVec(unsigned n);
@@ -41,8 +42,6 @@ void GameplayScene::Start()
     _rendererMap->Setup();
 
     MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
-
-    _batsVec = CreateBatsVec(5);
 }
 
 void GameplayScene::Update()
@@ -103,6 +102,24 @@ void GameplayScene::Update()
         }
     }
 
+    if (createBats == 1)
+    {
+        _batsVec = CreateBatsVec(5);
+    }
+
+    if (batsCleaner >= 0 && _batsLifetime < 0.0f)
+    {
+        batsCleaner -= GetFrameTime();
+    }
+
+    if (!_batsVec.empty() && batsCleaner < 0)
+    {
+        _batsVec.clear();
+
+        batsCleaner   = 20.0f;
+        _batsLifetime = 20.0f;
+    }
+
     // Our debug button
     if (IsKeyPressed(KEY_H))
     {
@@ -120,6 +137,8 @@ void GameplayScene::LoadResources()
     auto house3 = std::make_shared<House>();
     auto house4 = std::make_shared<House>();
 
+    auto ark = std::make_shared<Ark>();
+
     _gameObjectsVec =
     {
         // Player
@@ -134,7 +153,10 @@ void GameplayScene::LoadResources()
         house1,
         house2,
         house3,
-        house4
+        house4,
+
+        // Ark
+        ark
 
         // TODO: Add NPC?
     };
@@ -321,6 +343,33 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
                         if (CheckCollisionRecs(_player->GetRectangle(), houseBounds))
                         {
                             _player->Stop();
+                        }
+                    }
+                    else if (gameObject->name == "Ark")
+                    {
+                        if (CheckCollisionRecs(_player->GetRectangle(), GetRecBottomSide(gameObject->GetRectangle())))
+                        {
+                            gameObject->isOnTriger = 1;
+                        }
+                        const Rectangle arkBounds =
+                        {
+                            gameObject->GetRectangle().x,
+                            gameObject->GetRectangle().y,
+                            GetRecBottomSide(gameObject->GetRectangle()).width - 10.0f,
+                            gameObject->GetRectangle().height - GetRecBottomSide(gameObject->GetRectangle()).height,
+                        };
+                        if (CheckCollisionRecs(_player->GetRectangle(), arkBounds))
+                        {
+                            _player->Stop();
+                        }
+                        
+                        createBats = 0;
+                        if (_batsVec.empty())
+                        {
+                            if (CheckCollisionRecs(_player->GetRectangle(), gameObject->GetRectangle()) && _player->IsPunch())
+                            {
+                                createBats = 1;
+                            }
                         }
                     }
                 }

@@ -46,39 +46,15 @@ public:
 		_textures.Clear();
 	}
 
-	void Start() override
-	{
-		name = "Bat";
-
-		_position = { (float)GetRandomValue(500, 950), (float)GetRandomValue(50, 155), -1.0f };
-		_facing = 1.0f;
-
-		_textures.LoadTextureFile("resources/textures/animals/bat/fly.png");
-		_textures.LoadTextureFile("resources/textures/animals/bat/death.png");
-	}
+	void Start() override;
 
 	void Update() override;
 
-	void Heal()
-	{
-		_speed  = { 1.5f, 1.0f };
-		_isDead = 0;
-		_numFrames  = 6;
-		_frameSpeed = 10;
-		_facing *= -1;
-		
-		healed = 1;
-	}
+	void Heal();
 
-	void Death()
-	{
-		_speed  = { 0.0f, 0.0f };
-		_isDead = 1;
-		_numFrames  = 5;
-		_frameSpeed = 6;
-	}
+	void Death();
 
-	bool IsDead() const
+	inline bool IsDead() const
 	{
 		return _isDead;
 	}
@@ -109,74 +85,9 @@ public:
 	}
 
 protected:
-	void Start() override
-	{
-		name = "Chicken";
+	void Start() override;
 
-		_facing = -1.0f;
-		_animate = 0;
-		_position.z = 0.0f;
-		_rotation = 0.0f;
-
-		_textures.LoadTextureFile("resources/textures/animals/chicken/walk.png");
-
-		_pCurrentTexture = &_textures[0];
-
-		_rectangle = { _position.x, _position.y, 35.0f, 35.0f };
-	}
-
-	void Update() override
-	{
-		Animate(12, 7, 1.0f, _animate);
-
-		int x = 1, y = 0;
-
-		if (_position.x == 545.0f)
-		{
-			x = 0;
-			y = 1;
-		}
-		if (_position.y == 372.0f)
-		{
-			x = 2;
-			y = 0;
-		}
-		if (_position.x < 0.0f)
-		{
-			x = 1;
-			y = 2;
-		}
-
-		switch (x)
-		{
-		case 1:
-			_position.x += _speed;
-			_facing = -1.0f;
-			break;
-		case 2:
-			_position.x -= _speed;
-			_facing = 1.0f;
-			break;
-		default:
-			break;
-		}
-
-		switch (y)
-		{
-		case 1:
-			_position.y += _speed;
-			break;
-		case 2:
-			_position.y -= _speed;
-			break;
-		default:
-			break;
-		}
-
-		if (_position.y != 0.0f) _animate = 1;
-
-		_rectangle = { _position.x, _position.y, 35.0f, 35.0f };
-	}
+	void Update() override;
 
 private:
 	bool _animate;
@@ -197,75 +108,14 @@ public:
 		UnloadSound(_gettingPunched);
 	}
 
-	void Walk()
-	{
-		_textures[0] = _textures[1];
+	void Walk();
 
-		_isWalk = 1;
-		_rotation = 0.0f;
-		_numFrames = 12.0f;
-	}
-
-	void Hurt()
-	{
-		_numFrames = 1.0f;
-		_textures[0] = _textures[2];
-		_isWalk = 0;
-
-		_rotation = (_speed < 0.0f) ? 10.0f : 355.0f;
-
-		_timer += GetFrameTime();
-		if (_timer >= _updateTime)
-		{
-			_timer = -0.32f;
-			PlaySound(_gettingPunched);
-		}
-	}
+	void Hurt();
 
 public:
-	void Start() override
-	{
-		_facing = 1.0f;
-		_speed = 1.0f;
-		_position.z = 1.0f;
+	void Start() override;
 
-		_numFrames = 0;
-		_timer = 0;
-		_rotation = 0;
-		_isWalk = 0;
-
-		_gettingPunched = LoadSound("resources/sounds/getting_punched.wav");
-
-		_textures.push_back(Texture2D());
-		_textures.LoadTextureFile("resources/textures/animals/crocodile/walk.png");
-		_textures.LoadTextureFile("resources/textures/animals/crocodile/hurt.png");
-
-		_pCurrentTexture = &_textures[0];
-
-		name = "Crocodile";
-	}
-
-	void Update() override
-	{
-		if (_isWalk)
-		{
-			_position.x += _speed;
-
-			if (_position.x >= 1400.0f || _position.x <= 0)
-			{
-				_speed *= -1.0f;
-				_facing *= -1.0f;
-			}
-		}
-
-		_rectangle = {
-			_position.x + 4.0f, _position.y + 15.0f,
-			1.2f * (float)_pCurrentTexture->width / _numFrames,
-			1.2f * (float)_pCurrentTexture->height
-		};
-
-		Animate(12, _numFrames, 1.8f);
-	}
+	void Update() override;
 
 private:
 	float _speed;
@@ -291,35 +141,9 @@ public:
 	}
 
 protected:
-	void Start() override
-	{
-		name = "Rhino";
+	void Start() override;
 
-		_textures.LoadTextureFile("resources/textures/animals/rhino/idle.png");
-		_textures.LoadTextureFile("resources/textures/animals/rhino/walk.png");
-
-		_position = { 220.0f, 500.0f, 3.0f };
-
-		_rectangle = { _position.x, _position.y, 100.0f, 70.0f };
-	}
-
-	void Update() override
-	{
-		if (isOnTriger)
-		{
-			_numFrames = 6;
-			_pCurrentTexture = &_textures[1];
-		}
-		else
-		{
-			_numFrames = 8;
-			_pCurrentTexture = &_textures[0];
-		}
-
-		_rectangle = { _position.x, _position.y, 100.0f, 70.0f };
-
-		Animate(10, _numFrames, 2.0f);
-	}
+	void Update() override;
 
 private:
 	float _numFrames = 8;
@@ -339,24 +163,9 @@ public:
 	}
 
 protected:
-	void Start() override
-	{
-		name = "Horse";
+	void Start() override;
 
-		_textures.LoadTextureFile("resources/textures/animals/horse/idle.png");
-
-		_position = { 240.0f, 400.0f, 3.0f };
-		_facing = 1.0f;
-
-		_pCurrentTexture = &_textures[0];
-
-		_rectangle = { _position.x, _position.y, 80.0f, 60.0f };
-	}
-
-	void Update() override
-	{
-		Animate(6, 13, 1.5f);
-	}
+	void Update() override;
 };
 
 //class Cat : public GameObject
@@ -399,45 +208,14 @@ struct Animals
 {
 	Animals()
 	{
-		horse = std::make_shared<Horse>();
-		chicken = std::make_shared<Chicken>();
+		horse     = std::make_shared<Horse>();
+		chicken   = std::make_shared<Chicken>();
 		crocodile = std::make_shared<Crocodile>();
 	}
 
-	void Start(std::vector<std::shared_ptr<GameObject>>& gameObjectsVec)
-	{
-		for (auto& rhino : rhinos) rhino = std::make_shared<Rhino>();
+	void Start(std::vector<std::shared_ptr<GameObject>>& gameObjectsVec);
 
-		rhinos[0]->SetPosition({ 24.0f,  105.0f });
-		rhinos[1]->SetPosition({ 168.0f, 143.0f });
-		rhinos[2]->SetPosition({ 67.0f,  263.0f });
-
-		rhinos[1]->SetFacing(rhinos[1]->GetFacing() * -1.0f);
-
-		for (auto& rhino : rhinos)
-		{
-			gameObjectsVec.push_back(rhino);
-		}
-	}
-
-	void Update(const float playerSpeed, Vector2 playerDirection, const float playerFacing)
-	{
-		for (auto& rhino : rhinos)
-		{
-			if (rhino->isOnTriger)
-			{
-				// Check if playerDirection is not zero before using it
-				if (Vector2Length(playerDirection) > 0.0f)
-				{
-					rhino->SetPosition(rhino->GetPosition() - Vector2Scale(Vector2Normalize(playerDirection), playerSpeed));
-					rhino->SetFacing(playerFacing * -1.0f);
-				}
-			}
-		}
-
-		if (crocodile->isOnTriger) crocodile->Hurt();
-		else crocodile->Walk();
-	}
+	void Update(const float playerSpeed, Vector2 playerDirection, const float playerFacing);
 
 	std::shared_ptr<Horse> horse;
 	std::shared_ptr<Chicken> chicken;

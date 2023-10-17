@@ -54,7 +54,7 @@ public:
 private:
 	RLTileMap _tileMap  = {};
 	RLCamera2D _camera  = {};
-	float _batsLifetime = 15.0f;
+	float _batsLifetime = 20.0f;
 	std::mutex _collisionMutex = {};
 	std::shared_ptr<Player>  _player  = {};
 	std::shared_ptr<Animals> _animals = {};
