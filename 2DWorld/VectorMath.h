@@ -42,6 +42,18 @@ inline Vector2 operator -(const Vector2& a, const Vector2& b)
 	return { a.x - b.x, a.y - b.y };
 }
 
+// Addition operator for Vector3
+inline Vector3 operator +(const Vector3& a, const Vector3& b)
+{
+	return { a.x + b.x, a.y + b.y, a.z + b.z };
+}
+
+// Subtraction operator for Vector3
+inline Vector3 operator -(const Vector3& a, const Vector3& b)
+{
+	return { a.x - b.x, a.y - b.y, a.z - b.z };
+}
+
 // Convert a Vector2 to a string
 inline std::string Vector2ToString(const Vector2& v)
 {
@@ -80,4 +92,16 @@ inline float Vector2Distance(const Vector2& p1, const Vector2& p2)
 	float dy = p2.y - p1.y;
 
 	return std::sqrt(dx * dx + dy * dy);
+}
+
+// Convert a Vector2 to a Vector3 by setting the z component to 0.
+inline Vector3 Vector2ToVector3(const Vector2& v)
+{
+	return { v.x, v.y, 0.0f };
+}
+
+// Convert a Vector3 to a Vector2
+inline Vector2 Vector3ToVector2(const Vector3& v)
+{
+	return { v.x, v.y };
 }

@@ -153,15 +153,13 @@ void Player::Update()
 	}
 #endif
 
-	_lastPosition.x = _position.x;
-	_lastPosition.y = _position.y;
+	_lastPosition = Vector3ToVector2(_position);
 
 	if (Vector2Length(GetDirection()) != 0)
 	{
 		_isWalk = 1;
 
-		_position.x = _position.x - Vector2Scale(Vector2Normalize(GetDirection()), GetSpeed()).x;
-		_position.y = _position.y - Vector2Scale(Vector2Normalize(GetDirection()), GetSpeed()).y;
+		_position = _position - Vector2ToVector3(Vector2Scale(Vector2Normalize(GetDirection()), GetSpeed()));
 
 		_textures[0] = (_isOnHorse) ? _textures[5] : _textures[3];
 
