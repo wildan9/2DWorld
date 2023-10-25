@@ -132,7 +132,7 @@ void RLTileRenderer::Draw(const RLCamera2D& camera)
             if (tile.SourceTexture != nullptr && TileInView(tile))
             {
                 Vector2 origin = { layer.second.TileSize.x * 0.5f, layer.second.TileSize.y * 0.5f };
-                Rectangle dest = { tile.DestinationPos.x + origin.x,tile.DestinationPos.y + origin.y, layer.second.TileSize.x, layer.second.TileSize.y };
+                Rectangle dest = { tile.DestinationPos.x + origin.x, tile.DestinationPos.y + origin.y, layer.second.TileSize.x, layer.second.TileSize.y };
                
                 // Draw a part of a texture defined by a rectangle with 'pro' parameters
                 DrawTexturePro(*tile.SourceTexture, tile.SourceRect, dest, origin, tile.Rotate ? 90.0f : 0.0f, WHITE); 
@@ -150,9 +150,9 @@ void RLTileRenderer::DrawGrid(const Rectangle& playerRec)
             if (tile.SourceTexture != nullptr && TileInView(tile))
             {
                 Vector2 origin = { layer.second.TileSize.x * 0.5f, layer.second.TileSize.y * 0.5f };
-                Rectangle mapRec = { tile.DestinationPos.x + origin.x,tile.DestinationPos.y + origin.y, layer.second.TileSize.x, layer.second.TileSize.y };
+                Rectangle mapRec = { tile.DestinationPos.x + origin.x, tile.DestinationPos.y + origin.y, layer.second.TileSize.x, layer.second.TileSize.y };
 
-                DrawRectangleLinesEx(mapRec, 1.0f, CheckCollisionRecs(playerRec, mapRec) ? RED : WHITE);
+                DrawRectangleLinesEx(mapRec, 0.5f, CheckCollisionRecs(playerRec, mapRec) ? RED : WHITE);
             }
         }
     }

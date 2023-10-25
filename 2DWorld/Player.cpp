@@ -199,9 +199,11 @@ void Player::Update()
 
 	const bool animate = (_isOnHorse && IsKeyDown(KEY_LEFT_CONTROL)) ? 0 : 1;
 
+	_scale = playerSize;
+
 	_rotation = (!animate) ? ((Vector2Length(GetDirection()) != 0) ? ((GetFacing() != -1.0f) ? ((GetSpeed() > 5) ? -45.0f : -25.0f) : (GetSpeed() > 5) ? 45.0f : 25.0f) : 0.0f) : 0.0f;
 
-	Animate(FrameSpeed(), NumFrames(), playerSize, animate);
+	Animate(FrameSpeed(), NumFrames(), animate);
 }
 
 // ---------------- Private Functions ------------------------------------------

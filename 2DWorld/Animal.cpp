@@ -37,6 +37,8 @@ void Bat::Start()
 
 	_textures.LoadTextureFile("resources/textures/animals/bat/fly.png");
 	_textures.LoadTextureFile("resources/textures/animals/bat/death.png");
+
+	_scale = 2.0f;
 }
 
 void Bat::Update()
@@ -73,7 +75,7 @@ void Bat::Update()
 	}
 	if (_position.y >= _flyRadius || _position.y <= 0) _speed.y *= -1.0f;
 
-	Animate(_frameSpeed, _numFrames, 2.0f, _animate);
+	Animate(_frameSpeed, _numFrames, _animate);
 }
 
 void Bat::Heal()
@@ -118,7 +120,7 @@ void Chicken::Start()
 
 void Chicken::Update()
 {
-	Animate(12, 7, 1.0f, _animate);
+	Animate(12, 7, _animate);
 
 	int x = 1, y = 0;
 
@@ -214,6 +216,8 @@ void Crocodile::Start()
 	_pCurrentTexture = &_textures[0];
 
 	name = "Crocodile";
+
+	_scale = 1.8f;
 }
 
 void Crocodile::Update()
@@ -235,7 +239,7 @@ void Crocodile::Update()
 		1.2f * (float)_pCurrentTexture->height
 	};
 
-	Animate(12, _numFrames, 1.8f);
+	Animate(12, _numFrames);
 }
 
 void Rhino::Start()
@@ -248,6 +252,8 @@ void Rhino::Start()
 	_position = { 220.0f, 500.0f, 3.0f };
 
 	_rectangle = { _position.x, _position.y, 100.0f, 70.0f };
+
+	_scale = 2.0f;
 }
 
 void Rhino::Update()
@@ -265,7 +271,7 @@ void Rhino::Update()
 
 	_rectangle = { _position.x, _position.y, 100.0f, 70.0f };
 
-	Animate(10, _numFrames, 2.0f);
+	Animate(10, _numFrames);
 }
 
 void Horse::Start()
@@ -280,11 +286,13 @@ void Horse::Start()
 	_pCurrentTexture = &_textures[0];
 
 	_rectangle = { _position.x, _position.y, 80.0f, 60.0f };
+	
+	_scale = 1.8f;
 }
 
 void Horse::Update()
 {
-	Animate(6, 13, 1.5f);
+	Animate(6, 13);
 }
 
 void Animals::Start(std::vector<std::shared_ptr<GameObject>>& gameObjectsVec)

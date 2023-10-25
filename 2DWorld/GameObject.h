@@ -89,7 +89,7 @@ public:
 	virtual void Update() = 0;
 
 protected:
-	void Animate(float frameSpeed, float numFrames, float size, const bool animate = 1);
+	void Animate(float frameSpeed, float numFrames, const bool animate = 1);
 	
 	inline int GetCurrentFrame()
 	{
@@ -108,6 +108,7 @@ protected:
 
 	float _rotation = 0.0f;
 	float _facing	= 1.0f;
+	float _scale    = 1.0f;
 
 private:
 	int _currentFrame = 0;

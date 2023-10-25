@@ -87,13 +87,15 @@ protected:
         _rectangle = { _position.x, _position.y, 90.0f, 140.0f };
 
         name = "House";
+
+        _scale = 0.8f;
     }
 
     void Update() override
     {
         _rectangle = { _position.x + 10.0f, _position.y + 40.0f, 90.0f, 140.0f };
 
-        Animate(1, 1, 0.8f, 0);
+        Animate(1, 1, 0);
 
         if (isOnTriger) _position.z = 1.0f;
         else _position.z = 3.0f;
@@ -125,13 +127,15 @@ protected:
         _rectangle = { _position.x, _position.y, 440.0f, 200.0f };
 
         name = "Ark";
+
+        _scale = 0.4f;
     }
 
     void Update() override
     {
         _rectangle = { _position.x, _position.y + 30.0f, 440.0f, 200.0f };
 
-        Animate(1, 1, 0.4f, 0);
+        Animate(1, 1, 0);
 
         if (isOnTriger) _position.z = 1.0f;
         else _position.z = 3.0f;

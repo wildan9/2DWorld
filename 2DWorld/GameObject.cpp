@@ -30,7 +30,7 @@ GameObject::GameObject() = default;
 
 GameObject::~GameObject() = default;
 
-void GameObject::Animate(float frameSpeed, float numFrames, float size, const bool animate)
+void GameObject::Animate(float frameSpeed, float numFrames, const bool animate)
 {
     assert(_pCurrentTexture != nullptr);
 
@@ -42,8 +42,8 @@ void GameObject::Animate(float frameSpeed, float numFrames, float size, const bo
 
     _dest = {
         _position.x, _position.y,
-        size * (float)_pCurrentTexture->width / numFrames,
-        size * (float)_pCurrentTexture->height
+        _scale * (float)_pCurrentTexture->width / numFrames,
+        _scale * (float)_pCurrentTexture->height
     };
 
     if (animate)
