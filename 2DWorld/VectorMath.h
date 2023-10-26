@@ -94,7 +94,7 @@ inline float Vector2Distance(const Vector2& p1, const Vector2& p2)
 	return std::sqrt(dx * dx + dy * dy);
 }
 
-// Convert a Vector2 to a Vector3 by setting the z component to 0.
+// Convert a Vector2 to a Vector3 by setting the z component to 0.0f
 inline Vector3 Vector2ToVector3(const Vector2& v)
 {
 	return { v.x, v.y, 0.0f };
@@ -104,4 +104,14 @@ inline Vector3 Vector2ToVector3(const Vector2& v)
 inline Vector2 Vector3ToVector2(const Vector3& v)
 {
 	return { v.x, v.y };
+}
+
+// Perform linear interpolation between two Vector2 points
+inline Vector2 Vector2Lerp(Vector2 start, Vector2 end, float alpha) 
+{
+	Vector2 result;
+	result.x = start.x + alpha * (end.x - start.x);
+	result.y = start.y + alpha * (end.y - start.y);
+
+	return result;
 }
