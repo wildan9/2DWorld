@@ -35,13 +35,13 @@ public:
     
     void Update(const Vector2& playerPos, const Rectangle& mapRec, int screenWidth, int screenHeight, bool scrollable);
 
-    inline ::Camera2D& RLCamera2D::BeginMode()
+    inline ::Camera2D& BeginMode()
     {
         ::BeginMode2D(*this);
         return (*this);
     }
 
-    inline ::Camera2D& RLCamera2D::EndMode()
+    inline ::Camera2D& EndMode()
     {
         ::EndMode2D();
         return (*this);

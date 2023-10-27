@@ -102,11 +102,6 @@ void GameplayScene::Update()
         }
     }
 
-    if (createBats == 1)
-    {
-        _batsVec = CreateBatsVec(5);
-    }
-
     if (batsCleaner >= 0 && _batsLifetime < 0.0f)
     {
         batsCleaner -= GetFrameTime();
@@ -118,6 +113,11 @@ void GameplayScene::Update()
 
         batsCleaner   = 20.0f;
         _batsLifetime = 20.0f;
+    }
+
+    if (createBats && _batsVec.empty())
+    {
+        _batsVec = CreateBatsVec(5);
     }
 
     // Our debug button
@@ -389,7 +389,7 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
         }
 
         // Sleep for a short duration to control the update rate of collision checking
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        std::this_thread::sleep_for(std::chrono::milliseconds(12));
     }
 
     return nullptr;
