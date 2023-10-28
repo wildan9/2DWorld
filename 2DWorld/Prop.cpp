@@ -97,7 +97,7 @@ protected:
 
         Animate(1, 1, 0);
 
-        if (isOnTriger) _position.z = 1.0f;
+        if (isOnTrigger) _position.z = 1.0f;
         else _position.z = 3.0f;
     }
 };
@@ -137,7 +137,7 @@ protected:
 
         Animate(1, 1, 0);
 
-        if (isOnTriger) _position.z = 1.0f;
+        if (isOnTrigger) _position.z = 1.0f;
         else _position.z = 3.0f;
     }
 };

@@ -43,7 +43,7 @@ public:
 	int id = 0;
 	std::string name = "";
 	bool isInView    = 0;
-	bool isOnTriger  = 0;
+	bool isOnTrigger = 0;
 
 public:
 	inline Vector2 GetPosition() const

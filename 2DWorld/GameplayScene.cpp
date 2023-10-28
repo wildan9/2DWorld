@@ -94,7 +94,7 @@ void GameplayScene::Update()
             }
             if (_batsLifetime < 0 && bat->IsDead())
             {
-                if (bat->isOnTriger == 1)
+                if (bat->isOnTrigger)
                 {
                     bat->Heal();
                 }
@@ -306,13 +306,13 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
             {
                 if (gameObject->isInView)
                 {
-                    gameObject->isOnTriger = 0;
+                    gameObject->isOnTrigger = 0;
                     if (gameObject->name == "Rhino")
                     {
                         if (CheckCollisionRecs(_player->GetRectangle(), gameObject->GetRectangle()) &&
                             IsKeyDown(KEY_ENTER) && Vector2Length(_player->GetDirection()) > 0.0f)
                         {
-                            gameObject->isOnTriger = 1;
+                            gameObject->isOnTrigger = 1;
                         }
                         else if (CheckCollisionRecs(_player->GetRectangle(), GetRecBottomSide(gameObject->GetRectangle())))
                         {
@@ -324,14 +324,14 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
                         if (CheckCollisionRecs(_player->GetRectangle(), gameObject->GetRectangle()) &&
                             _player->IsPunch() && OnTouch(*_player, gameObject->GetPosition().x))
                         {
-                            gameObject->isOnTriger = 1;
+                            gameObject->isOnTrigger = 1;
                         }
                     }
                     else if (gameObject->name == "House")
                     {
                         if (CheckCollisionRecs(_player->GetRectangle(), GetRecBottomSide(gameObject->GetRectangle())))
                         {
-                            gameObject->isOnTriger = 1;
+                            gameObject->isOnTrigger = 1;
                         }
                         const Rectangle houseBounds =
                         {
@@ -349,7 +349,7 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
                     {
                         if (CheckCollisionRecs(_player->GetRectangle(), GetRecBottomSide(gameObject->GetRectangle())))
                         {
-                            gameObject->isOnTriger = 1;
+                            gameObject->isOnTrigger = 1;
                         }
                         const Rectangle arkBounds =
                         {
@@ -379,10 +379,10 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
             {
                 if (bat->isInView)
                 {
-                    bat->isOnTriger = 0;
+                    bat->isOnTrigger = 0;
                     if (CheckCollisionRecs(_player->GetRectangle(), bat->GetRectangle()) && IsKeyDown(KEY_ENTER))
                     {
-                        bat->isOnTriger = 1;
+                        bat->isOnTrigger = 1;
                     }
                 }
             }

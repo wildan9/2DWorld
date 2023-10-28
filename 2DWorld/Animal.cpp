@@ -258,7 +258,7 @@ void Rhino::Start()
 
 void Rhino::Update()
 {
-	if (isOnTriger)
+	if (isOnTrigger)
 	{
 		_numFrames = 6;
 		_pCurrentTexture = &_textures[1];
@@ -315,7 +315,7 @@ void Animals::Update(const float playerSpeed, Vector2 playerDirection, const flo
 {
 	for (auto& rhino : rhinos)
 	{
-		if (rhino->isOnTriger)
+		if (rhino->isOnTrigger)
 		{
 			// Check if playerDirection is not zero before using it
 			if (Vector2Length(playerDirection) > 0.0f)
@@ -326,6 +326,6 @@ void Animals::Update(const float playerSpeed, Vector2 playerDirection, const flo
 		}
 	}
 
-	if (crocodile->isOnTriger) crocodile->Hurt();
+	if (crocodile->isOnTrigger) crocodile->Hurt();
 	else crocodile->Walk();
 }
