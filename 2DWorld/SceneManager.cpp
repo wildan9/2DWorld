@@ -36,7 +36,7 @@ void SetActiveScene(std::shared_ptr<Scene> scene)
 	currentScene->Start();
 }
 
-std::shared_ptr<Scene> GetCurrentScene()
+const std::shared_ptr<Scene> GetCurrentScene()
 {
 	return currentScene;
 }

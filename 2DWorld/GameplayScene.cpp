@@ -29,6 +29,8 @@
 bool showGrid = 0, worldCollision = 1, createBats = 0;
 float batsCleaner = 20.0f;
 
+Rectangle mapRec = {};
+
 Rectangle GetRecBottomSide(const Rectangle& rec);
 std::vector<std::shared_ptr<Bat>> CreateBatsVec(unsigned n);
 bool IsSorted(const std::vector<std::shared_ptr<GameObject>>& vec);
@@ -46,7 +48,7 @@ void GameplayScene::Start()
 
 void GameplayScene::Update()
 {
-    Rectangle mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
+    mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
 
     _camera.Update(_player->GetPosition(), mapRec, GetScreenWidth(), GetScreenHeight(), 1);
     _animals->Update(_player->GetSpeed(), _player->GetDirection(), _player->GetFacing());
@@ -388,8 +390,14 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
             }
         }
 
+        if (_player->GetPosition().x < 0 || _player->GetPosition().y < 0 || 
+            _player->GetPosition().x > mapRec.width || _player->GetPosition().y > mapRec.height)
+        {
+            _player->Stop();
+        }
+
         // Sleep for a short duration to control the update rate of collision checking
-        std::this_thread::sleep_for(std::chrono::milliseconds(12));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 
     return nullptr;
@@ -411,9 +419,9 @@ bool IsSorted(const std::vector<std::shared_ptr<GameObject>>& vec)
 inline Rectangle GetRecBottomSide(const Rectangle& rec)
 {
     float fullArea = rec.width * rec.height;
-    float bottomArea = fullArea - (fullArea * 0.85f);
+    float bottomArea = fullArea - fullArea * 0.85f;
 
-    float y = rec.y + ((fullArea - bottomArea) / rec.width);
+    float y = rec.y + (fullArea - bottomArea) / rec.width;
 
     return { rec.x, y, rec.width, bottomArea / rec.width };
 }

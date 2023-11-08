@@ -107,7 +107,7 @@ inline Vector2 Vector3ToVector2(const Vector3& v)
 }
 
 // Perform linear interpolation between two Vector2 points
-inline Vector2 Vector2Lerp(Vector2 start, Vector2 end, float alpha) 
+inline Vector2 Vector2Lerp(const Vector2& start, const Vector2& end, float alpha) 
 {
 	Vector2 result;
 	result.x = start.x + alpha * (end.x - start.x);

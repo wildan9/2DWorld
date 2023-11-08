@@ -91,7 +91,7 @@ public:
 protected:
 	void Animate(float frameSpeed, float numFrames, const bool animate = 1);
 	
-	inline int GetCurrentFrame()
+	inline int GetCurrentFrame() const
 	{
 		return _currentFrame;
 	}

@@ -26,15 +26,10 @@
 
 #pragma once
 
-#include <ctime>
-#include <queue>
-#include <list>
 #include <vector>
 #include <atomic>
 #include <thread>
 #include <string>
-#include <iomanip>
-#include <sstream>
 
 #include "Audio.h"
 #include "VectorMath.h"
