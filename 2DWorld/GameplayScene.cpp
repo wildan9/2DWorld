@@ -29,8 +29,6 @@
 bool showGrid = 0, worldCollision = 1, createBats = 0;
 float batsCleaner = 20.0f;
 
-Rectangle mapRec = {};
-
 Rectangle GetRecBottomSide(const Rectangle& rec);
 std::vector<std::shared_ptr<Bat>> CreateBatsVec(unsigned n);
 bool IsSorted(const std::vector<std::shared_ptr<GameObject>>& vec);
@@ -48,9 +46,9 @@ void GameplayScene::Start()
 
 void GameplayScene::Update()
 {
-    mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
+    _mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
 
-    _camera.Update(_player->GetPosition(), mapRec, GetScreenWidth(), GetScreenHeight(), 1);
+    _camera.Update(_player->GetPosition(), _mapRec, GetScreenWidth(), GetScreenHeight(), 1);
     _animals->Update(_player->GetSpeed(), _player->GetDirection(), _player->GetFacing());
 
     // Update the game objects
@@ -391,7 +389,7 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
         }
 
         if (_player->GetPosition().x < 0 || _player->GetPosition().y < 0 || 
-            _player->GetPosition().x > mapRec.width || _player->GetPosition().y > mapRec.height)
+            _player->GetPosition().x > _mapRec.width || _player->GetPosition().y > _mapRec.height)
         {
             _player->Stop();
         }

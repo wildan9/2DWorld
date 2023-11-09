@@ -52,8 +52,9 @@ public:
 	void* CollisionChecking(const std::atomic<bool>& collisionThreadRunning);
 
 private:
-	RLTileMap _tileMap  = {};
+	RLTileMap  _tileMap = {};
 	RLCamera2D _camera  = {};
+	Rectangle  _mapRec  = {};
 	float _batsLifetime = 20.0f;
 	std::mutex _collisionMutex = {};
 	std::shared_ptr<Player>  _player  = {};
