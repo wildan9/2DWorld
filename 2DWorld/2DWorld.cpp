@@ -58,15 +58,15 @@ void Engine::Update()
     {
         if (IsKeyPressed(KEY_ENTER))
         {
-            _gameplayScene = std::make_shared<GameplayScene>();
+            auto gameplayScene = std::make_shared<GameplayScene>();
 
-            SetActiveScene(_gameplayScene);
+            SetActiveScene(gameplayScene);
 
             worldState = WorldStates::GAMEPLAY;
 
             _collisionThreadRunning = 1;
 
-            _threads.push_back(std::thread(&GameplayScene::CollisionChecking, _gameplayScene, std::ref(_collisionThreadRunning)));
+            _threads.push_back(std::thread(&GameplayScene::CollisionChecking, gameplayScene, std::ref(_collisionThreadRunning)));
         }
 
         GetCurrentScene()->Update();

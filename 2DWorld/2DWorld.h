@@ -56,7 +56,6 @@ public:
 	void ShutDown();
 
 private:
-	std::shared_ptr<GameplayScene> _gameplayScene = nullptr;
 	std::atomic<bool> _collisionThreadRunning = 0;
 	std::atomic<bool> _isEngineShutDown = 0;
 	std::vector<std::thread> _threads = {};
