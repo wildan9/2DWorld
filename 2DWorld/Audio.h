@@ -31,6 +31,7 @@
 
 #include <thread>
 #include <atomic>
+#include <cassert>
 #include <stdexcept>
 
 class Audio
