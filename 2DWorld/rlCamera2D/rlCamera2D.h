@@ -27,9 +27,12 @@
 #pragma once
 
 #include "raylib.h"
+#include "VectorMath.h"
 
 class RLCamera2D : public ::Camera2D
 {
+    Vector2 GetMouseDirection();
+
 public:
     RLCamera2D() : ::Camera2D{ offset = { 0.0f, 0.0f }, target = { 0.0f, 0.0f }, rotation = 0.0f, zoom = 1.0f } {}
     
@@ -54,4 +57,6 @@ public:
 
 private:
     Rectangle _rectangle = { 0, 0, 0, 0 };
+    float _cameraSpeed = 5.5f;
+    bool _freeMode = 0;
 };
