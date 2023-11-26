@@ -31,7 +31,7 @@
 
 class RLCamera2D : public ::Camera2D
 {
-    Vector2 GetMouseDirection();
+    Vector2 GetDirection();
 
 public:
     RLCamera2D() : ::Camera2D{ offset = { 0.0f, 0.0f }, target = { 0.0f, 0.0f }, rotation = 0.0f, zoom = 1.0f } {}

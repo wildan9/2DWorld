@@ -31,30 +31,30 @@ Rectangle GetRecX2(const Rectangle& rec);
 Rectangle GetRecY1(const Rectangle& rec);
 Rectangle GetRecY2(const Rectangle& rec);
 
-Vector2 RLCamera2D::GetMouseDirection()
+Vector2 RLCamera2D::GetDirection()
 {
-    Vector2 dir = {};
+    Vector2 direction = {};
     Vector2 mousePos = GetMousePosition();
     Vector2 worldMousePos = GetScreenToWorld2D(mousePos, *this);
 
     if (CheckCollisionPointRec(worldMousePos, GetRecY1(_rectangle)))
     {
-        dir.x += _cameraSpeed;
+        direction.x += _cameraSpeed;
     }
     if (CheckCollisionPointRec(worldMousePos, GetRecY2(_rectangle)))
     {
-        dir.x -= _cameraSpeed;
+        direction.x -= _cameraSpeed;
     }
     if (CheckCollisionPointRec(worldMousePos, GetRecX1(_rectangle)))
     {
-        dir.y += _cameraSpeed;
+        direction.y += _cameraSpeed;
     }
     if (CheckCollisionPointRec(worldMousePos, GetRecX2(_rectangle)))
     {
-        dir.y -= _cameraSpeed;
+        direction.y -= _cameraSpeed;
     }
 
-    return dir;
+    return direction;
 }
 
 void RLCamera2D::Update(const Vector2& playerPos, const Rectangle& mapRec, int screenWidth, int screenHeight, bool scrollable)
@@ -63,7 +63,7 @@ void RLCamera2D::Update(const Vector2& playerPos, const Rectangle& mapRec, int s
 
     _freeMode = IsMouseButtonDown(MOUSE_RIGHT_BUTTON);
 
-    if (_freeMode) target = target + GetMouseDirection();
+    if (_freeMode) target = target + GetDirection();
     else target = playerPos;
 
     const Rectangle& rec = mapRec;
