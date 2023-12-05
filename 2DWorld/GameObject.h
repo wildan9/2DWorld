@@ -89,7 +89,7 @@ public:
 	virtual void Update() = 0;
 
 protected:
-	void Animate(float frameSpeed, float numFrames, const bool animate = 1);
+	void Animate(int frameSpeed, int numFrames, const bool animate = 1);
 	
 	inline int GetCurrentFrame() const
 	{

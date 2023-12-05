@@ -66,8 +66,8 @@ private:
 	float _flyRadius;
 	bool _isDead = 0;
 	bool _animate = 1;
-	float _numFrames = 6;
-	float _frameSpeed = 10;
+	int _numFrames = 6;
+	int _frameSpeed = 10;
 	float _fallTimer = 0.5f;
 };
 
@@ -119,10 +119,10 @@ public:
 
 private:
 	float _speed;
-	float _numFrames;
 	float _timer;
 	float _rotation;
 	bool _isWalk;
+	int _numFrames;
 	Sound _gettingPunched;
 	const float _updateTime = 0.0834f;
 };
@@ -146,7 +146,7 @@ protected:
 	void Update() override;
 
 private:
-	float _numFrames = 8;
+	int _numFrames = 8;
 };
 
 class Horse : public GameObject

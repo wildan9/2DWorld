@@ -30,7 +30,7 @@ GameObject::GameObject() = default;
 
 GameObject::~GameObject() = default;
 
-void GameObject::Animate(float frameSpeed, float numFrames, const bool animate)
+void GameObject::Animate(int frameSpeed, int numFrames, const bool animate)
 {
     assert(_pCurrentTexture != nullptr);
 

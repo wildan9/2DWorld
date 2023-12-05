@@ -80,8 +80,8 @@ public:
 	Vector2 GetDirection() const;
 
 private:
-	int FrameSpeed()  const;
-	float NumFrames() const;
+	int FrameSpeed() const;
+	int NumFrames()  const;
 
 private:
 	bool _isWalk, _isDragonInside, _isOnHorse;

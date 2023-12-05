@@ -216,16 +216,16 @@ int Player::FrameSpeed() const
 	return 4;
 }
 
-float Player::NumFrames() const
+int Player::NumFrames() const
 {
 	if (_isOnHorse)
 	{
-		if (!_isWalk) return 13.0f;
-		else return 6.0f;
+		if (!_isWalk) return 13;
+		else return 6;
 	}
 
-	if (!_isOnHorse && IsPunch() && !_isWalk) return 3.0f;
-	else if (_isWalk) return 6.0f;
+	if (!_isOnHorse && IsPunch() && !_isWalk) return 3;
+	else if (_isWalk) return 6;
 
-	return 2.0f;
+	return 2;
 }
