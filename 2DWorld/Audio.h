@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -31,12 +31,14 @@
 
 #include <thread>
 #include <atomic>
+#include <cassert>
 #include <stdexcept>
 
 class Audio
 {
 	template<typename T>
 	T LoadAudioData(const char* audio);
+	void UnloadBGM();
 
 public:
 	void Update(std::string& bgm, std::atomic<bool>& isEngineShutDown);
@@ -44,10 +46,7 @@ public:
 	void FreeResources();
 
 private:
-	void UnloadBGM();
-
-private:
-	Music _bgm = {};
+	Music _bgm{};
 };
 
 template<typename T>
@@ -67,6 +66,5 @@ T Audio::LoadAudioData(const char* audio)
 	}
 }
 
-void  DrawVolumeBar();
-void  PlayClickSound();
-float GetMasterVolume();
+void DrawVolumeBar();
+void PlayClickSound();

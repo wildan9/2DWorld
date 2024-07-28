@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2022-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -26,31 +26,19 @@
 
 #pragma once
 
-#include <ctime>
-#include <queue>
-#include <list>
 #include <vector>
 #include <atomic>
 #include <thread>
 #include <string>
-#include <iomanip>
-#include <sstream>
 
 #include "Audio.h"
-#include "VectorMath.h"
+#include "MathLib.h"
 #include "TitleScene.h"
 #include "SceneManager.h"
 #include "GameplayScene.h"
 
-#include "rlTiles/rlTiles.h"
-#include "rlCamera2D/rlCamera2D.h"
-#include "rlTiles/PUGIXML/pugixml.hpp"
-
-#define RAYGUI_IMPLEMENTATION
-#include "extras/raygui.h"
-
-static const int screenWidth  = 512;
-static const int screenHeight = 512;
+const int screenWidth  = 512;
+const int screenHeight = 512;
 
 class Engine
 {
@@ -61,10 +49,9 @@ public:
 	void ShutDown();
 
 private:
-	std::shared_ptr<GameplayScene> _gameplayScene = nullptr;
-	std::atomic<bool> _collisionThreadRunning = 0;
+	Audio _audio{};
+	std::string _currentBGM{};
+	std::vector<std::thread> _threads{};
 	std::atomic<bool> _isEngineShutDown = 0;
-	std::vector<std::thread> _threads = {};
-	std::string _currentBGM = {};
-	Audio _audio = {};
+	std::atomic<bool> _collisionThreadRunning = 0;
 };

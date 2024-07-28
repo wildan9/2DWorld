@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2022-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -58,15 +58,15 @@ void Engine::Update()
     {
         if (IsKeyPressed(KEY_ENTER))
         {
-            _gameplayScene = std::make_shared<GameplayScene>();
+            auto gameplayScene = std::make_shared<GameplayScene>();
 
-            SetActiveScene(_gameplayScene);
+            SetActiveScene(gameplayScene);
 
             worldState = WorldStates::GAMEPLAY;
 
             _collisionThreadRunning = 1;
 
-            _threads.push_back(std::thread(&GameplayScene::CollisionChecking, _gameplayScene, std::ref(_collisionThreadRunning)));
+            _threads.push_back(std::thread(&GameplayScene::CollisionChecking, gameplayScene, std::ref(_collisionThreadRunning)));
         }
 
         GetCurrentScene()->Update();

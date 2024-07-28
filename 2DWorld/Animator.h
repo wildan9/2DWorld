@@ -1,12 +1,8 @@
 /**********************************************************************************************
 *
-*   raylibExtras * Utilities and Shared Components for Raylib
-*
-*   RLTiles * Tiled map rendering
-*
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022 Jeffery Myers
+*   Copyright (c) 2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -28,32 +24,25 @@
 *
 **********************************************************************************************/
 
-#include "rlTileMap.h"
+#pragma once
 
+#include <array>
 
-Vector2 RLTileLayer::GetDisplayLocation(int x, int y, RLTiledMapTypes mapType)
+#include "MathLib.h"
+
+struct Animator
 {
-    if (mapType == RLTiledMapTypes::Orthographic)
-        return Vector2{ static_cast<float>(x * TileWidth), static_cast<float>(y * TileHeight) };
+    int currFrame;
+    int frameCounter;
+    std::array<math::rec, 2> recData;
+};
 
-    float halfWidth = TileWidth * 0.5f;
-    float halfHeight = TileHeight * 0.5f;
-    float quarterHeight = TileHeight * 0.25f;
-
-    return Vector2{ x * halfWidth - y * halfWidth - halfWidth, y * halfHeight + (x * halfHeight) };
-}
-
-RLTile RLTileMap::GetTile(int x, int y, int layerID)
+inline Animator CreateAnimator()
 {
-    std::map<int, RLTileLayer>::iterator itr = Layers.find(layerID);
-    if (itr == Layers.end())
-        return RLTile();
+    Animator animator{};
+    animator.currFrame    = 0;
+    animator.frameCounter = 0;
+    animator.recData      = std::array<math::rec, 2>();
 
-    RLTileLayer &layer = itr->second;
-
-    if (x < 0 || x >= layer.Width || y < 0 || y >= layer.Height)
-        return RLTile();
-
-    int index = y * layer.Width + x;
-    return layer.Tiles[index];
+    return animator;
 }

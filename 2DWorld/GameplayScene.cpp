@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -25,112 +25,119 @@
 **********************************************************************************************/
 
 #include "GameplayScene.h"
+#include "rlTileMap/ray_tilemap.h"
+#include "rlgl.h"
 
-bool showGrid = 0, worldCollision = 1, createBats = 0;
-float batsCleaner = 20.0f;
+bool showGrid = 0, worldCollision = 1;
 
 Rectangle GetRecBottomSide(const Rectangle& rec);
-std::vector<std::shared_ptr<Bat>> CreateBatsVec(unsigned n);
-bool IsSorted(const std::vector<std::shared_ptr<GameObject>>& vec);
 void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right);
 void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int right);
 bool OnTouch(const Player& player, float targetPosX);
 
+RayTiled::TileMap map;
+
+RayTiled::UserLayer* testUserLayer = nullptr;
+
+RayTiled::TileLayer* objectTileLayer = nullptr;
+
+struct PlayerDrawable : RayTiled::TileLayer::Drawable
+{
+    math::vec2 pos{ 300.0f, 300.0f };
+
+    float radius = 8;
+
+    float GetY() override { return pos.y - radius; }
+
+    std::shared_ptr<Player> object;
+};
+
+PlayerDrawable drawablePlayer;
+
+void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
+{
+    drawablePlayer.object->Draw();
+}
+
+void DrawCollisionLayer(RayTiled::ObjectLayer& layer, Camera2D* camera, Vector2 bounds)
+{
+    for (auto& object : layer.Objets)
+    {
+        switch (object->Type)
+        {
+        case RayTiled::ObjectLayer::ObjectType::Generic:
+            DrawRectangleRec(object->Bounds, ColorAlpha(BLUE, 0.25f));
+            break;
+
+        case RayTiled::ObjectLayer::ObjectType::Point:
+            DrawCircleV(Vector2{ object->Bounds.x, object->Bounds.y }, 8, GRAY);
+            break;
+
+        case RayTiled::ObjectLayer::ObjectType::Text:
+        {
+            auto text = static_cast<RayTiled::ObjectLayer::TextObject*>(object.get());
+            DrawText(text->Text.c_str(), object->Bounds.x, object->Bounds.y, text->FontSize, WHITE);
+        }
+        break;
+        }
+    }
+}
+
+void InitMap()
+{
+    RayTiled::LoadTileMap("resources/sample_map.tmx", map);
+
+    testUserLayer = RayTiled::InsertTileMapLayer<RayTiled::UserLayer>(map, map.Layers.back()->LayerId);
+
+    auto playerLayer = RayTiled::FindLayer(map, "Objects");
+    if (playerLayer && playerLayer->Type == RayTiled::TileLayerType::Tile)
+    {
+        objectTileLayer = static_cast<RayTiled::TileLayer*>(playerLayer);
+
+        objectTileLayer->CustomDrawalbeFunction = DrawObjectLayerItem;
+        objectTileLayer->AddDrawable(&drawablePlayer);
+    }
+
+    auto collisionlayer = RayTiled::FindLayer(map, "CollisionObjects");
+    if (collisionlayer && collisionlayer->Type == RayTiled::TileLayerType::Object)
+    {
+        static_cast<RayTiled::ObjectLayer*>(collisionlayer)->DrawFunc = DrawCollisionLayer;
+        static_cast<RayTiled::ObjectLayer*>(collisionlayer)->CheckForCollisions = true;
+    }
+}
+
 void GameplayScene::Start()
 {
     LoadResources();
-    _rendererMap->Setup();
-
     MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
 }
 
 void GameplayScene::Update()
 {
-    Rectangle mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
+    drawablePlayer.pos.x = drawablePlayer.object->GetPos().x + 15;
+    drawablePlayer.pos.y = drawablePlayer.object->GetPos().y + 15;
 
-    _camera.Update(_player->GetPosition(), mapRec, GetScreenWidth(), GetScreenHeight(), 1);
-    _animals->Update(_player->GetSpeed(), _player->GetDirection(), _player->GetFacing());
+    // Sort the game objects
+    MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
 
-    // Update the game objects
-    for (const auto& gameObject : _gameObjectsVec)
-    {
-        gameObject->isInView = 0;
-        if (CheckCollisionRecs(_camera.GetRectangle(), gameObject->GetRectangle()))
-        {
-            gameObject->Update();
-            gameObject->isInView = 1;
-        }
-        // Updated each frame
-        else if (gameObject->name == "Crocodile" || gameObject->name == "Chicken")
-        {
-            gameObject->Update();
-        }
-    }
+    _mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
 
-    if (!IsSorted(_gameObjectsVec))
-    {
-        MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
-    }
-    
-    if (_batsLifetime >= 0)
-    {
-        _batsLifetime -= GetFrameTime();
-    }
- 
-    if (!_batsVec.empty())
-    {
-        for (auto& bat : _batsVec)
-        {
-            bat->isInView = 0;
-            if (CheckCollisionRecs(_camera.GetRectangle(), bat->GetRectangle()))
-            {
-                bat->isInView = 1;
-            }
-            bat->Update();
-
-            if (_batsLifetime < 0 && !bat->IsDead() && !bat->healed)
-            {
-                bat->Death();
-            }
-            if (_batsLifetime < 0 && bat->IsDead())
-            {
-                if (bat->isOnTriger == 1)
-                {
-                    bat->Heal();
-                }
-            }
-        }
-    }
-
-    if (createBats == 1)
-    {
-        _batsVec = CreateBatsVec(5);
-    }
-
-    if (batsCleaner >= 0 && _batsLifetime < 0.0f)
-    {
-        batsCleaner -= GetFrameTime();
-    }
-
-    if (!_batsVec.empty() && batsCleaner < 0)
-    {
-        _batsVec.clear();
-
-        batsCleaner   = 20.0f;
-        _batsLifetime = 20.0f;
-    }
+    _camera.Update(drawablePlayer.object->GetPos(), _mapRec, GetScreenWidth(), GetScreenHeight(), 1);
 
     // Our debug button
     if (IsKeyPressed(KEY_H))
     {
         showGrid = !showGrid;
     }
+
+    drawablePlayer.object->Update();
 }
 
 void GameplayScene::LoadResources()
 {
-    _player  = std::make_shared<Player>();
-    _animals = std::make_shared<Animals>();
+    InitMap();
+
+    drawablePlayer.object = std::make_shared<Player>();
 
     auto house1 = std::make_shared<House>();
     auto house2 = std::make_shared<House>();
@@ -142,12 +149,7 @@ void GameplayScene::LoadResources()
     _gameObjectsVec =
     {
         // Player
-        _player,
-
-        // Animals
-        _animals->chicken,
-        _animals->horse,
-        _animals->crocodile,
+        drawablePlayer.object,
 
         // House
         house1,
@@ -161,20 +163,9 @@ void GameplayScene::LoadResources()
         // TODO: Add NPC?
     };
 
-    RLReadTileMap("resources/maps/empire/wildan_empire.tmx", _tileMap);
-
-    for (std::map<int, RLTileSheet>::iterator itr = _tileMap.Sheets.begin(); itr != _tileMap.Sheets.end(); itr++)
-    {
-        itr->second.SheetSource = "resources/" + itr->second.SheetSource;
-    }
-
-    _rendererMap = std::make_unique<RLTileRenderer>(_tileMap);
-
-    _animals->Start(_gameObjectsVec);
-
-    house2->SetPosition({ 1340.0f, 458.0f, });
-    house3->SetPosition({ 1730.0f, 170.0f, });
-    house4->SetPosition({ 1730.0f, 458.0f, });
+    house2->SetPos({ 1340.0f, 458.0f, });
+    house3->SetPos({ 1730.0f, 170.0f, });
+    house4->SetPos({ 1730.0f, 458.0f, });
 }
 
 void GameplayScene::FreeResources()
@@ -185,70 +176,19 @@ void GameplayScene::FreeResources()
 void GameplayScene::Draw()
 {
     _camera.BeginMode();
-    _rendererMap->Draw(_camera);
-
-    if (!_batsVec.empty())
-    {
-        if (IsBatDead())
-        {
-            for (const auto& bat : _batsVec)
-            {
-                if (bat->isInView)
-                {
-                    bat->Draw();
-                }
-            }
-        }
-    }
-
-    // Draw the game objects in sorted order
-    for (const auto& gameObject : _gameObjectsVec)
-    {
-        if (gameObject->isInView)
-        {
-            gameObject->Draw();
-
-            if (showGrid)
-            {
-                _rendererMap->DrawGrid(_player->GetRectangle());
-                DrawRectangleLinesEx(gameObject->GetRectangle(), 1.2f, GREEN);
-
-                if (gameObject->name != "")
-                {
-                    DrawText(
-                        gameObject->name.c_str(),
-                        (int)gameObject->GetPosition().x,
-                        (int)gameObject->GetPosition().y,
-                        12, WHITE
-                    );
-                }
-                DrawText(
-                    Vector2ToString(gameObject->GetPosition()).c_str(),
-                    (int)gameObject->GetPosition().x,
-                    (int)gameObject->GetPosition().y + 12,
-                    14, WHITE
-                );
-
-                DrawRectangleLinesEx(_camera.GetRectangle(), 2.2f, RED);
-            }
-        }
-    }
-
-    if (!_batsVec.empty())
-    {
-        if (!IsBatDead())
-        {
-            for (const auto& bat : _batsVec)
-            {
-                if (bat->isInView)
-                {
-                    bat->Draw();
-                }
-            }
-        }
-    }
-
+        RayTiled::DrawTileMap(map, &_camera);
     _camera.EndMode();
+
+    if (showGrid)
+    {
+        rlPushMatrix();
+        rlTranslatef(0, 25 * 50, 0);
+        rlRotatef(90, 1, 0, 0);
+        DrawGrid(100, 50);
+        rlPopMatrix();
+    }
+
+    DrawText(TextFormat("Tiles Drawn: %d", (int)RayTiled::GetTileDrawStats()), 5, 25, 20, WHITE);
 }
 
 void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right)
@@ -266,7 +206,7 @@ void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int
 
     while (i < n1 && j < n2)
     {
-        if (leftVec[i]->GetZ() <= rightVec[j]->GetZ()) vec[k++] = leftVec[i++];
+        if (leftVec[i]->GetPos().y <= rightVec[j]->GetPos().y) vec[k++] = leftVec[i++];
         else vec[k++] = rightVec[j++];
     }
 
@@ -287,8 +227,8 @@ void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int righ
 
 bool OnTouch(const Player& player, float targetPosX)
 {
-    if (player.GetFacing() == 1.0f && player.GetPosition().x < targetPosX) return 1;
-    else if (player.GetFacing() == -1.0f && player.GetPosition().x > targetPosX) return 1;
+    if (player.GetFacing() == 1.0f && player.GetPos().x < targetPosX) return 1;
+    else if (player.GetFacing() == -1.0f && player.GetPos().x > targetPosX) return 1;
 
     return 0;
 }
@@ -297,135 +237,29 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
 {
     while (collisionThreadRunning)
     {
-        if (worldCollision)
+        std::lock_guard<std::mutex> lock(_collisionMutex);
+
+        math::vec2 newPos(drawablePlayer.pos);        
+        Rectangle newRec{ newPos.x - drawablePlayer.radius, newPos.y - drawablePlayer.radius, drawablePlayer.radius * 2, drawablePlayer.radius * 2 };
+        
+        std::vector<RayTiled::CollisionRecord> collisions;
+        if (GetCollisions(map, newRec, collisions) == 1)
         {
-            // Lock the mutex to protect shared data?
-            std::lock_guard<std::mutex> lock(_collisionMutex);
-
-            for (auto& gameObject : _gameObjectsVec)
-            {
-                if (gameObject->isInView)
-                {
-                    gameObject->isOnTriger = 0;
-                    if (gameObject->name == "Rhino")
-                    {
-                        if (CheckCollisionRecs(_player->GetRectangle(), gameObject->GetRectangle()) &&
-                            IsKeyDown(KEY_ENTER) && Vector2Length(_player->GetDirection()) > 0.0f)
-                        {
-                            gameObject->isOnTriger = 1;
-                        }
-                        else if (CheckCollisionRecs(_player->GetRectangle(), GetRecBottomSide(gameObject->GetRectangle())))
-                        {
-                            _player->Stop();
-                        }
-                    }
-                    else if (gameObject->name == "Crocodile")
-                    {
-                        if (CheckCollisionRecs(_player->GetRectangle(), gameObject->GetRectangle()) &&
-                            _player->IsPunch() && OnTouch(*_player, gameObject->GetPosition().x))
-                        {
-                            gameObject->isOnTriger = 1;
-                        }
-                    }
-                    else if (gameObject->name == "House")
-                    {
-                        if (CheckCollisionRecs(_player->GetRectangle(), GetRecBottomSide(gameObject->GetRectangle())))
-                        {
-                            gameObject->isOnTriger = 1;
-                        }
-                        const Rectangle houseBounds =
-                        {
-                            gameObject->GetRectangle().x,
-                            gameObject->GetRectangle().y,
-                            GetRecBottomSide(gameObject->GetRectangle()).width,
-                            gameObject->GetRectangle().height - GetRecBottomSide(gameObject->GetRectangle()).height,
-                        };
-                        if (CheckCollisionRecs(_player->GetRectangle(), houseBounds))
-                        {
-                            _player->Stop();
-                        }
-                    }
-                    else if (gameObject->name == "Ark")
-                    {
-                        if (CheckCollisionRecs(_player->GetRectangle(), GetRecBottomSide(gameObject->GetRectangle())))
-                        {
-                            gameObject->isOnTriger = 1;
-                        }
-                        const Rectangle arkBounds =
-                        {
-                            gameObject->GetRectangle().x,
-                            gameObject->GetRectangle().y,
-                            GetRecBottomSide(gameObject->GetRectangle()).width - 10.0f,
-                            gameObject->GetRectangle().height - GetRecBottomSide(gameObject->GetRectangle()).height,
-                        };
-                        if (CheckCollisionRecs(_player->GetRectangle(), arkBounds))
-                        {
-                            _player->Stop();
-                        }
-                        
-                        createBats = 0;
-                        if (_batsVec.empty())
-                        {
-                            if (CheckCollisionRecs(_player->GetRectangle(), gameObject->GetRectangle()) && _player->IsPunch())
-                            {
-                                createBats = 1;
-                            }
-                        }
-                    }
-                }
-            }
-
-            for (auto& bat : _batsVec)
-            {
-                if (bat->isInView)
-                {
-                    bat->isOnTriger = 0;
-                    if (CheckCollisionRecs(_player->GetRectangle(), bat->GetRectangle()) && IsKeyDown(KEY_ENTER))
-                    {
-                        bat->isOnTriger = 1;
-                    }
-                }
-            }
+            drawablePlayer.object->Stop();
         }
 
-        // Sleep for a short duration to control the update rate of collision checking
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        std::this_thread::sleep_for(std::chrono::milliseconds(12));
     }
 
     return nullptr;
 }
 
-bool IsSorted(const std::vector<std::shared_ptr<GameObject>>& vec)
-{
-    for (int i = 1; i < vec.size(); i++)
-    {
-        if (vec[i]->GetZ() < vec[i - 1]->GetZ()) 
-        {
-            return 0;
-        }
-    }
-
-    return 1;
-}
-
 inline Rectangle GetRecBottomSide(const Rectangle& rec)
 {
     float fullArea = rec.width * rec.height;
-    float bottomArea = fullArea - (fullArea * 0.85f);
+    float bottomArea = fullArea - fullArea * 0.85f;
 
-    float y = rec.y + ((fullArea - bottomArea) / rec.width);
+    float y = rec.y + (fullArea - bottomArea) / rec.width;
 
     return { rec.x, y, rec.width, bottomArea / rec.width };
-}
-
-std::vector<std::shared_ptr<Bat>> CreateBatsVec(unsigned n)
-{
-    std::vector<std::shared_ptr<Bat>> batsVec;
-
-    for (unsigned i = 0; i < n; i++)
-    {
-        batsVec.push_back(std::make_shared<Bat>());
-    }
-
-    return batsVec;
 }

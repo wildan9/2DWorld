@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -35,9 +35,6 @@ public:
 	virtual void Start()  = 0;
 	virtual void Update() = 0;
 	virtual void Draw()   = 0;
-
 	virtual void LoadResources() {}
 	virtual void FreeResources() {}
 };
-
-void DrawCenteredText(int y, const char* text, int fontSize, Color color);

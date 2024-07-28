@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -35,9 +35,7 @@
 #include "Player.h"
 #include "Animal.h"
 #include "GameObject.h"
-#include "rlTiles/rlTiles.h"
 #include "rlCamera2D/rlCamera2D.h"
-#include "rlTiles/PUGIXML/pugixml.hpp"
 
 #include "Prop.cpp"
 
@@ -52,13 +50,10 @@ public:
 	void* CollisionChecking(const std::atomic<bool>& collisionThreadRunning);
 
 private:
-	RLTileMap _tileMap  = {};
-	RLCamera2D _camera  = {};
+	RLCamera2D _camera{};
+	math::rec _mapRec{};
 	float _batsLifetime = 20.0f;
-	std::mutex _collisionMutex = {};
-	std::shared_ptr<Player>  _player  = {};
-	std::shared_ptr<Animals> _animals = {};
-	std::vector<std::shared_ptr<Bat>> _batsVec = {};
-	std::unique_ptr<RLTileRenderer> _rendererMap = {};
-	std::vector<std::shared_ptr<GameObject>> _gameObjectsVec = {};
+	std::mutex _collisionMutex{};
+	//std::shared_ptr<Animals> _animals{};
+	std::vector<std::shared_ptr<GameObject>> _gameObjectsVec{};
 };

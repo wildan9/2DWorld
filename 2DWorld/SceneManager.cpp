@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ void SetActiveScene(std::shared_ptr<Scene> scene)
 	currentScene->Start();
 }
 
-std::shared_ptr<Scene> GetCurrentScene()
+const std::shared_ptr<Scene> GetCurrentScene()
 {
 	return currentScene;
 }

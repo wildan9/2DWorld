@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ enum class BGMStates
 	LOAD_HARP
 
 };
-BGMStates bgmState;
+BGMStates bgmState{};
 
 struct Volume
 {
@@ -41,10 +41,10 @@ struct Volume
 	float master  = 0.2f;
 	float current = 0.2f;
 };
-Volume volume;
+Volume volume{};
 
-Sound clickSound = {};
-Timer volumeBarTimer = {};
+Sound clickSound{};
+Timer volumeBarTimer{};
 
 void Audio::LoadResources()
 {
@@ -96,13 +96,18 @@ void Audio::Update(std::string& bgm, std::atomic<bool>& isEngineShutDown)
 		}
 
 		if (IsKeyPressed(KEY_M)) volume.muted = !volume.muted;
-
-		if (volume.muted && IsKeyPressed(KEY_M) || volume.muted)  volume.master = 0.0f;
+		if (IsKeyPressed(KEY_L) && volume.muted || IsKeyPressed(KEY_K) && volume.muted)
+		{
+			volume.muted  = !volume.muted;
+			volume.master = volume.current;
+		}
+		if (volume.muted  && IsKeyPressed(KEY_M) || volume.muted)  volume.master = 0.0f;
 		if (!volume.muted && IsKeyPressed(KEY_M) || !volume.muted) volume.master = volume.current;
 
 		SetMasterVolume(volume.master);
+		assert(GetMasterVolume() == volume.master);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		std::this_thread::sleep_for(std::chrono::milliseconds(16));
 	}
 }
 
@@ -126,14 +131,9 @@ void PlayClickSound()
 	PlaySound(clickSound);
 }
 
-float GetMasterVolume()
-{
-	return volume.master;
-}
-
 void DrawVolumeBar()
 {
-	const char* strVolumeArr[11] =
+	const char* strVolumeArr[11]
 	{
 		"Muted", "Volume: #", "Volume: # #", "Volume: # # #",
 		"Volume: # # # #", "Volume: # # # # #", "Volume: # # # # # #",
@@ -141,7 +141,7 @@ void DrawVolumeBar()
 		"Volume: # # # # # # # # #", "Volume: # # # # # # # # # #"
 	};
 
-	const Color volumeColors[]{ RED, DARKGREEN, GREEN };
+	const Color volumeColors[]{ RED, GREEN, LIME, DARKGREEN };
 
 	const unsigned volume = GetMasterVolume() * 10;
 
@@ -149,11 +149,12 @@ void DrawVolumeBar()
 	{
 		UpdateTimer(volumeBarTimer);
 
-		int volumeColor = 2;
+		int volumeColor = 1;
 
-		if (volume < 1) volumeColor = 0;
-		else if (volume > 1 && volume < 8) volumeColor = 1;
-		else if (volume > 8) volumeColor = 2;
+		if (volume < 1) volumeColor = 0; 
+		else if (volume >= 1 && volume < 3) volumeColor = 1; 
+		else if (volume >= 3 && volume < 7) volumeColor = 2; 
+		else if (volume >= 7) volumeColor = 3;
 
 		const char* strVolume = strVolumeArr[volume];
 

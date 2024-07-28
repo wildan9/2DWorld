@@ -26,19 +26,52 @@
 
 #include "RLCamera2D.h"
 
-void RLCamera2D::Update(const Vector2& playerPos, const Rectangle& mapRec, int screenWidth, int screenHeight, bool scrollable)
+math::rec GetRecX1(const math::rec& r);
+math::rec GetRecX2(const math::rec& r);
+math::rec GetRecY1(const math::rec& r);
+math::rec GetRecY2(const math::rec& r);
+
+math::vec2 RLCamera2D::GetDir() const
+{
+    math::vec2 dir{};
+    math::vec2 worldMousePos(math::to_vec2(GetScreenToWorld2D(GetMousePosition(), *this)));
+
+    if (GetRecY1(_rec).check_collision(worldMousePos))
+    {
+        dir.x += _cameraSpeed;
+    }
+    if (GetRecY2(_rec).check_collision(worldMousePos))
+    {
+        dir.x -= _cameraSpeed;
+    }
+    if (GetRecX1(_rec).check_collision(worldMousePos))
+    {
+        dir.y += _cameraSpeed;
+    }
+    if (GetRecX2(_rec).check_collision(worldMousePos))
+    {
+        dir.y -= _cameraSpeed;
+    }
+
+    return dir;
+}
+
+void RLCamera2D::Update(const math::vec2& playerPos, const math::rec& rec, int screenWidth, int screenHeight, bool scrollable)
 {
     offset = { screenWidth / 2.0f, screenHeight / 2.0f };
-    target = playerPos;
 
-    const Rectangle& rec = mapRec;
+    _freeMode = IsMouseButtonDown(MOUSE_RIGHT_BUTTON);
+
+    const math::vec2 cameraTarget = (_freeMode) ? math::to_vec2(target) + GetDir() : playerPos;
+
+    target = math::rl_vec(cameraTarget);
     
-    float minX = rec.width, minY = rec.height, maxX = 0, maxY = 0;
+    float minX = rec.w, minY = rec.h, maxX = 0, maxY = 0;
 
-    minX = (rec.x < minX) ? rec.x : minX;
-    maxX = (rec.x + rec.width > maxX) ? rec.x + rec.width : maxX;
-    minY = (rec.y < minY) ? rec.y : minY;
-    maxY = (rec.y + rec.height > maxY) ? rec.y + rec.height : maxY;
+    minX = std::fminf(rec.x, minX);
+    maxX = std::fmaxf(rec.x + rec.w, maxX);
+    minY = std::fminf(rec.y, minY);
+    maxY = std::fmaxf(rec.y + rec.h, maxY);
 
     Vector2 max = GetWorldToScreen2D({ maxX, maxY }, *this);
     Vector2 min = GetWorldToScreen2D({ minX, minY }, *this);
@@ -54,9 +87,48 @@ void RLCamera2D::Update(const Vector2& playerPos, const Rectangle& mapRec, int s
         if ((GetMouseWheelMove() < 0.0f) && zoom > 1.0f) zoom -= 0.1f;
     }
 
-    _rectangle.x = target.x - (offset.x / zoom);
-    _rectangle.y = target.y - (offset.y / zoom);
+    _rec.x = target.x - offset.x / zoom;
+    _rec.y = target.y - offset.y / zoom;
 
-    _rectangle.width  = screenWidth / zoom;
-    _rectangle.height = screenHeight / zoom;
+    _rec.w  = screenWidth / zoom;
+    _rec.h = screenHeight / zoom;
+}
+
+inline math::rec GetRecX1(const math::rec& r)
+{
+    float fullArea = r.w * r.h;
+    float bottomArea = fullArea - (fullArea * 0.9f);
+
+    float y = r.y + (fullArea - bottomArea) / r.w;
+
+    return { r.x, y, r.w, bottomArea / r.w };
+}
+
+inline math::rec GetRecX2(const math::rec& r)
+{
+    float fullArea = r.w * r.h;
+    float bottomArea = fullArea - (fullArea * 0.9f);
+
+    return { r.x, r.y, r.w, bottomArea / r.w };
+}
+
+inline math::rec GetRecY1(const math::rec& r)
+{
+    float fullArea = r.w * r.h;
+    float rightArea = fullArea - (fullArea * 0.9f);
+
+    float x = r.x + (fullArea - rightArea) / r.h;
+
+    return { x, r.y, rightArea / r.h, r.h };
+}
+
+inline math::rec GetRecY2(const math::rec& r)
+{
+    float fullArea = r.w * r.h;
+    float leftArea = fullArea * 0.1f;
+
+    float x = r.x;
+    float width = leftArea / r.h;
+
+    return { x, r.y, width, r.h };
 }

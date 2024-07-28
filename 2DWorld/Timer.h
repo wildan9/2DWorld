@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -34,13 +34,13 @@ struct Timer
     float lifetime = 0.0f; // The remaining lifetime of the timer
 };
 
-// Function to start or reset a timer with a specified lifetime
+// Start or reset a timer with a specified lifetime
 inline void StartTimer(Timer& timer, float lifetime)
 {
     timer.lifetime = lifetime; // Set the timer's lifetime
 }
 
-// Function to update the timer by reducing its lifetime by the frame time
+// Update the timer by reducing its lifetime by the frame time
 inline void UpdateTimer(Timer& timer)
 {
     if (timer.lifetime > 0) // Only update if the timer is active
@@ -49,7 +49,7 @@ inline void UpdateTimer(Timer& timer)
     }
 }
 
-// Function to check if a timer has finished (lifetime reached or below zero)
+// Check if a timer has finished (lifetime reached or below zero)
 inline const bool IsTimerDone(const Timer& timer)
 {
     return timer.lifetime <= 0; // Return true if the timer's lifetime is zero or less

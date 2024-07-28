@@ -7,14 +7,14 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{b0740b1a-0337-4e8a-a397-5292c92b887d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="rlTiles">
-      <UniqueIdentifier>{f106dd3d-b8af-4d36-9fbc-33ace61ff53f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="rlTiles\PUGIXML">
-      <UniqueIdentifier>{0eb2c5e2-49c4-47a0-99d5-da60326a9705}</UniqueIdentifier>
-    </Filter>
     <Filter Include="rlCamera2D">
       <UniqueIdentifier>{ae2db644-1804-4f81-b552-407ec09c17ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rlTileMap">
+      <UniqueIdentifier>{a779adb5-e531-4928-a95c-29fd6ac309d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rlTileMap\PUGIXML">
+      <UniqueIdentifier>{145baa88-bb22-4e0f-8d62-21bc96b7e2e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,22 +24,7 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rlTiles\PUGIXML\pugiconfig.hpp">
-      <Filter>rlTiles\PUGIXML</Filter>
-    </ClInclude>
-    <ClInclude Include="rlTiles\PUGIXML\pugixml.hpp">
-      <Filter>rlTiles\PUGIXML</Filter>
-    </ClInclude>
-    <ClInclude Include="rlTiles\rlTileMap.h">
-      <Filter>rlTiles</Filter>
-    </ClInclude>
-    <ClInclude Include="rlTiles\rlTileMapRenderer.h">
-      <Filter>rlTiles</Filter>
-    </ClInclude>
-    <ClInclude Include="rlTiles\rlTiles.h">
-      <Filter>rlTiles</Filter>
-    </ClInclude>
-    <ClInclude Include="VectorMath.h">
+    <ClInclude Include="MathLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rlCamera2D\rlCamera2D.h">
@@ -60,7 +45,7 @@
     <ClInclude Include="GameplayScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Texture2DVec.h">
+    <ClInclude Include="ObjectTexures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
@@ -72,6 +57,21 @@
     <ClInclude Include="Animal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Model2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rlTileMap\ray_tilemap.h">
+      <Filter>rlTileMap</Filter>
+    </ClInclude>
+    <ClInclude Include="rlTileMap\PUGIXML\pugiconfig.hpp">
+      <Filter>rlTileMap\PUGIXML</Filter>
+    </ClInclude>
+    <ClInclude Include="rlTileMap\PUGIXML\pugixml.hpp">
+      <Filter>rlTileMap\PUGIXML</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DWorld.cpp">
@@ -79,18 +79,6 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="rlTiles\PUGIXML\pugixml.cpp">
-      <Filter>rlTiles\PUGIXML</Filter>
-    </ClCompile>
-    <ClCompile Include="rlTiles\rlTileMap.cpp">
-      <Filter>rlTiles</Filter>
-    </ClCompile>
-    <ClCompile Include="rlTiles\rlTileMapIO.cpp">
-      <Filter>rlTiles</Filter>
-    </ClCompile>
-    <ClCompile Include="rlTiles\rlTileMapRenderer.cpp">
-      <Filter>rlTiles</Filter>
     </ClCompile>
     <ClCompile Include="rlCamera2D\rlCamera2D.cpp">
       <Filter>rlCamera2D</Filter>
@@ -119,5 +107,30 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Model2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rlTileMap\ray_tilemap.cpp">
+      <Filter>rlTileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="rlTileMap\ray_tilemap_drawing.cpp">
+      <Filter>rlTileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="rlTileMap\ray_tilemap_tmx.cpp">
+      <Filter>rlTileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="rlTileMap\PUGIXML\pugixml.cpp">
+      <Filter>rlTileMap\PUGIXML</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="rlTileMap\PUGIXML\readme.txt">
+      <Filter>rlTileMap\PUGIXML</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="rlTileMap\README.md">
+      <Filter>rlTileMap</Filter>
+    </None>
   </ItemGroup>
 </Project>

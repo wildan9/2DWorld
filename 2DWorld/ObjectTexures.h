@@ -1,12 +1,8 @@
 /**********************************************************************************************
 *
-*   raylibExtras * Utilities and Shared Components for Raylib
-*
-*   RLTiles * Tiled map rendering
-*
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022 Jeffery Myers
+*   Copyright (c) 2023-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -28,75 +24,40 @@
 *
 **********************************************************************************************/
 
-
 #pragma once
 
+#include <vector>
 #include "raylib.h"
 
-#include <vector>
-#include <map>
-#include <string>
-
-class RLTileSheet
+struct ObjectTexures : public std::vector<Texture2D>
 {
-public:
-    int ID = 0;
+	// Clear the vector of textures
+	void Clear();
 
-    std::string SheetSource;
-    int StartFrame = 0;
+	// Destructor to clear the vector of textures
+	~ObjectTexures();
 
-    std::vector<Rectangle> Tiles;
-
-    inline Rectangle GetFrame(int tileID)
-    {
-        size_t index = tileID - StartFrame;
-        if (index >= 0 && index < Tiles.size())
-            return Tiles[index];
-
-        return Rectangle{ 0,0,0,0 };
-    }
+	// Load a texture from a file
+	int LoadTextureFile(const char* texture);
 };
 
-enum class RLTiledMapTypes
+inline void ObjectTexures::Clear()
 {
-    Orthographic,
-    Isometric,
-};
+	for (const auto& texture : *this)
+	{
+		UnloadTexture(texture);
+	}
 
-struct RLTile
+	clear();
+}
+
+inline ObjectTexures::~ObjectTexures()
 {
-    bool FlipX = false;
-    bool FilpY = false;
-    bool FlipDiag = false;
+	Clear();
+}
 
-    int16_t TileID = -1;
-};
-
-class RLTileLayer
+inline int ObjectTexures::LoadTextureFile(const char* texture)
 {
-public:
-    int ID = 0;
-    int Width = 0;
-    int Height = 0;
-    int TileWidth = 0;
-    int TileHeight = 0;
-
-    std::vector<RLTile> Tiles;
-
-    Vector2 GetDisplayLocation(int x, int y, RLTiledMapTypes mode);
-};
-
-class RLTileMap
-{
-public:
-    std::map<int, RLTileSheet> Sheets;
-    std::map<int, RLTileLayer> Layers;
-
-    RLTiledMapTypes MapType = RLTiledMapTypes::Orthographic;
-
-    RLTile GetTile(int x, int y, int layerID);
-};
-
-bool RLReadTileMap(const std::string& filename, RLTileMap& map);
-bool RLReadTileMapFromMemory(void* buffer, size_t bufferSize, RLTileMap& map);
-
+	push_back(LoadTexture(texture));
+	return int(size() - 1);
+}

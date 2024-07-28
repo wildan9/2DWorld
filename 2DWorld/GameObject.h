@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2023-2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -26,90 +26,33 @@
 
 #pragma once
 
-#include "raylib.h"
-#include "VectorMath.h"
-#include "Texture2DVec.h"
+#include "Model2D.h"
 
-#include <string>
+#include <memory>
 #include <cassert>
 
 class GameObject
 {
-public:
-	GameObject();
-	virtual ~GameObject();
+protected:
+	Model2D _model;
 
 public:
+	GameObject() : _model{} {}
+	virtual ~GameObject() = default;
+	virtual void Start()  = 0;
+	virtual void Update() = 0;
+	void Draw() const;
+
 	int id = 0;
 	std::string name = "";
 	bool isInView    = 0;
-	bool isOnTriger  = 0;
+	bool isOnTrigger = 0;
 
-public:
-	inline Vector2 GetPosition() const
-	{ 
-		return { _position.x, _position.y }; 
-	}
+	inline math::rec  GetRec() const { return _model.rec; }
+	inline math::vec2 GetPos() const { return _model.trans.pos; }
+	inline float      GetFacing() const { return _model.facing; }
 
-	inline float GetZ() const
-	{
-		return _position.z;
-	}
-	
-	inline void SetPosition(Vector2 position) 
-	{ 
-		_position.x = position.x; 
-		_position.y = position.y; 
-	}
-
-	inline Rectangle GetRectangle() const
-	{
-		return _rectangle;
-	}
-
-	inline float GetFacing() const
-	{
-		return _facing;
-	}
-
-	inline void SetFacing(float facing)
-	{
-		_facing = facing;
-	}
-
-	inline void Draw() const
-	{
-		assert(_pCurrentTexture != nullptr);
-
-		DrawTexturePro(*_pCurrentTexture, _source, _dest, { 0.0f, 0.0f }, _rotation, WHITE);
-	}
-
-public:
-	virtual void Start()  = 0;
-	virtual void Update() = 0;
-
-protected:
-	void Animate(float frameSpeed, float numFrames, float size, const bool animate = 1);
-	
-	inline int GetCurrentFrame()
-	{
-		return _currentFrame;
-	}
-
-protected:
-	Rectangle _source = { 0, 0, 0, 0 };
-	Rectangle _dest   = { 0, 0, 0, 0 };
-	
-	Rectangle _rectangle = { 0, 0, 0, 0 };
-	Vector3	  _position  = { 0.0f, 0.0f, 0.0f }; // Need to use Z-component for layout position
-	
-	Texture2DVec _textures = {};
-	Texture2D*   _pCurrentTexture = nullptr;
-
-	float _rotation = 0.0f;
-	float _facing	= 1.0f;
-
-private:
-	int _currentFrame = 0;
-	int _frameCounter = 0;
+	inline void SetFacing(float facing) { _model.facing = facing; }
+	inline void SetRec(const math::rec& rec) { _model.rec = rec; }
+	inline void SetPos(const math::vec2& pos) { _model.trans.pos = pos; }
 };

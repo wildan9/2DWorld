@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023 Wildan Wijanarko (@wildan9)
+*   Copyright (c) 2024 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -26,58 +26,23 @@
 
 #pragma once
 
-#include <cmath>
-#include <string>
-#include "raylib.h"
+#include "MathLib.h"
+#include "Animator.h"
+#include "ObjectTexures.h"
 
-// Addition operator for Vector2
-inline Vector2 operator +(const Vector2& a, const Vector2& b)
+#include <memory>
+
+struct Model2D
 {
-	return { a.x + b.x, a.y + b.y };
-}
+	float facing;
+	math::rec rec;
+	math::trans2d trans;
+	Texture2D* currTexture;
+	std::unique_ptr<Animator> animator;
+	std::unique_ptr<ObjectTexures> textures;
+};
 
-// Subtraction operator for Vector2
-inline Vector2 operator -(const Vector2& a, const Vector2& b)
-{
-	return { a.x - b.x, a.y - b.y };
-}
-
-// Convert a Vector2 to a string
-inline std::string Vector2ToString(const Vector2& v)
-{
-	return { "x: " + std::to_string((int)v.x) + "  y: " + std::to_string((int)v.y) };
-}
-
-// Calculate the length (magnitude) of a Vector2
-inline float Vector2Length(const Vector2& v)
-{
-	return std::sqrt(v.x * v.x + v.y * v.y);
-}
-
-// Scale a Vector2 by a given factor
-inline Vector2 Vector2Scale(const Vector2& v, float scale)
-{
-	return { v.x * scale, v.y * scale };
-}
-
-// Normalize a Vector2, converting it to a unit vector
-inline Vector2 Vector2Normalize(const Vector2& v)
-{
-	float length = Vector2Length(v);
-	
-	if (length == 0.0f)
-	{
-		return { 0.0f, 0.0f }; // Avoid division by zero
-	}
-
-	return { v.x / length, v.y / length };
-}
-
-// Calculate the Euclidean distance between two Vector2 points
-inline float Vector2Distance(const Vector2& p1, const Vector2& p2)
-{
-	float dx = p2.x - p1.x;
-	float dy = p2.y - p1.y;
-
-	return std::sqrt(dx * dx + dy * dy);
-}
+Model2D LoadModel2D(const std::vector<std::string>& texturesPath = {});
+void UnloadModel2D(Model2D& model);
+void UpdateAnim(Model2D& model, int frameSpeed, int numFrames, bool animate);
+void DrawModel2D(const Model2D& model);

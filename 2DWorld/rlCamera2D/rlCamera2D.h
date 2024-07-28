@@ -27,31 +27,36 @@
 #pragma once
 
 #include "raylib.h"
+#include "MathLib.h"
 
 class RLCamera2D : public ::Camera2D
 {
+    math::vec2 GetDir() const;
+
 public:
     RLCamera2D() : ::Camera2D{ offset = { 0.0f, 0.0f }, target = { 0.0f, 0.0f }, rotation = 0.0f, zoom = 1.0f } {}
     
-    void Update(const Vector2& playerPos, const Rectangle& mapRec, int screenWidth, int screenHeight, bool scrollable);
+    void Update(const math::vec2& playerPos, const math::rec& rec, int screenWidth, int screenHeight, bool scrollable);
 
-    inline ::Camera2D& RLCamera2D::BeginMode()
+    inline ::Camera2D& BeginMode()
     {
         ::BeginMode2D(*this);
         return (*this);
     }
 
-    inline ::Camera2D& RLCamera2D::EndMode()
+    inline ::Camera2D& EndMode()
     {
         ::EndMode2D();
         return (*this);
     }
 
-    inline Rectangle GetRectangle() const
+    inline math::rec GetRec() const
     {
-        return _rectangle;
+        return _rec;
     }
 
 private:
-    Rectangle _rectangle = { 0, 0, 0, 0 };
+    math::rec _rec{ 0, 0, 0, 0 };
+    float _cameraSpeed = 5.5f;
+    bool _freeMode = 0;
 };
