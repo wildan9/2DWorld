@@ -33,7 +33,7 @@ bool showGrid = 0, worldCollision = 1;
 Rectangle GetRecBottomSide(const Rectangle& rec);
 void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right);
 void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int right);
-bool OnTouch(const Player& player, float targetPosX);
+//bool OnTouch(const Player& player, float targetPosX);
 
 RayTiled::TileMap map;
 
@@ -41,22 +41,11 @@ RayTiled::UserLayer* testUserLayer = nullptr;
 
 RayTiled::TileLayer* objectTileLayer = nullptr;
 
-struct PlayerDrawable : RayTiled::TileLayer::Drawable
-{
-    math::vec2 pos{ 300.0f, 300.0f };
-
-    float radius = 8;
-
-    float GetY() override { return pos.y - radius; }
-
-    std::shared_ptr<Player> object;
-};
-
-PlayerDrawable drawablePlayer;
+Player player;
 
 void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
 {
-    drawablePlayer.object->Draw();
+    player.Draw();
 }
 
 void DrawCollisionLayer(RayTiled::ObjectLayer& layer, Camera2D* camera, Vector2 bounds)
@@ -95,7 +84,7 @@ void InitMap()
         objectTileLayer = static_cast<RayTiled::TileLayer*>(playerLayer);
 
         objectTileLayer->CustomDrawalbeFunction = DrawObjectLayerItem;
-        objectTileLayer->AddDrawable(&drawablePlayer);
+        objectTileLayer->AddDrawable(&player);
     }
 
     auto collisionlayer = RayTiled::FindLayer(map, "CollisionObjects");
@@ -114,15 +103,12 @@ void GameplayScene::Start()
 
 void GameplayScene::Update()
 {
-    drawablePlayer.pos.x = drawablePlayer.object->GetPos().x + 15;
-    drawablePlayer.pos.y = drawablePlayer.object->GetPos().y + 15;
-
     // Sort the game objects
     MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
 
     _mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
 
-    _camera.Update(drawablePlayer.object->GetPos(), _mapRec, GetScreenWidth(), GetScreenHeight(), 1);
+    _camera.Update(player.pos, _mapRec, GetScreenWidth(), GetScreenHeight(), 1);
 
     // Our debug button
     if (IsKeyPressed(KEY_H))
@@ -130,14 +116,14 @@ void GameplayScene::Update()
         showGrid = !showGrid;
     }
 
-    drawablePlayer.object->Update();
+    player.Update();
 }
 
 void GameplayScene::LoadResources()
 {
     InitMap();
 
-    drawablePlayer.object = std::make_shared<Player>();
+    player = CreatePlayer();
 
     auto house1 = std::make_shared<House>();
     auto house2 = std::make_shared<House>();
@@ -149,7 +135,7 @@ void GameplayScene::LoadResources()
     _gameObjectsVec =
     {
         // Player
-        drawablePlayer.object,
+        //player.object,
 
         // House
         house1,
@@ -170,7 +156,7 @@ void GameplayScene::LoadResources()
 
 void GameplayScene::FreeResources()
 {
-    
+    DeletePlayer(player);
 }
 
 void GameplayScene::Draw()
@@ -225,13 +211,13 @@ void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int righ
     }
 }
 
-bool OnTouch(const Player& player, float targetPosX)
-{
-    if (player.GetFacing() == 1.0f && player.GetPos().x < targetPosX) return 1;
-    else if (player.GetFacing() == -1.0f && player.GetPos().x > targetPosX) return 1;
-
-    return 0;
-}
+//bool OnTouch(const Player& player, float targetPosX)
+//{
+//    if (player.GetFacing() == 1.0f && player.GetPos().x < targetPosX) return 1;
+//    else if (player.GetFacing() == -1.0f && player.GetPos().x > targetPosX) return 1;
+//
+//    return 0;
+//}
 
 void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadRunning)
 {
@@ -239,13 +225,13 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
     {
         std::lock_guard<std::mutex> lock(_collisionMutex);
 
-        math::vec2 newPos(drawablePlayer.pos);        
-        Rectangle newRec{ newPos.x - drawablePlayer.radius, newPos.y - drawablePlayer.radius, drawablePlayer.radius * 2, drawablePlayer.radius * 2 };
+        math::vec2 newPos(player.pos);        
+        Rectangle newRec{ newPos.x - player.rad, newPos.y - player.rad, player.rad * 2, player.rad * 2 };
         
         std::vector<RayTiled::CollisionRecord> collisions;
-        if (GetCollisions(map, newRec, collisions) == 1)
+        if (GetCollisions(map, newRec, collisions))
         {
-            drawablePlayer.object->Stop();
+            player.pos = newPos;
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(12));

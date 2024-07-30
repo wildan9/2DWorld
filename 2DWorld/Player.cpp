@@ -26,158 +26,95 @@
 
 #include "Player.h"
 
-static float playerSize = 0.7f;
-static const float updateTime = 0.084f;
 static void UpdatePlayerTrans(math::trans2d& trans, math::vec2 pos, float rot, float scl);
 
-Player::Player() 
-	: _isWalk{ 0 }
-	, _isDragonInside{ 0 }
-	, _isOnHorse{ 0 }
-	, _stamina{ 6.0f }
+Player CreatePlayer()
 {
-	Start();
+    Player p;
+    p.pos = math::vec2{ 300.0f, 300.0f };
+    p.rot = 0.0f;
+    p.scl = 1.0f;
+    p.rad = 20.0f;
+    p.facing = 1.0f;
+    p.isWalk = 1;
+    p.rec = math::rec{ p.pos.x, p.pos.y, 15.0f, 15.0f };
+
+    const std::vector<std::string> texturesPaths
+    {
+        "resources/textures/character/friendly_man_idle.png",
+        "resources/textures/character/friendly_man_punch.png",
+        "resources/textures/character/friendly_man_walk.png",
+        "resources/textures/character/horse_riding/idle.png",
+        "resources/textures/character/horse_riding/walk.png"
+    };
+
+    p.model = LoadModel2D(texturesPaths);
+    p.model.animator = std::make_unique<Animator>(CreateAnimator());
+
+    p.model.currTexture = &p.model.textures->at(0);
+
+    return p;
 }
 
-Player::~Player()
+void DeletePlayer(Player& player)
 {
-	UnloadModel2D(_model);
-}
-
-float Player::GetSpeed() const
-{
-	if (_isOnHorse && IsKeyDown(KEY_SPACE) && _dir.length() != 0) return 6.5f;
-	if (IsKeyDown(KEY_SPACE) && _dir.length() != 0 && _stamina > 0) return 4.0f;
-	else return 2.0f;
-}
-
-void Player::Start()
-{
-	const std::vector<std::string> texturesPaths
-	{
-		"resources/textures/character/friendly_man_idle.png",
-		"resources/textures/character/friendly_man_punch.png",
-		"resources/textures/character/friendly_man_walk.png",
-		"resources/textures/character/horse_riding/idle.png",
-		"resources/textures/character/horse_riding/walk.png"
-	};
-
-	_model = LoadModel2D(texturesPaths);
-
-	_pos = { 380.0f, 420.0f };
-	_model.facing = -1.0f;
-
-	_model.currTexture = &_model.textures->at(0);
-
-	_model.rec =
-	{ 
-		_pos.x, _pos.y + 5.0f,
-		playerSize * (float)_model.currTexture->width/NumFrames() * 1.0f * 0.90f,
-		playerSize * (float)_model.currTexture->height * 1.0f * 0.90f
-	};
-
-	_model.animator = std::make_unique<Animator>(CreateAnimator());
+    UnloadModel2D(player.model);
 }
 
 void Player::Update()
 {
-	_dir = math::vec2_input_dir();
+    dir = math::vec2_input_dir();
 
-#ifdef _DEBUG
-	_stamina = 6.0f;
-#else
-	if (!_isDragonInside && !_isOnHorse)
-	{
-		if (IsKeyDown(KEY_SPACE) && dir.length() != 0 && _stamina > 0.0f)
-		{
-			_stamina -= GetFrameTime();
-		}
-		else if (!IsKeyDown(KEY_SPACE) && dir.length() == 0 && _stamina < 6.0f)
-		{
-			_stamina += GetFrameTime();
-		}
-	}
-	else if (_isOnHorse && _stamina < 6.0f)
-	{
-		_stamina += GetFrameTime();
-	}
-#endif
+    float speed = (IsKeyDown(KEY_SPACE)) ? 2.2f : 1.2f;
 
-	_lastPos = _pos;
+    bool isPunch = IsKeyDown(KEY_E);
+    bool isOnHorse = 0;
 
-	if (_dir.length() != 0)
-	{
-		_isWalk = 1;
+    int frameSpeed = 6;
+    int numFrames = 2;
 
-		_pos = _pos - _dir.normalize().scale(GetSpeed());
+    if (dir.length() != 0)
+    {
+        isWalk = 1;
 
-		_model.textures->at(0) = (_isOnHorse) ? _model.textures->at(5) : _model.textures->at(3);
+        pos = pos - dir.normalize().scale(speed);
+        model.textures->at(0) = (isOnHorse) ? model.textures->at(5) : model.textures->at(3);
 
-		if (_dir.x < 0.0f) _model.facing = 1.0f;
-		if (_dir.x > 0.0f) _model.facing = -1.0f;
-	}
-	else
-	{
-		_isWalk = 0;
-		_model.textures->at(0) = (_isOnHorse) ? _model.textures->at(4) : _model.textures->at(1);
-	}
+        if (dir.x < 0.0f) facing = 1.0f;
+        if (dir.x > 0.0f) facing = -1.0f;
 
-	if (!_isOnHorse && IsPunch()) _model.textures->at(0) = _model.textures->at(2);
+        numFrames = 6;
+        frameSpeed = 12;
+    }
+    else
+    {
+        isWalk = 0;
+        model.textures->at(0) = (isOnHorse) ? model.textures->at(4) : model.textures->at(1);
+    }
 
-	playerSize = (_isOnHorse) ? 1.4f : 0.7f;
+    if (!isOnHorse && isPunch) model.textures->at(0) = model.textures->at(2);
 
-	const float recSize = (_isOnHorse) ? 0.9f : 1.0f;
+    rec.x = pos.x;
+    rec.y = pos.y;
 
-	_model.currTexture = &_model.textures->at(0);
+    model.facing = facing;
+    
 
-	if (_isOnHorse && IsKeyDown(KEY_LEFT_CONTROL))
-	{
-		_model.rec = math::rec();
-	}
-	else
-	{
-		_model.rec =
-		{ 
-			_pos.x, _pos.y + 5.0f,
-			playerSize * (float)_model.currTexture->width / NumFrames() * recSize * 0.90f,
-			playerSize * (float)_model.currTexture->height * recSize * 0.90f
-		};
-	}
-
-	bool animate = (_isOnHorse && IsKeyDown(KEY_LEFT_CONTROL)) ? 0 : 1;
-	float rot = (!animate) ? (_dir.length() != 0 ? ((GetFacing() != -1.0f) ? ((GetSpeed() > 5) ? -45.0f : -25.0f) : (GetSpeed() > 5) ? 45.0f : 25.0f) : 0.0f) : 0.0f;
-
-	UpdatePlayerTrans(_model.trans, _pos, rot, playerSize);
-	UpdateAnim(_model, FrameSpeed(), NumFrames(), animate);
+    math::vec2 playerDrawPos = math::vec2{ pos.x - 25.0f, pos.y - 25.0f };
+    UpdatePlayerTrans(model.trans, playerDrawPos, rot, scl);
+    UpdateAnim(model, frameSpeed, numFrames, 1);
 }
 
-int Player::FrameSpeed() const
+void Player::Draw()
 {
-	if (_isOnHorse && !_isWalk) return 6;
-
-	if (_isWalk) return 12;
-	else if (IsPunch() && !_isWalk) return 16;
-
-	return 4;
-}
-
-int Player::NumFrames() const
-{
-	if (_isOnHorse)
-	{
-		if (!_isWalk) return 13;
-		else return 6;
-	}
-
-	if (!_isOnHorse && IsPunch() && !_isWalk) return 3;
-	else if (_isWalk) return 6;
-
-	return 2;
+    //DrawRectangleRec(math::rl_rec(rec), BLUE);
+    DrawCircleLinesV(math::rl_vec(pos), rad, RED);
+    DrawModel2D(model);
 }
 
 static void UpdatePlayerTrans(math::trans2d& trans, math::vec2 pos, float rot, float scl)
 {
-	trans.pos = pos;
-	trans.rot = rot;
-	trans.scl = scl;
+    trans.pos = pos;
+    trans.rot = rot;
+    trans.scl = scl;
 }

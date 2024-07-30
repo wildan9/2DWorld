@@ -118,6 +118,7 @@ void Engine::ShutDown()
     _threads.clear();
 
     _audio.FreeResources();
+    GetCurrentScene()->FreeResources();
 
     CloseAudioDevice();
     CloseWindow();

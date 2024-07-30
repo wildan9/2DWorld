@@ -24,51 +24,27 @@
 *
 **********************************************************************************************/
 
-#pragma once
+#include "MathLib.h"
+#include "Model2D.h"
+#include "rlTileMap/ray_tilemap.h"
 
-#include "GameObject.h"
-
-class Player final : public GameObject
+struct Player : RayTiled::TileLayer::Drawable
 {
-private:
-	int NumFrames()  const;
-	int FrameSpeed() const;
+    Model2D model;
+    math::rec rec;
+    math::vec2 pos;
+    math::vec2 dir;
+    float rot;
+    float scl;
+    float rad;
+    float facing;
+    bool isWalk;
 
-	bool _isDragonInside, _isOnHorse, _isWalk;
-	math::vec2 _pos, _lastPos, _dir;
-	float _stamina;
-
-public:
-	inline void Stop() { _pos = _lastPos; }
-	
-	inline void OnHorse(bool isOnHorse) { _isOnHorse = isOnHorse; }
-	
-	inline bool IsOnHorse() const { return _isOnHorse; }
-	
-	inline bool IsInvisible() const 
-	{ 
-		return IsKeyDown(KEY_LEFT_SHIFT); 
-	}
-	
-	inline bool IsPunch() const 
-	{ 
-		return (IsKeyDown(KEY_E) && !_isWalk); 
-	}
-
-	inline float GetStamina() const 
-	{ 
-		return (_isDragonInside) ? 9.0f : _stamina; 
-	}
-	
-	inline void SetStamina(bool isDragonInside) 
-	{ 
-		_isDragonInside = isDragonInside; 
-	}
-
-	void  Start() override;
-	void  Update() override;
-	float GetSpeed() const;
-
-	~Player();
-	Player();
+    void Update();
+    void Draw();
+    
+    float GetY() override { return pos.y - rad; }
 };
+
+Player CreatePlayer();
+void DeletePlayer(Player& player);
