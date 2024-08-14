@@ -33,6 +33,7 @@ struct Player : RayTiled::TileLayer::Drawable
     Model2D model;
     math::rec rec;
     math::vec2 pos;
+    math::vec2 lastPos;
     math::vec2 dir;
     float rot;
     float scl;

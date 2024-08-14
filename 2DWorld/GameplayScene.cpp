@@ -223,15 +223,11 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
 {
     while (collisionThreadRunning)
     {
-        std::lock_guard<std::mutex> lock(_collisionMutex);
-
-        math::vec2 newPos(player.pos);        
-        Rectangle newRec{ newPos.x - player.rad, newPos.y - player.rad, player.rad * 2, player.rad * 2 };
-        
+        std::lock_guard<std::mutex> lock{ _collisionMutex };
         std::vector<RayTiled::CollisionRecord> collisions;
-        if (GetCollisions(map, newRec, collisions))
+        if (GetCollisions(map, math::rl_rec(player.rec), collisions))
         {
-            player.pos = newPos;
+            player.pos = player.lastPos;
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(12));

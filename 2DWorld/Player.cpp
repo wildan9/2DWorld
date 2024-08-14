@@ -37,7 +37,7 @@ Player CreatePlayer()
     p.rad = 20.0f;
     p.facing = 1.0f;
     p.isWalk = 1;
-    p.rec = math::rec{ p.pos.x, p.pos.y, 15.0f, 15.0f };
+    p.rec = math::rec{ p.pos.x, p.pos.y, 20.0f, 25.0f };
 
     const std::vector<std::string> texturesPaths
     {
@@ -64,6 +64,8 @@ void DeletePlayer(Player& player)
 void Player::Update()
 {
     dir = math::vec2_input_dir();
+
+    lastPos = pos;
 
     float speed = (IsKeyDown(KEY_SPACE)) ? 2.2f : 1.2f;
 
@@ -94,11 +96,10 @@ void Player::Update()
 
     if (!isOnHorse && isPunch) model.textures->at(0) = model.textures->at(2);
 
-    rec.x = pos.x;
-    rec.y = pos.y;
+    rec.x = pos.x - 20.0f;
+    rec.y = pos.y - 20.0f;
 
     model.facing = facing;
-    
 
     math::vec2 playerDrawPos = math::vec2{ pos.x - 25.0f, pos.y - 25.0f };
     UpdatePlayerTrans(model.trans, playerDrawPos, rot, scl);
@@ -107,7 +108,7 @@ void Player::Update()
 
 void Player::Draw()
 {
-    //DrawRectangleRec(math::rl_rec(rec), BLUE);
+    DrawRectangleLines(rec.x, rec.y, rec.w, rec.h, GREEN);
     DrawCircleLinesV(math::rl_vec(pos), rad, RED);
     DrawModel2D(model);
 }
