@@ -42,7 +42,7 @@ struct Player : RayTiled::TileLayer::Drawable
     bool isWalk;
 
     void Update();
-    void Draw();
+    void Draw() const;
     
     float GetY() override { return pos.y - rad; }
 };

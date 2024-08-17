@@ -34,7 +34,6 @@
 #include "Scene.h"
 #include "Player.h"
 #include "Animal.h"
-#include "GameObject.h"
 #include "rlCamera2D/rlCamera2D.h"
 
 #include "Prop.cpp"
@@ -55,5 +54,4 @@ private:
 	float _batsLifetime = 20.0f;
 	std::mutex _collisionMutex{};
 	//std::shared_ptr<Animals> _animals{};
-	std::vector<std::shared_ptr<GameObject>> _gameObjectsVec{};
 };

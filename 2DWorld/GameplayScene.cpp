@@ -30,10 +30,8 @@
 
 bool showGrid = 0, worldCollision = 1;
 
-Rectangle GetRecBottomSide(const Rectangle& rec);
-void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right);
-void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int right);
-//bool OnTouch(const Player& player, float targetPosX);
+static Rectangle GetRecBottomSide(const Rectangle& rec);
+static bool OnTouch(const Player& player, float targetPosX);
 
 RayTiled::TileMap map;
 
@@ -98,14 +96,10 @@ void InitMap()
 void GameplayScene::Start()
 {
     LoadResources();
-    MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
 }
 
 void GameplayScene::Update()
 {
-    // Sort the game objects
-    MergeSort(_gameObjectsVec, 0, _gameObjectsVec.size() - 1);
-
     _mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
 
     _camera.Update(player.pos, _mapRec, GetScreenWidth(), GetScreenHeight(), 1);
@@ -124,34 +118,6 @@ void GameplayScene::LoadResources()
     InitMap();
 
     player = CreatePlayer();
-
-    auto house1 = std::make_shared<House>();
-    auto house2 = std::make_shared<House>();
-    auto house3 = std::make_shared<House>();
-    auto house4 = std::make_shared<House>();
-
-    auto ark = std::make_shared<Ark>();
-
-    _gameObjectsVec =
-    {
-        // Player
-        //player.object,
-
-        // House
-        house1,
-        house2,
-        house3,
-        house4,
-
-        // Ark
-        ark
-
-        // TODO: Add NPC?
-    };
-
-    house2->SetPos({ 1340.0f, 458.0f, });
-    house3->SetPos({ 1730.0f, 170.0f, });
-    house4->SetPos({ 1730.0f, 458.0f, });
 }
 
 void GameplayScene::FreeResources()
@@ -177,47 +143,13 @@ void GameplayScene::Draw()
     DrawText(TextFormat("Tiles Drawn: %d", (int)RayTiled::GetTileDrawStats()), 5, 25, 20, WHITE);
 }
 
-void Merge(std::vector<std::shared_ptr<GameObject>>& vec, int left, int mid, int right)
+static bool OnTouch(const Player& player, float targetPosX)
 {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+    if (player.facing == 1.0f && player.pos.x < targetPosX) return 1;
+    else if (player.facing == -1.0f && player.pos.x > targetPosX) return 1;
 
-    std::vector<std::shared_ptr<GameObject>> leftVec(n1);
-    std::vector<std::shared_ptr<GameObject>> rightVec(n2);
-
-    for (int i = 0; i < n1; i++) leftVec[i] = vec[left + i];
-    for (int i = 0; i < n2; i++) rightVec[i] = vec[mid + 1 + i];
-
-    int i = 0, j = 0, k = left;
-
-    while (i < n1 && j < n2)
-    {
-        if (leftVec[i]->GetPos().y <= rightVec[j]->GetPos().y) vec[k++] = leftVec[i++];
-        else vec[k++] = rightVec[j++];
-    }
-
-    while (i < n1) vec[k++] = leftVec[i++];
-    while (j < n2) vec[k++] = rightVec[j++];
+    return 0;
 }
-
-void MergeSort(std::vector<std::shared_ptr<GameObject>>& vec, int left, int right)
-{
-    if (left < right)
-    {
-        int mid = left + (right - left) / 2;
-        MergeSort(vec, left, mid);
-        MergeSort(vec, mid + 1, right);
-        Merge(vec, left, mid, right);
-    }
-}
-
-//bool OnTouch(const Player& player, float targetPosX)
-//{
-//    if (player.GetFacing() == 1.0f && player.GetPos().x < targetPosX) return 1;
-//    else if (player.GetFacing() == -1.0f && player.GetPos().x > targetPosX) return 1;
-//
-//    return 0;
-//}
 
 void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadRunning)
 {
@@ -236,7 +168,7 @@ void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadR
     return nullptr;
 }
 
-inline Rectangle GetRecBottomSide(const Rectangle& rec)
+static Rectangle GetRecBottomSide(const Rectangle& rec)
 {
     float fullArea = rec.width * rec.height;
     float bottomArea = fullArea - fullArea * 0.85f;

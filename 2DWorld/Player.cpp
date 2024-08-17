@@ -33,11 +33,11 @@ Player CreatePlayer()
     Player p;
     p.pos = math::vec2{ 300.0f, 300.0f };
     p.rot = 0.0f;
-    p.scl = 1.0f;
+    p.scl = 0.6f;
     p.rad = 20.0f;
     p.facing = 1.0f;
     p.isWalk = 1;
-    p.rec = math::rec{ p.pos.x, p.pos.y, 20.0f, 25.0f };
+    p.rec = math::rec{ p.pos.x, p.pos.y, 10.0f, 15.0f };
 
     const std::vector<std::string> texturesPaths
     {
@@ -106,10 +106,10 @@ void Player::Update()
     UpdateAnim(model, frameSpeed, numFrames, 1);
 }
 
-void Player::Draw()
+void Player::Draw() const
 {
     DrawRectangleLines(rec.x, rec.y, rec.w, rec.h, GREEN);
-    DrawCircleLinesV(math::rl_vec(pos), rad, RED);
+    //DrawCircleLinesV(math::rl_vec(pos), rad, RED);
     DrawModel2D(model);
 }
 

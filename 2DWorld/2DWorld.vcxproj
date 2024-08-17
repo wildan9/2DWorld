@@ -336,7 +336,6 @@
     <ClCompile Include="Animal.cpp" />
     <ClCompile Include="2DWorld.cpp" />
     <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameplayScene.cpp" />
     <ClCompile Include="Model2D.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -355,7 +354,6 @@
     <ClInclude Include="Animal.h" />
     <ClInclude Include="Animator.h" />
     <ClInclude Include="Audio.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameplayScene.h" />
     <ClInclude Include="Model2D.h" />
     <ClInclude Include="Player.h" />
