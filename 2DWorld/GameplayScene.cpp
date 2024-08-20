@@ -100,7 +100,7 @@ void GameplayScene::Start()
 
 void GameplayScene::Update()
 {
-    _mapRec = { 10.0f, 10.0f, 61.5f * 61.5f / 2.0f, 61.5f * 61.5f / 2.0f };
+    _mapRec = { 10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f };
 
     _camera.Update(player.pos, _mapRec, GetScreenWidth(), GetScreenHeight(), 1);
 
@@ -129,6 +129,7 @@ void GameplayScene::Draw()
 {
     _camera.BeginMode();
         RayTiled::DrawTileMap(map, &_camera);
+        DrawRectangleLinesEx(math::rl_rec(_mapRec), 12, BLACK);
     _camera.EndMode();
 
     if (showGrid)
