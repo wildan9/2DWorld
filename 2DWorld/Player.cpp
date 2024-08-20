@@ -34,7 +34,7 @@ Player CreatePlayer()
     p.pos = math::vec2{ 300.0f, 300.0f };
     p.rot = 0.0f;
     p.scl = 0.6f;
-    p.rad = 20.0f;
+    p.rad = 10.0f;
     p.facing = 1.0f;
     p.isWalk = 1;
     p.rec = math::rec{ p.pos.x, p.pos.y, 10.0f, 15.0f };
@@ -96,12 +96,12 @@ void Player::Update()
 
     if (!isOnHorse && isPunch) model.textures->at(0) = model.textures->at(2);
 
-    rec.x = pos.x - 20.0f;
-    rec.y = pos.y - 20.0f;
+    rec.x = pos.x - 10.0f;
+    rec.y = pos.y - 10.0f;
 
     model.facing = facing;
 
-    math::vec2 playerDrawPos = math::vec2{ pos.x - 25.0f, pos.y - 25.0f };
+    math::vec2 playerDrawPos = math::vec2{ pos.x - 15.0f, pos.y - 15.0f };
     UpdatePlayerTrans(model.trans, playerDrawPos, rot, scl);
     UpdateAnim(model, frameSpeed, numFrames, 1);
 }
@@ -109,7 +109,7 @@ void Player::Update()
 void Player::Draw() const
 {
     DrawRectangleLines(rec.x, rec.y, rec.w, rec.h, GREEN);
-    //DrawCircleLinesV(math::rl_vec(pos), rad, RED);
+    DrawCircleLinesV(math::rl_vec(pos), rad, RED);
     DrawModel2D(model);
 }
 

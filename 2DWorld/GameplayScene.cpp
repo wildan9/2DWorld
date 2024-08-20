@@ -89,7 +89,7 @@ void InitMap()
     if (collisionlayer && collisionlayer->Type == RayTiled::TileLayerType::Object)
     {
         static_cast<RayTiled::ObjectLayer*>(collisionlayer)->DrawFunc = DrawCollisionLayer;
-        static_cast<RayTiled::ObjectLayer*>(collisionlayer)->CheckForCollisions = true;
+        static_cast<RayTiled::ObjectLayer*>(collisionlayer)->CheckForCollisions = 1;
     }
 }
 
