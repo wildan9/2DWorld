@@ -28,6 +28,38 @@
 
 static void UpdatePlayerTrans(math::trans2d& trans, math::vec2 pos, float rot, float scl);
 
+static struct
+{
+    float dt;
+    const float ut = 0.084f;
+
+    Sound landStep;
+
+    inline void Load()
+    {
+        landStep = LoadSound("resources/sounds/land_step.wav");
+    }
+
+    inline void Unload()
+    {
+        UnloadSound(landStep);
+    }
+
+    inline void Play(const char* sound, float t)
+    {
+        if (sound == "land")
+        {
+            dt += GetFrameTime() * t;
+            if (dt >= ut)
+            {
+                dt = 0.0f;
+                PlaySound(landStep);
+            }
+        }
+    }
+
+} playerSound;
+
 Player CreatePlayer()
 {
     Player p;
@@ -53,12 +85,15 @@ Player CreatePlayer()
 
     p.model.currTexture = &p.model.textures->at(0);
 
+    playerSound.Load();
+
     return p;
 }
 
 void DeletePlayer(Player& player)
 {
     UnloadModel2D(player.model);
+    playerSound.Unload();
 }
 
 void Player::Update()
@@ -87,6 +122,9 @@ void Player::Update()
 
         numFrames = 6;
         frameSpeed = 12;
+
+        float st = (speed > 2.0f) ? 0.33f : 0.23f;
+        playerSound.Play("land", st);
     }
     else
     {
@@ -94,7 +132,12 @@ void Player::Update()
         model.textures->at(0) = (isOnHorse) ? model.textures->at(4) : model.textures->at(1);
     }
 
-    if (!isOnHorse && isPunch) model.textures->at(0) = model.textures->at(2);
+    if (!isWalk && isPunch)
+    {
+        model.textures->at(0) = model.textures->at(2);
+        frameSpeed = 16;
+        numFrames = 3;
+    }
 
     rec.x = pos.x - 10.0f;
     rec.y = pos.y - 10.0f;
