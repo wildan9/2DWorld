@@ -23,3 +23,69 @@
 *   SOFTWARE.
 *
 **********************************************************************************************/
+
+#include "Animal.h"
+
+Bat CreateBat(math::vec2 pos)
+{
+    Bat b;
+    b.pos = pos;
+    b.speed = math::vec2{ 0.7f, 0.9f };
+    b.rot = 0.0f;
+    b.scl = 0.6f;
+    b.rad = 10.0f;
+    b.facing = 1.0f;
+
+    const std::vector<std::string> texturesPaths
+    {
+        "resources/textures/animals/bat/fly.png"
+    };
+
+    b.model = LoadModel2D(texturesPaths);
+    b.model.animator = std::make_unique<Animator>(CreateAnimator());
+
+    b.model.currTexture = &b.model.textures->at(0);
+
+    return b;
+}
+
+void DeleteBat(Bat& bat)
+{
+    UnloadModel2D(bat.model);
+}
+
+void Bat::Update()
+{
+    int frameSpeed = 10;
+    int numFrames = 6;
+    model.textures->at(0) = model.textures->at(1);
+    math::vec2 playerDrawPos = math::vec2{ pos.x - 15.0f, pos.y - 15.0f };
+
+    model.trans.pos = pos;
+    model.trans.scl = 1.0f;
+    model.trans.rot = 0.0f;
+
+    const float flyRadius = 1200.0f;
+
+    if (pos.x >= flyRadius || pos.x <= 0)
+    {
+        speed.x *= -1.0f;
+        facing *= -1.0f;
+    }
+    if (pos.y >= flyRadius || pos.y <= 0)
+    {
+        speed.y *= -1.0f;
+    }
+
+    pos = pos + speed;
+
+    model.facing = facing;
+
+    UpdateAnim(model, frameSpeed, numFrames, 1);
+}
+
+void Bat::Draw() const
+{
+    DrawRectangleLines(pos.x, pos.y, 15, 15, GREEN);
+    DrawModel2D(model);
+}

@@ -37,12 +37,4 @@ struct Animator
     std::array<math::rec, 2> recData;
 };
 
-inline Animator CreateAnimator()
-{
-    Animator animator{};
-    animator.currFrame    = 0;
-    animator.frameCounter = 0;
-    animator.recData      = std::array<math::rec, 2>();
-
-    return animator;
-}
+Animator CreateAnimator();

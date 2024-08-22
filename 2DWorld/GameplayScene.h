@@ -54,4 +54,5 @@ private:
 	float _batsLifetime = 20.0f;
 	std::mutex _collisionMutex{};
 	//std::shared_ptr<Animals> _animals{};
+	std::array<Bat, 10> _bats{};
 };

@@ -23,3 +23,22 @@
 *   SOFTWARE.
 *
 **********************************************************************************************/
+
+#include "Model2D.h"
+
+struct Bat
+{
+    Model2D model;
+    math::vec2 speed;
+    math::vec2 pos;
+    float rot;
+    float scl;
+    float rad;
+    float facing;
+
+    void Update();
+    void Draw() const;
+};
+
+Bat CreateBat(math::vec2 pos);
+void DeleteBat(Bat& bat);

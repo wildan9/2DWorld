@@ -116,6 +116,9 @@
     <ClCompile Include="rlTileMap\PUGIXML\pugixml.cpp">
       <Filter>rlTileMap\PUGIXML</Filter>
     </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="rlTileMap\PUGIXML\readme.txt">

@@ -111,6 +111,11 @@ void GameplayScene::Update()
     }
 
     player.Update();
+    
+    for (auto& bat : _bats)
+    {
+        bat.Update();
+    }
 }
 
 void GameplayScene::LoadResources()
@@ -118,10 +123,20 @@ void GameplayScene::LoadResources()
     InitMap();
 
     player = CreatePlayer();
+
+    for (int i = 0; i < 10; i++)
+    {
+        _bats[i] = CreateBat(math::vec2{ 100.0f + i * 14, 100.0f + i * 12 });
+    }
 }
 
 void GameplayScene::FreeResources()
 {
+    for (auto& bat : _bats)
+    {
+        DeleteBat(bat);
+    }
+    
     DeletePlayer(player);
 }
 
@@ -130,6 +145,10 @@ void GameplayScene::Draw()
     _camera.BeginMode();
         RayTiled::DrawTileMap(map, &_camera);
         DrawRectangleLinesEx(math::rl_rec(_mapRec), 12, BLACK);
+        for (const auto& bat : _bats)
+        {
+            bat.Draw();
+        }
     _camera.EndMode();
 
     if (showGrid)

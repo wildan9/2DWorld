@@ -335,6 +335,7 @@
   <ItemGroup>
     <ClCompile Include="Animal.cpp" />
     <ClCompile Include="2DWorld.cpp" />
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="GameplayScene.cpp" />
     <ClCompile Include="Model2D.cpp" />
