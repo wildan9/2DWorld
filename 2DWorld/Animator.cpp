@@ -36,15 +36,15 @@ Animator CreateAnimator()
     return a;
 }
 
-void UpdateAnim(Animator* animator, Texture2D texture, math::trans2d trans, float facing, int frameSpeed, int numFrames, bool animate)
+void UpdateAnim(Animator* animator, const Texture2D& texture, math::trans2d trans, float facing, int frameSpeed, int numFrames, bool animate)
 {
     if (animator == nullptr) return;
 
     auto* pAnim = animator;
 
     pAnim->recData[0] = math::rec{
-        pAnim->currFrame * (float)texture.width / numFrames,
-        0.0f, facing * (float)texture.width / numFrames,
+        pAnim->currFrame * (float)texture.width/numFrames,
+        0.0f, facing * (float)texture.width/numFrames,
         (float)texture.height
     };
 

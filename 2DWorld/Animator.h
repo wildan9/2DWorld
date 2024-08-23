@@ -38,4 +38,4 @@ struct Animator
 };
 
 Animator CreateAnimator();
-void UpdateAnim(Animator* animator, Texture2D texture, math::trans2d trans, float facing, int frameSpeed, int numFrames, bool animate);
+void UpdateAnim(Animator* animator, const Texture2D& texture, math::trans2d trans, float facing, int frameSpeed, int numFrames, bool animate);
