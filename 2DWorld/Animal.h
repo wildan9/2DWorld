@@ -33,7 +33,6 @@ struct Bat
     math::vec2 pos;
     float rot;
     float scl;
-    float rad;
     float facing;
 
     void Update();

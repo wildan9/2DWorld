@@ -33,7 +33,6 @@ Bat CreateBat(math::vec2 pos)
     b.speed = math::vec2{ 0.7f, 0.9f };
     b.rot = 0.0f;
     b.scl = 0.6f;
-    b.rad = 10.0f;
     b.facing = 1.0f;
 
     const std::vector<std::string> texturesPaths
@@ -59,7 +58,6 @@ void Bat::Update()
     int frameSpeed = 10;
     int numFrames = 6;
     model.textures->at(0) = model.textures->at(1);
-    math::vec2 playerDrawPos = math::vec2{ pos.x - 15.0f, pos.y - 15.0f };
 
     model.trans.pos = pos;
     model.trans.scl = 1.0f;
@@ -81,7 +79,7 @@ void Bat::Update()
 
     model.facing = facing;
 
-    UpdateAnim(model, frameSpeed, numFrames, 1);
+    UpdateAnim(model.animator.get(), *model.currTexture, model.trans, facing, frameSpeed, numFrames, 1);
 }
 
 void Bat::Draw() const

@@ -44,5 +44,4 @@ struct Model2D
 
 Model2D LoadModel2D(const std::vector<std::string>& texturesPath = {});
 void UnloadModel2D(Model2D& model);
-void UpdateAnim(Model2D& model, int frameSpeed, int numFrames, bool animate);
 void DrawModel2D(const Model2D& model);

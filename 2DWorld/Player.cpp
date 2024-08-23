@@ -146,7 +146,7 @@ void Player::Update()
 
     math::vec2 playerDrawPos = math::vec2{ pos.x - 15.0f, pos.y - 15.0f };
     UpdatePlayerTrans(model.trans, playerDrawPos, rot, scl);
-    UpdateAnim(model, frameSpeed, numFrames, 1);
+    UpdateAnim(model.animator.get(), *model.currTexture, model.trans, facing, frameSpeed, numFrames, 1);
 }
 
 void Player::Draw() const

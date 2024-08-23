@@ -57,36 +57,6 @@ void UnloadModel2D(Model2D& model)
     }
 }
 
-void UpdateAnim(Model2D& model, int frameSpeed, int numFrames, bool animate)
-{
-    if (model.animator == nullptr) return;
-
-    auto* pAnim = model.animator.get();
-    auto* pTex  = model.currTexture;
-
-    pAnim->recData[0] = math::rec{
-        pAnim->currFrame * (float)pTex->width/numFrames,
-        0.0f, model.facing * (float)pTex->width/numFrames,
-        (float)pTex->height
-    };
-
-    pAnim->recData[1] = math::rec{
-        model.trans.pos.x, model.trans.pos.y,
-        model.trans.scl * (float)pTex->width/numFrames,
-        model.trans.scl * (float)pTex->height
-    };
-
-    if (!animate) return;
-
-    pAnim->frameCounter++;
-    if (pAnim->frameCounter >= (GetFPS()/frameSpeed))
-    {
-        pAnim->frameCounter = 0;
-        pAnim->currFrame++;
-        if (pAnim->currFrame > numFrames) pAnim->currFrame = 0;
-    }
-}
-
 void DrawModel2D(const Model2D& model)
 {
     const Animator* animator = model.animator.get();
