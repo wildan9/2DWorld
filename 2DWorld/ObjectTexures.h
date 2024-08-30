@@ -34,9 +34,6 @@ struct ObjectTexures : public std::vector<Texture2D>
 	// Clear the vector of textures
 	void Clear();
 
-	// Destructor to clear the vector of textures
-	~ObjectTexures();
-
 	// Load a texture from a file
 	int LoadTextureFile(const char* texture);
 };
@@ -49,11 +46,6 @@ inline void ObjectTexures::Clear()
 	}
 
 	clear();
-}
-
-inline ObjectTexures::~ObjectTexures()
-{
-	Clear();
 }
 
 inline int ObjectTexures::LoadTextureFile(const char* texture)

@@ -335,7 +335,6 @@
   <ItemGroup>
     <ClCompile Include="Animal.cpp" />
     <ClCompile Include="2DWorld.cpp" />
-    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="GameplayScene.cpp" />
     <ClCompile Include="Model2D.cpp" />
@@ -353,7 +352,6 @@
   <ItemGroup>
     <ClInclude Include="2DWorld.h" />
     <ClInclude Include="Animal.h" />
-    <ClInclude Include="Animator.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="GameplayScene.h" />
     <ClInclude Include="Model2D.h" />

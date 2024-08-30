@@ -81,7 +81,7 @@ Player CreatePlayer()
     };
 
     p.model = LoadModel2D(texturesPaths);
-    p.model.animator = std::make_unique<Animator>(CreateAnimator());
+    p.model.animator = CreateAnimator();
 
     p.model.currTexture = &p.model.textures->at(0);
 
@@ -115,7 +115,7 @@ void Player::Update()
         isWalk = 1;
 
         pos = pos - dir.normalize().scale(speed);
-        model.textures->at(0) = (isOnHorse) ? model.textures->at(5) : model.textures->at(3);
+        animCurrFrame = (isOnHorse) ? 5 : 3;
 
         if (dir.x < 0.0f) facing = 1.0f;
         if (dir.x > 0.0f) facing = -1.0f;
@@ -129,12 +129,13 @@ void Player::Update()
     else
     {
         isWalk = 0;
-        model.textures->at(0) = (isOnHorse) ? model.textures->at(4) : model.textures->at(1);
+        animCurrFrame = (isOnHorse) ? 4 : 1;
     }
 
     if (!isWalk && isPunch)
     {
         model.textures->at(0) = model.textures->at(2);
+        animCurrFrame = 2;
         frameSpeed = 16;
         numFrames = 3;
     }
@@ -142,11 +143,9 @@ void Player::Update()
     rec.x = pos.x - 10.0f;
     rec.y = pos.y - 10.0f;
 
-    model.facing = facing;
-
     math::vec2 playerDrawPos = math::vec2{ pos.x - 15.0f, pos.y - 15.0f };
     UpdatePlayerTrans(model.trans, playerDrawPos, rot, scl);
-    UpdateAnim(model.animator.get(), *model.currTexture, model.trans, facing, frameSpeed, numFrames, 1);
+    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrFrame, 1);
 }
 
 void Player::Draw() const

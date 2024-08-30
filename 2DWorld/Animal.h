@@ -31,7 +31,7 @@ struct Bat
     Model2D model;
     math::vec2 speed;
     math::vec2 pos;
-    float rot;
+    int animCurrFrame;
     float scl;
     float facing;
 

@@ -34,11 +34,13 @@ struct Player : RayTiled::TileLayer::Drawable
     math::vec2 pos;
     math::vec2 lastPos;
     math::vec2 dir;
+    
+    int animCurrFrame;
+    float facing;
+    bool isWalk;
     float rot;
     float scl;
     float rad;
-    float facing;
-    bool isWalk;
 
     void Update();
     void Draw() const;

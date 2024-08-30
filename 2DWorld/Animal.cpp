@@ -31,7 +31,6 @@ Bat CreateBat(math::vec2 pos)
     Bat b;
     b.pos = pos;
     b.speed = math::vec2{ 0.7f, 0.9f };
-    b.rot = 0.0f;
     b.scl = 0.6f;
     b.facing = 1.0f;
 
@@ -41,7 +40,7 @@ Bat CreateBat(math::vec2 pos)
     };
 
     b.model = LoadModel2D(texturesPaths);
-    b.model.animator = std::make_unique<Animator>(CreateAnimator());
+    b.model.animator = CreateAnimator();
 
     b.model.currTexture = &b.model.textures->at(0);
 
@@ -57,7 +56,8 @@ void Bat::Update()
 {
     int frameSpeed = 10;
     int numFrames = 6;
-    model.textures->at(0) = model.textures->at(1);
+
+    animCurrFrame = 1;
 
     model.trans.pos = pos;
     model.trans.scl = 1.0f;
@@ -77,9 +77,7 @@ void Bat::Update()
 
     pos = pos + speed;
 
-    model.facing = facing;
-
-    UpdateAnim(model.animator.get(), *model.currTexture, model.trans, facing, frameSpeed, numFrames, 1);
+    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrFrame, 1);
 }
 
 void Bat::Draw() const

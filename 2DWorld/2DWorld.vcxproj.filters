@@ -54,9 +54,6 @@
     <ClInclude Include="Animal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Animator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Model2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -115,9 +112,6 @@
     </ClCompile>
     <ClCompile Include="rlTileMap\PUGIXML\pugixml.cpp">
       <Filter>rlTileMap\PUGIXML</Filter>
-    </ClCompile>
-    <ClCompile Include="Animator.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

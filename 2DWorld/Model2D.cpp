@@ -29,24 +29,22 @@
 
 Model2D LoadModel2D(const std::vector<std::string>& texturesPath)
 {
-    Model2D model{};
-    model.facing = 1.0f;
-    model.rec = math::rec();
-    model.trans = math::trans2d();
-    model.textures = std::make_unique<ObjectTexures>();
+    Model2D m;
+    m.trans = math::trans2d();
+    m.textures = std::make_unique<ObjectTexures>();
 
     if (!texturesPath.empty())
     {
-        model.textures->push_back(Texture2D());
+        m.textures->push_back(Texture2D());
 
         for (auto& p : texturesPath)
         {
             if (p == "") continue;           
-            model.textures->LoadTextureFile(p.c_str());
+            m.textures->LoadTextureFile(p.c_str());
         }
     }
 
-    return model;
+    return m;
 }
 
 void UnloadModel2D(Model2D& model)
@@ -57,13 +55,57 @@ void UnloadModel2D(Model2D& model)
     }
 }
 
+std::unique_ptr<Animator> CreateAnimator()
+{
+    auto a = std::make_unique<Animator>();
+    a->currFrame = 0;
+    a->frameCounter = 0;
+    a->recFrame.recData = std::array<math::rec, 2>();
+    a->recFrame.facing = 1.0f;
+
+    return a;
+}
+
+void UpdateAnim(Model2D& model, float facing, int frameSpeed, int numFrames, int frame, bool animate)
+{
+    auto animator = model.animator.get();
+
+    if (animator == nullptr) return;
+    
+    math::trans2d trans = model.trans;
+    model.currTexture = &model.textures->at(frame);
+    Texture2D texture = *model.currTexture;
+
+    animator->recFrame.recData[0] = math::rec{
+        animator->currFrame * (float)texture.width/numFrames,
+        0.0f, facing * (float)texture.width/numFrames,
+        (float)texture.height
+    };
+
+    animator->recFrame.recData[1] = math::rec{
+        trans.pos.x, trans.pos.y,
+        trans.scl * (float)texture.width/numFrames,
+        trans.scl * (float)texture.height
+    };
+
+    if (!animate) return;
+
+    animator->frameCounter++;
+    if (animator->frameCounter >= (GetFPS()/frameSpeed))
+    {
+        animator->frameCounter = 0;
+        animator->currFrame++;
+        if (animator->currFrame > numFrames) animator->currFrame = 0;
+    }
+}
+
 void DrawModel2D(const Model2D& model)
 {
     const Animator* animator = model.animator.get();
 
-    math::vec2 ori{};
-    math::rec  src{};
-    math::rec  dst{};
+    math::vec2 ori;
+    math::rec  src;
+    math::rec  dst;
 
     if (model.currTexture == nullptr) return;
 
@@ -79,8 +121,8 @@ void DrawModel2D(const Model2D& model)
     else
     {
         ori = math::vec2();
-        src = animator->recData[0];
-        dst = animator->recData[1];
+        src = animator->recFrame.recData[0];
+        dst = animator->recFrame.recData[1];
     }
 
     if (tex.id > 0)

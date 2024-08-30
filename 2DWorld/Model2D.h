@@ -27,21 +27,35 @@
 #pragma once
 
 #include "MathLib.h"
-#include "Animator.h"
 #include "ObjectTexures.h"
 
+#include <array>
 #include <memory>
+
+struct RecFrame
+{
+    float facing;
+    std::array<math
+    ::rec, 2> recData;
+};
+
+struct Animator
+{
+    int currFrame;
+    int frameCounter;
+    RecFrame recFrame;
+};
 
 struct Model2D
 {
-	float facing;
-	math::rec rec;
 	math::trans2d trans;
 	Texture2D* currTexture;
 	std::unique_ptr<Animator> animator;
 	std::unique_ptr<ObjectTexures> textures;
 };
 
+std::unique_ptr<Animator> CreateAnimator();
 Model2D LoadModel2D(const std::vector<std::string>& texturesPath = {});
+void UpdateAnim(Model2D& model, float facing, int frameSpeed, int numFrames, int frame, bool animate);
 void UnloadModel2D(Model2D& model);
 void DrawModel2D(const Model2D& model);
