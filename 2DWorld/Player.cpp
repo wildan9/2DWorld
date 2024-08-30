@@ -81,7 +81,7 @@ Player CreatePlayer()
     };
 
     p.model = LoadModel2D(texturesPaths);
-    p.model.animator = CreateAnimator();
+    p.model.animData = CreateAnimationData();
 
     p.model.currTexture = &p.model.textures->at(0);
 

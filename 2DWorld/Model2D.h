@@ -39,7 +39,7 @@ struct RecFrame
     ::rec, 2> recData;
 };
 
-struct Animator
+struct AnimationData
 {
     int currFrame;
     int frameCounter;
@@ -48,13 +48,13 @@ struct Animator
 
 struct Model2D
 {
-	math::trans2d trans;
-	Texture2D* currTexture;
-	std::unique_ptr<Animator> animator;
-	std::unique_ptr<ObjectTexures> textures;
+    math::trans2d trans;
+    Texture2D* currTexture;
+    std::unique_ptr<AnimationData> animData;
+    std::unique_ptr<ObjectTexures> textures;
 };
 
-std::unique_ptr<Animator> CreateAnimator();
+std::unique_ptr<AnimationData> CreateAnimationData();
 Model2D LoadModel2D(const std::vector<std::string>& texturesPath = {});
 void UpdateAnim(Model2D& model, float facing, int frameSpeed, int numFrames, int frame, bool animate);
 void UnloadModel2D(Model2D& model);
