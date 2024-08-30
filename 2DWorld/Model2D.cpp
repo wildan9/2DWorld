@@ -101,7 +101,7 @@ void UpdateAnim(Model2D& model, float facing, int frameSpeed, int numFrames, int
 
 void DrawModel2D(const Model2D& model)
 {
-    const AnimationData* animationData = model.animData.get();
+    const AnimationData* animData = model.animData.get();
 
     math::vec2 ori;
     math::rec  src;
@@ -112,7 +112,7 @@ void DrawModel2D(const Model2D& model)
     Texture2D& tex = *model.currTexture;
     float rot = model.trans.rot;
 
-    if (animationData == nullptr)
+    if (animData == nullptr)
     {
         ori = math::vec2();
         src = { 0.0f, 0.0f, (float)tex.width, (float)tex.height };
@@ -121,8 +121,8 @@ void DrawModel2D(const Model2D& model)
     else
     {
         ori = math::vec2();
-        src = animationData->recFrame.recData[0];
-        dst = animationData->recFrame.recData[1];
+        src = animData->recFrame.recData[0];
+        dst = animData->recFrame.recData[1];
     }
 
     if (tex.id > 0)
