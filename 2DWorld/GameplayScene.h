@@ -26,8 +26,6 @@
 
 #pragma once
 
-#include <mutex>
-#include <thread>
 #include <atomic>
 #include <vector>
 
@@ -40,19 +38,18 @@
 
 class GameplayScene : public Scene
 {
+	void CollisionChecking();
+
 public:
 	void Start() override;
 	void Update() override;
 	void LoadResources() override;
 	void FreeResources() override;
 	void Draw() override;
-	void* CollisionChecking(const std::atomic<bool>& collisionThreadRunning);
 
 private:
 	RLCamera2D _camera{};
 	math::rec _mapRec{};
 	float _batsLifetime = 20.0f;
-	std::mutex _collisionMutex{};
-	//std::shared_ptr<Animals> _animals{};
 	std::array<Bat, 10> _bats{};
 };

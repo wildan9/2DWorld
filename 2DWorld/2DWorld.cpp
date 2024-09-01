@@ -46,8 +46,6 @@ void Engine::Start()
     SetActiveScene(std::make_shared<TitleScene>());
 
     _audio.LoadResources();
-
-    _threads.push_back(std::thread(&Audio::Update, _audio, std::ref(_currentBGM), std::ref(_isEngineShutDown)));
 }
 
 void Engine::Update()
@@ -64,9 +62,7 @@ void Engine::Update()
 
             worldState = WorldStates::GAMEPLAY;
 
-            _collisionThreadRunning = 1;
-
-            _threads.push_back(std::thread(&GameplayScene::CollisionChecking, gameplayScene, std::ref(_collisionThreadRunning)));
+            _currentBGM = "bird";
         }
 
         GetCurrentScene()->Update();
@@ -75,6 +71,7 @@ void Engine::Update()
     case WorldStates::GAMEPLAY:
     {
         GetCurrentScene()->Update();
+        _audio.Update(_currentBGM);
     } break;
     default:
         break;
@@ -102,21 +99,6 @@ void Engine::Render()
 
 void Engine::ShutDown()
 {
-    _isEngineShutDown = 1;
-
-    // Signal the collision checking thread to stop
-    _collisionThreadRunning = 0;
-
-    for (auto& thread : _threads)
-    {
-        if (thread.joinable())
-        {
-            thread.join();
-        }
-    }
-
-    _threads.clear();
-
     _audio.FreeResources();
     GetCurrentScene()->FreeResources();
 

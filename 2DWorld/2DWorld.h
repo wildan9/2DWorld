@@ -51,7 +51,4 @@ public:
 private:
 	Audio _audio{};
 	std::string _currentBGM{};
-	std::vector<std::thread> _threads{};
-	std::atomic<bool> _isEngineShutDown = 0;
-	std::atomic<bool> _collisionThreadRunning = 0;
 };

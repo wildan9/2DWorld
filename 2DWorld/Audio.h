@@ -41,7 +41,7 @@ class Audio
 	void UnloadBGM();
 
 public:
-	void Update(std::string& bgm, std::atomic<bool>& isEngineShutDown);
+	void Update(std::string& bgm);
 	void LoadResources();
 	void FreeResources();
 

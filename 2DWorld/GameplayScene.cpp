@@ -116,6 +116,8 @@ void GameplayScene::Update()
     {
         bat.Update();
     }
+
+    CollisionChecking();
 }
 
 void GameplayScene::LoadResources()
@@ -171,21 +173,13 @@ static bool OnTouch(const Player& player, float targetPosX)
     return 0;
 }
 
-void* GameplayScene::CollisionChecking(const std::atomic<bool>& collisionThreadRunning)
+void GameplayScene::CollisionChecking()
 {
-    while (collisionThreadRunning)
+    std::vector<RayTiled::CollisionRecord> collisions;
+    if (GetCollisions(map, math::rl_rec(player.rec), collisions))
     {
-        std::lock_guard<std::mutex> lock{ _collisionMutex };
-        std::vector<RayTiled::CollisionRecord> collisions;
-        if (GetCollisions(map, math::rl_rec(player.rec), collisions))
-        {
-            player.pos = player.lastPos;
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(12));
+        player.pos = player.lastPos;
     }
-
-    return nullptr;
 }
 
 static Rectangle GetRecBottomSide(const Rectangle& rec)
