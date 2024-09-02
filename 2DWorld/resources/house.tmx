@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="24" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="17">
+ <tileset firstgid="1" name="Roguelike" tilewidth="16" tileheight="16" spacing="1" tilecount="1767" columns="57">
+  <image source="Spritesheet/roguelikeSheet_transparent.png" width="968" height="526"/>
+ </tileset>
+ <layer id="1" name="Ground/terrain" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJybxMrAMJlGeAoQnwbiMzTCZ0fNHzV/1PxR80fNHzV/1PxhaT4LG4TNykZ9zAbEAL+cvy4=
+  </data>
+ </layer>
+ <layer id="2" name="Ground overlay" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgiD/r25IQAEAfBkJAAAB
+  </data>
+ </layer>
+ <layer id="3" name="Objects" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgiD/r25IQAEAfBkJAAAB
+  </data>
+ </layer>
+ <layer id="7" name="Object Overlay" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgiD/r25IQAEAfBkJAAAB
+  </data>
+ </layer>
+ <layer id="4" name="Doors/windows/roof" width="24" height="24">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgiD/r25IQAEAfBkJAAAB
+  </data>
+ </layer>
+ <objectgroup id="8" name="CollisionObjects"/>
+</map>

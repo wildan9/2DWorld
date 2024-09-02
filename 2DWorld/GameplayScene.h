@@ -30,6 +30,7 @@
 #include <vector>
 
 #include "Scene.h"
+#include "Timer.h"
 #include "Player.h"
 #include "Animal.h"
 #include "rlCamera2D/rlCamera2D.h"

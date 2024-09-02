@@ -28,7 +28,7 @@
 #include "rlTileMap/ray_tilemap.h"
 #include "rlgl.h"
 
-bool showGrid = 0, worldCollision = 1;
+bool showGrid = 0, worldCollision = 1, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
 
 static Rectangle GetRecBottomSide(const Rectangle& rec);
 static bool OnTouch(const Player& player, float targetPosX);
@@ -39,10 +39,15 @@ RayTiled::UserLayer* testUserLayer = nullptr;
 
 RayTiled::TileLayer* objectTileLayer = nullptr;
 
+const math::rec houseDoor{ 484.0f, 625.0f, 9, 9 };
+
 Player player;
+
+Timer mapSwitchTimer;
 
 void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
 {
+    DrawRectangleLines(houseDoor.x, houseDoor.y, houseDoor.w, houseDoor.h, RED);
     player.Draw();
 }
 
@@ -70,9 +75,34 @@ void DrawCollisionLayer(RayTiled::ObjectLayer& layer, Camera2D* camera, Vector2 
     }
 }
 
-void InitMap()
+void InitWorldMap()
 {
+    RayTiled::UnloadTileMap(map, 1);
     RayTiled::LoadTileMap("resources/sample_map.tmx", map);
+
+    testUserLayer = RayTiled::InsertTileMapLayer<RayTiled::UserLayer>(map, map.Layers.back()->LayerId);
+
+    auto playerLayer = RayTiled::FindLayer(map, "Objects");
+    if (playerLayer && playerLayer->Type == RayTiled::TileLayerType::Tile)
+    {
+        objectTileLayer = static_cast<RayTiled::TileLayer*>(playerLayer);
+
+        objectTileLayer->CustomDrawalbeFunction = DrawObjectLayerItem;
+        objectTileLayer->AddDrawable(&player);
+    }
+
+    auto collisionlayer = RayTiled::FindLayer(map, "CollisionObjects");
+    if (collisionlayer && collisionlayer->Type == RayTiled::TileLayerType::Object)
+    {
+        static_cast<RayTiled::ObjectLayer*>(collisionlayer)->DrawFunc = DrawCollisionLayer;
+        static_cast<RayTiled::ObjectLayer*>(collisionlayer)->CheckForCollisions = 1;
+    }
+}
+
+void InitHouseMap()
+{
+    RayTiled::UnloadTileMap(map, 1);
+    RayTiled::LoadTileMap("resources/house.tmx", map);
 
     testUserLayer = RayTiled::InsertTileMapLayer<RayTiled::UserLayer>(map, map.Layers.back()->LayerId);
 
@@ -102,7 +132,7 @@ void GameplayScene::Update()
 {
     _mapRec = { 10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f };
 
-    _camera.Update(player.pos, _mapRec, GetScreenWidth(), GetScreenHeight(), 1);
+    _camera.Update(player.pos, _mapRec, GetScreenWidth(), GetScreenHeight(), isCameraScrollable);
 
     // Our debug button
     if (IsKeyPressed(KEY_H))
@@ -122,7 +152,7 @@ void GameplayScene::Update()
 
 void GameplayScene::LoadResources()
 {
-    InitMap();
+    InitWorldMap();
 
     player = CreatePlayer();
 
@@ -140,17 +170,21 @@ void GameplayScene::FreeResources()
     }
     
     DeletePlayer(player);
+    RayTiled::UnloadTileMap(map, 1);
 }
 
 void GameplayScene::Draw()
 {
     _camera.BeginMode();
-        RayTiled::DrawTileMap(map, &_camera);
-        DrawRectangleLinesEx(math::rl_rec(_mapRec), 12, BLACK);
-        for (const auto& bat : _bats)
+        if (!onSwitch)
+        {
+            RayTiled::DrawTileMap(map, &_camera);
+            DrawRectangleLinesEx(math::rl_rec(_mapRec), 12, BLACK);
+        }
+        /*for (const auto& bat : _bats)
         {
             bat.Draw();
-        }
+        }*/
     _camera.EndMode();
 
     if (showGrid)
@@ -162,6 +196,9 @@ void GameplayScene::Draw()
         rlPopMatrix();
     }
 
+    std::string strPlayerPos{};
+    strPlayerPos = strPlayerPos + "X: " + std::to_string((int)player.pos.x) + " Y: " + std::to_string((int)player.pos.y);
+    DrawText(strPlayerPos.c_str(), 15, GetScreenHeight() - 30, 24, WHITE);
     DrawText(TextFormat("Tiles Drawn: %d", (int)RayTiled::GetTileDrawStats()), 5, 25, 20, WHITE);
 }
 
@@ -173,12 +210,33 @@ static bool OnTouch(const Player& player, float targetPosX)
     return 0;
 }
 
+#include <iostream>
+
 void GameplayScene::CollisionChecking()
 {
     std::vector<RayTiled::CollisionRecord> collisions;
     if (GetCollisions(map, math::rl_rec(player.rec), collisions))
     {
         player.pos = player.lastPos;
+    }
+
+    if (houseDoor.check_collision(player.rec) && !enteringHouse)
+    {
+        onSwitch = 1;
+        isCameraScrollable = 0;
+        InitHouseMap();
+        player.pos = math::vec2{ 166.0f, 125.0f };
+        _camera.zoom = 2.0f;
+        enteringHouse = 1;
+
+        StartTimer(mapSwitchTimer, 0.5f);
+    }
+
+    UpdateTimer(mapSwitchTimer);
+
+    if (onSwitch && IsTimerDone(mapSwitchTimer))
+    {
+        onSwitch = 0;
     }
 }
 
