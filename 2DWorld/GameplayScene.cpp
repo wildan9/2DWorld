@@ -184,10 +184,14 @@ void GameplayScene::Draw()
             RayTiled::DrawTileMap(map, &_camera);
             DrawRectangleLinesEx(math::rl_rec(_mapRec), 12, BLACK);
         }
-        /*for (const auto& bat : _bats)
+
+        if (!enteringHouse)
         {
-            bat.Draw();
-        }*/
+            for (const auto& bat : _bats)
+            {
+                bat.Draw();
+            }
+        }
     _camera.EndMode();
 
     if (showGrid)
