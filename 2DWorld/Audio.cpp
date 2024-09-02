@@ -70,6 +70,7 @@ void Audio::Update(std::string& bgm)
 		_bgm = LoadAudioData<Music>("resources/sounds/harp.ogg");
 		_bgm.looping = 1;
 		bgm = "";
+		PlayMusicStream(_bgm);
 	} break;
 	default:
 		break;
