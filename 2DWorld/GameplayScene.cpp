@@ -39,7 +39,7 @@ RayTiled::UserLayer* testUserLayer = nullptr;
 
 RayTiled::TileLayer* objectTileLayer = nullptr;
 
-const math::rec houseDoor{ 484.0f, 625.0f, 9, 9 };
+math::rec houseDoor{ 484.0f, 625.0f, 9, 9 };
 
 Player player;
 
@@ -147,6 +147,9 @@ void GameplayScene::Update()
         bat.Update();
     }
 
+    if (enteringHouse) houseDoor = math::rec{ 370.0f, 250.0f, 9, 9 };
+    else houseDoor = math::rec{ 484.0f, 625.0f, 9, 9 };
+
     CollisionChecking();
 }
 
@@ -210,8 +213,6 @@ static bool OnTouch(const Player& player, float targetPosX)
     return 0;
 }
 
-#include <iostream>
-
 void GameplayScene::CollisionChecking()
 {
     std::vector<RayTiled::CollisionRecord> collisions;
@@ -220,7 +221,7 @@ void GameplayScene::CollisionChecking()
         player.pos = player.lastPos;
     }
 
-    if (houseDoor.check_collision(player.rec) && !enteringHouse)
+    if (houseDoor.check_collision(player.rec) && !enteringHouse && !onSwitch)
     {
         onSwitch = 1;
         isCameraScrollable = 0;
@@ -237,6 +238,18 @@ void GameplayScene::CollisionChecking()
     if (onSwitch && IsTimerDone(mapSwitchTimer))
     {
         onSwitch = 0;
+    }
+
+    if (houseDoor.check_collision(player.rec) && enteringHouse && !onSwitch)
+    {
+        onSwitch = 1;
+        isCameraScrollable = 1;
+        InitWorldMap();
+        player.pos = math::vec2{ 484.0f, 650.0f };
+        _camera.zoom = 2.0f;
+        enteringHouse = 0;
+
+        StartTimer(mapSwitchTimer, 0.5f);
     }
 }
 
