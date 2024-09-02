@@ -62,6 +62,7 @@ void Audio::Update(std::string& bgm)
 		_bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
 		_bgm.looping = 1;
 		bgm = "";
+		PlayMusicStream(_bgm);
 	} break;
 	case BGMStates::LOAD_HARP:
 	{
@@ -79,7 +80,6 @@ void Audio::Update(std::string& bgm)
 	else if (bgm == "bird") bgmState = BGMStates::LOAD_BIRD;
 
 	UpdateMusicStream(_bgm);
-	PlayMusicStream(_bgm);
 
 	if (IsKeyPressed(KEY_L) && volume.master < 1.0f && !volume.muted)
 	{
