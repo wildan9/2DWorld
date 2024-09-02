@@ -15,12 +15,12 @@
  </layer>
  <layer id="3" name="Objects" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2ttKwzAYwPGt6653pSjCfApx+greeACfQMXNK59ABBWPL6Gg6INsgnrtreKLmNIW0yxJk5o5Nv8/CLFp7eT7lkNTazUAAAAAAAAAmEwb0bj/AqguycmvnUT6Wj1f1pbrinM96fwVOXJmyoUt3qp55dpbcXwX2a9JHJMnLZdc6No+RNtn1q72CVMb7HS5WIv8+4ncJ97rw21w55sL2zpKPnfk8Nkt8lVQNn+whv17VebwnOucLF/HPG5mG6vUZ4n83DbxHClTTmQLgXMQ+n7Touq6ajFAPBm39Hyfz9vZcdWcsKYys+XiMDb/Xtsjph1xn36j2EZOzFz2q3K6PtGx5A1+QuxfJW4CzDdd0YcOGuXXTbuyXMhx2hT1lhKzslzoqLFfb9Zqe+J4/5/no2yseqqHj9NOROzHybbn8sXcY1Vlz0RHXX/NSD9fNIfLdTPM504T11zI3/e++H4PRHnWfM991sRIueTAFvNe46ckTM/c9+SmMjWmcswHSm66WbvLOtX0DBhqjJwm+V6ubu5NYn4epzFfaaZlNRvvk3XSboW10mNUrB/IiZGak26j2Ed0/WEuq9kjHL3TOO0DSTmLzf3B5V1iS+kPas3YVe5FPBO+ZuWtrr+GNezkkefzvD8sZfUy/cKL7/44/5M4fiHeaTB/mM2O6L4+71sQlhzrsriTFwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA4ht9DGmB
+   eJzt2ltKw0AUgOE2bZ59UhShrkKsrsILuAIVW59cgQgqXjehoOhCWkF99lVxI05IgpPp3BKnlsb/gyFmElM5pyczmdhoAAAAAAAAAMB02ogm/RdAdUlOfu0k0m/V466+XE8c60vHr8iRN1MubPFWLSjn3or9u8h+TuKYPGn55ELX9yH6PrN+tSZMfbBz1Ydvncg18d4c7YO/srmwzaPkY0cenz1DvgpcuWAO+/eqjOE53zFZPo9x3MxWH+qzRH5sm3iOlc+4sRg4B6GvVxdV51VLAeLJfUuv7PN5J9uvmhPmVGa2XBy2zb/XKRHTrrjOoFXsIydmPutVOV1NdC15Qzkh1q8SNwHGm56ooYOW+7y6c+VCjtOm2G4pMXPlQkeN/XrcaOyJ/f1/ng/XveqpGT5OOxGxnyTbmssXY49VlTUTHXX+NSv9fBGPtus4zOfWiW8u5O/7QHy/h6I9a77nZebESPnkwBbzfuunJUzP3PfkpjI1pnLMh0puelm/zzzV9AwY6h5ZJ/larm7sTWJ+3k5jvhqnbS273yfzpN0Kc6XHqLh9ICdGak56rWKN6OphPtuyRjh+p+20BpJ21jbXg8+7xBmlHtQt9y63F/FM+Jq1t6b+HOaw00cez/N6WM62K9RFKWXXx/mfxMkL8U6D8cNsbkzXLfO+BWHJsXbFnbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABLfxD9oAA==
   </data>
  </layer>
  <layer id="7" name="Object Overlay" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2kEKgzAQBVDpPXqfQne9R++/dVWQkhBj62Qw720EzSqfmSHBZQEAAAAAYGbPW/n5/b31rubVsXZ2tSx69vuoh5yK9mQRkQ/t+pBDvJ65wblkkc8vvWnvTN6uM8freubG593dfp5Kr8pj5PzQt8paWaiXOM4b+aiHPJzL85FFHnoV7Kc+8pDFeP/OoHbmfsv6sOh7DHXJLNwRXoveBUTzT+I1mB/x3GGOs93r1r7LBQAAAAAAAAAAAAAAAAAAAAAAAAAAAPJZAezNFsc=
+   eJzt2k0KgzAQBlDpPXqfQne9R++/dVWQYshP6ziY9zaCZjUfkzDBZQEAAAAAYGbP2/7z+3vtXcmrY+3sSln01HvUQ067WrKIyId6f8ghnizykEU+v2TQeiZv1znHy3r64/Purp6HslflYf7IZ2Q+5xj2qnz0Qx7mj3xkkYe9Ctrpjzxkcb5/Z1Caud+yHhZ9j6EvmYU7wmuxdwHR/JN4Dc6PeO4wz7Otda3ucgEAAAAAAAAAAAAAAAAAAAAAAAAAAIB8VqWaGEg=
   </data>
  </layer>
  <layer id="4" name="Doors/windows/roof" width="100" height="100">
