@@ -130,7 +130,8 @@ void GameplayScene::Start()
 
 void GameplayScene::Update()
 {
-    _mapRec = { 10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f };
+    _mapRec = (enteringHouse) ? math::rec{ 10.0f, 10.0f, 28.5f * 28.5f / 2.0f, 24.8f * 24.8f / 2.0f } 
+    : math::rec{ 10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f };
 
     _camera.Update(player.pos, _mapRec, GetScreenWidth(), GetScreenHeight(), isCameraScrollable);
 
@@ -147,7 +148,7 @@ void GameplayScene::Update()
         bat.Update();
     }
 
-    if (enteringHouse) houseDoor = math::rec{ 370.0f, 250.0f, 9, 9 };
+    if (enteringHouse) houseDoor = math::rec{ 100.0f, 300.0f, 9, 9 };
     else houseDoor = math::rec{ 484.0f, 625.0f, 9, 9 };
 
     CollisionChecking();
@@ -182,7 +183,6 @@ void GameplayScene::Draw()
         if (!onSwitch)
         {
             RayTiled::DrawTileMap(map, &_camera);
-            DrawRectangleLinesEx(math::rl_rec(_mapRec), 12, BLACK);
         }
 
         if (!enteringHouse)
@@ -191,6 +191,7 @@ void GameplayScene::Draw()
             {
                 bat.Draw();
             }
+            DrawRectangleLinesEx(math::rl_rec(_mapRec), 12, BLACK);
         }
     _camera.EndMode();
 
@@ -230,7 +231,7 @@ void GameplayScene::CollisionChecking()
         onSwitch = 1;
         isCameraScrollable = 0;
         InitHouseMap();
-        player.pos = math::vec2{ 166.0f, 125.0f };
+        player.pos = math::vec2{ 200.0f, 200.0f };
         _camera.zoom = 2.0f;
         enteringHouse = 1;
 

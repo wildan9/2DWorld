@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="24" height="24" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="17">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="26" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="17">
  <tileset firstgid="1" name="Roguelike" tilewidth="16" tileheight="16" spacing="1" tilecount="1767" columns="57">
   <image source="Spritesheet/roguelikeSheet_transparent.png" width="968" height="526"/>
  </tileset>
- <layer id="1" name="Ground/terrain" width="24" height="24">
+ <tileset firstgid="1768" name="home_tileset_1" tilewidth="16" tileheight="16" tilecount="560" columns="56">
+  <image source="Spritesheet/home_tileset_1.png" width="898" height="160"/>
+ </tileset>
+ <tileset firstgid="2328" name="home_tileset_2" tilewidth="16" tileheight="16" tilecount="216" columns="8">
+  <image source="Spritesheet/home_tileset_2.png" width="128" height="432"/>
+ </tileset>
+ <tileset firstgid="2544" name="home_tileset_3" tilewidth="16" tileheight="16" tilecount="768" columns="48">
+  <image source="Spritesheet/home_tileset_3.png" width="768" height="256"/>
+ </tileset>
+ <tileset firstgid="3312" name="home_tileset_4" tilewidth="16" tileheight="16" tilecount="720" columns="30">
+  <image source="Spritesheet/home_tileset_4.png" width="480" height="384"/>
+ </tileset>
+ <tileset firstgid="4032" name="kitchen" tilewidth="16" tileheight="16" tilecount="333" columns="9">
+  <image source="Spritesheet/kitchen.png" width="144" height="592"/>
+ </tileset>
+ <layer id="1" name="Ground/terrain" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJybxMrAMJlGeAoQnwbiMzTCZ0fNHzV/1PxR80fNHzV/1PxhaT4LG4TNykZ9zAbEAL+cvy4=
+   eJxjYGBgmMwKwaQAmB50vJETgjdxItggDAIX+BF4MTcCE+KfYUU1CxkPFntIwYPBnh1AvBOKT9HQHnQ8as/A2IOOQWAjUhqAYVD6O8s/fPAZOmEQwBbOsLAeCHvOs2LiUXsGjz1DIb0BALjQjIQ=
   </data>
  </layer>
- <layer id="2" name="Ground overlay" width="24" height="24">
+ <layer id="2" name="Ground overlay" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgiD/r25IQAEAfBkJAAAB
+   eJxjYBgFo2CAABcDAyMQM3HR1hoDoPmGQGxEY3sSgOYnAnESje0ZBaOAEFgHxOvx4A1Usuc5EL/Ag1+O2oMVKDAyMCjiwUqMVLKIQgAALZoh5Q==
   </data>
  </layer>
- <layer id="3" name="Objects" width="24" height="24">
+ <layer id="3" name="Objects" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgiD/r25IQAEAfBkJAAAB
+   eJy9lE0vA0EYx0eITXd3tssR4SJOFRrhVKI4cZHwJVB8AS8XfA69aYNIRWK93VwcKjhxb+MtPoP/ZKbZ6b7M7jbhn/zS58nMPv95np3tUYqQkuBCiuPA9g/a4WtyfgYOKSFFyuN0mhAbvCGuxMiH4TMCRkEW5AVMWcp/x0TtmkVI3eKxrErC3Ks9jf+W23jtdpyvA1widgQP4M6T34q4JK2r1K25sdzDNPrLgxx1z3uO+DUVnnd2uajEfH704DVW54mq8y2DkG2wAzTJawnvaBlkbHdvvxHu01DGCs6P8ewJOA2pIfcTpCHpXgygxrfuz6PuQZRPFbN5pM1rfYY6V2kRs7sRd8cJ4N6z5s0dxbNx+onSLHqdA1PiTjybhLyAd/T4AWqgDsYx2wk9vs8Mjd4TpVb6CdMKzrMK1mhzXKD8/QT9D7K5l2OeYQMz2zR5fIU5Xev+mPVTxZ59zPPA8w0kubcNfaLul+6PVXNL6rOr+FaZTw799GBPL5g0W/dRifkUUHseHgtg/Q99VP0UzfBnk/r8Rz+/fsOKIg==
   </data>
  </layer>
- <layer id="7" name="Object Overlay" width="24" height="24">
+ <layer id="7" name="Object Overlay" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgiD/r25IQAEAfBkJAAAB
+   eJxjYGBgaOJlYGgGYhD4yMfA8ImPAQ4I8UFATYCBQR2IzYHYAog1BCDiwkAzBXkZ6AL0sdjDAhRjpYP9SkA7lIFYjgS7/gogMDYghSS+j4t8t/lwMzD4ArEfEP9DMtMLyPYGYmUkMQt+BoZ6bvzm8fHh51ML7OHCzycHbADGz0Yqpgd3HHFHCMQA3RBLh3RZBbSjGogVoHYt4mFgWAzEO4BxvBOItwLxNiBmBYYtGxXCdyCBD9CPvryYbFqBHCzmzwOGbSgwPMMI5KFRMPhAIc9Au2BwAgDWaR9Q
   </data>
  </layer>
- <layer id="4" name="Doors/windows/roof" width="24" height="24">
+ <layer id="4" name="Doors/windows/roof" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgiD/r25IQAEAfBkJAAAB
+   eJxjYBgFo2AUDGdQwksfeybRyZ5RMApGAX0AAIsqASE=
   </data>
  </layer>
  <objectgroup id="8" name="CollisionObjects"/>
