@@ -65,12 +65,12 @@ void Engine::Update()
             SetCurrBGM("bird");
         }
 
-        GetCurrentScene()->Update();
+        GetCurrScene()->Update();
 
     } break;
     case WorldStates::GAMEPLAY:
     {
-        GetCurrentScene()->Update();
+        GetCurrScene()->Update();
         _audio.Update();
     } break;
     default:
@@ -83,9 +83,9 @@ void Engine::Render()
     BeginDrawing();
     ClearBackground(WHITE);
 
-    if (GetCurrentScene() != nullptr)
+    if (GetCurrScene() != nullptr)
     {
-        GetCurrentScene()->Draw();
+        GetCurrScene()->Draw();
     }
 
     DrawVolumeBar();
@@ -100,7 +100,7 @@ void Engine::Render()
 void Engine::ShutDown()
 {
     _audio.FreeResources();
-    GetCurrentScene()->FreeResources();
+    GetCurrScene()->FreeResources();
 
     CloseAudioDevice();
     CloseWindow();

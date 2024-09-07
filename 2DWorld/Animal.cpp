@@ -40,7 +40,7 @@ Bat CreateBat(math::vec2 pos)
     };
 
     b.model = LoadModel2D(texturesPaths);
-    b.model.animData = CreateAnimationData();
+    b.model.animData = CreateAnimData();
 
     b.model.currTexture = &b.model.textures->at(0);
 

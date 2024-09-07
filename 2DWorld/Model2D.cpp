@@ -55,7 +55,7 @@ void UnloadModel2D(Model2D& model)
     }
 }
 
-std::unique_ptr<AnimationData> CreateAnimationData()
+std::unique_ptr<AnimationData> CreateAnimData()
 {
     auto a = std::make_unique<AnimationData>();
     a->currFrame = 0;

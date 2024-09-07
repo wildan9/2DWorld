@@ -54,7 +54,7 @@ struct Model2D
     std::unique_ptr<ObjectTexures> textures;
 };
 
-std::unique_ptr<AnimationData> CreateAnimationData();
+std::unique_ptr<AnimationData> CreateAnimData();
 Model2D LoadModel2D(const std::vector<std::string>& texturesPath = {});
 void UpdateAnim(Model2D& model, float facing, int frameSpeed, int numFrames, int frame, bool animate);
 void UnloadModel2D(Model2D& model);
