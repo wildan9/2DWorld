@@ -78,7 +78,7 @@ void DrawCollisionLayer(RayTiled::ObjectLayer& layer, Camera2D* camera, Vector2 
 void InitWorldMap()
 {
     RayTiled::UnloadTileMap(map, 1);
-    RayTiled::LoadTileMap("resources/sample_map.tmx", map);
+    RayTiled::LoadTileMap("resources/world.tmx", map);
 
     testUserLayer = RayTiled::InsertTileMapLayer<RayTiled::UserLayer>(map, map.Layers.back()->LayerId);
 
