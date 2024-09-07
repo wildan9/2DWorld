@@ -32,6 +32,7 @@ bool showGrid = 0, worldCollision = 1, enteringHouse = 0, onSwitch = 0, isCamera
 
 static Rectangle GetRecBottomSide(const Rectangle& rec);
 static bool OnTouch(const Player& player, float targetPosX);
+static void DrawLoadingScreen();
 
 RayTiled::TileMap map;
 
@@ -204,6 +205,11 @@ void GameplayScene::Draw()
         rlPopMatrix();
     }
 
+    if (onSwitch)
+    {
+        DrawLoadingScreen();
+    }
+
     std::string strPlayerPos{};
     strPlayerPos = strPlayerPos + "X: " + std::to_string((int)player.pos.x) + " Y: " + std::to_string((int)player.pos.y);
     DrawText(strPlayerPos.c_str(), 15, GetScreenHeight() - 30, 24, WHITE);
@@ -237,7 +243,7 @@ void GameplayScene::CollisionChecking()
 
         SetCurrBGM("harp");
 
-        StartTimer(mapSwitchTimer, 0.5f);
+        StartTimer(mapSwitchTimer, 2.5f);
     }
 
     UpdateTimer(mapSwitchTimer);
@@ -258,7 +264,7 @@ void GameplayScene::CollisionChecking()
 
         SetCurrBGM("bird");
 
-        StartTimer(mapSwitchTimer, 0.5f);
+        StartTimer(mapSwitchTimer, 2.5f);
     }
 }
 
@@ -270,4 +276,27 @@ static Rectangle GetRecBottomSide(const Rectangle& rec)
     float y = rec.y + (fullArea - bottomArea) / rec.width;
 
     return { rec.x, y, rec.width, bottomArea / rec.width };
+}
+
+static void DrawLoadingScreen()
+{
+    DrawRectangle(0, 0, 512, 512, DARKBLUE); // Draw the background
+
+    static const char* text = "Loading...";  // Static text for the loading screen
+    static float alpha = 1.0f;               // Initial alpha transparency
+    static bool fadeOut = 1;                 // Direction of fading
+    static float blinkSpeed = 1.0f;          // Speed of blinking (lower value = faster blink)
+
+    math::vec2 textPos = { (float)GetScreenWidth()/2.0f - 80.0f, (float)GetScreenHeight() - 300.0f }; // Centered position
+
+    // Update alpha transparency
+    if (fadeOut) alpha -= blinkSpeed * GetFrameTime();
+    else alpha += blinkSpeed * GetFrameTime();
+
+    // Clamp the alpha between 0 and 1
+    if (alpha <= 0.0f) { alpha = 0.0f; fadeOut = 0; }
+    else if (alpha >= 1.0f) { alpha = 1.0f; fadeOut = 1; }
+
+    // Draw the blinking loading text
+    DrawTextEx(GetFontDefault(), text, math::rl_vec(textPos), 40.0f, 2, Fade(BLACK, alpha));
 }
