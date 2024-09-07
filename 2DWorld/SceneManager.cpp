@@ -26,17 +26,17 @@
 
 #include "SceneManager.h"
 
-std::shared_ptr<Scene> currentScene = nullptr;
+std::shared_ptr<Scene> currScene = nullptr;
 
 void SetActiveScene(std::shared_ptr<Scene> scene)
 {
-	currentScene.reset();
-	currentScene = scene;
+	currScene.reset();
+	currScene = scene;
 
-	currentScene->Start();
+	currScene->Start();
 }
 
 const std::shared_ptr<Scene> GetCurrScene()
 {
-	return currentScene;
+	return currScene;
 }
