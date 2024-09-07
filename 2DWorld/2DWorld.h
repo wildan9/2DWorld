@@ -50,5 +50,4 @@ public:
 
 private:
 	Audio _audio{};
-	std::string _currentBGM{};
 };

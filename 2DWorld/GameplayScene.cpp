@@ -235,6 +235,8 @@ void GameplayScene::CollisionChecking()
         _camera.zoom = 2.0f;
         enteringHouse = 1;
 
+        SetCurrBGM("harp");
+
         StartTimer(mapSwitchTimer, 0.5f);
     }
 
@@ -253,6 +255,8 @@ void GameplayScene::CollisionChecking()
         player.pos = math::vec2{ 484.0f, 650.0f };
         _camera.zoom = 2.0f;
         enteringHouse = 0;
+
+        SetCurrBGM("bird");
 
         StartTimer(mapSwitchTimer, 0.5f);
     }

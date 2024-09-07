@@ -62,7 +62,7 @@ void Engine::Update()
 
             worldState = WorldStates::GAMEPLAY;
 
-            _currentBGM = "bird";
+            SetCurrBGM("bird");
         }
 
         GetCurrentScene()->Update();
@@ -71,7 +71,7 @@ void Engine::Update()
     case WorldStates::GAMEPLAY:
     {
         GetCurrentScene()->Update();
-        _audio.Update(_currentBGM);
+        _audio.Update();
     } break;
     default:
         break;

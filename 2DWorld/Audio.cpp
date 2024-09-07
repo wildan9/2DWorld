@@ -46,13 +46,15 @@ Volume volume{};
 Sound clickSound{};
 Timer volumeBarTimer{};
 
+char* currBGM;
+
 void Audio::LoadResources()
 {
 	_bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
 	clickSound = LoadAudioData<Sound>("resources/sounds/menu_selection_click.wav");
 }
 
-void Audio::Update(std::string& bgm)
+void Audio::Update()
 {
 	switch (bgmState)
 	{
@@ -61,7 +63,7 @@ void Audio::Update(std::string& bgm)
 		UnloadBGM();
 		_bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
 		_bgm.looping = 1;
-		bgm = "";
+		currBGM = "";
 		PlayMusicStream(_bgm);
 	} break;
 	case BGMStates::LOAD_HARP:
@@ -69,16 +71,16 @@ void Audio::Update(std::string& bgm)
 		UnloadBGM();
 		_bgm = LoadAudioData<Music>("resources/sounds/harp.ogg");
 		_bgm.looping = 1;
-		bgm = "";
+		currBGM = "";
 		PlayMusicStream(_bgm);
 	} break;
 	default:
 		break;
 	}
 
-	if (bgm == "") bgmState = BGMStates::IDLE;
-	else if (bgm == "harp") bgmState = BGMStates::LOAD_HARP;
-	else if (bgm == "bird") bgmState = BGMStates::LOAD_BIRD;
+	if (currBGM == "") bgmState = BGMStates::IDLE;
+	else if (currBGM == "harp") bgmState = BGMStates::LOAD_HARP;
+	else if (currBGM == "bird") bgmState = BGMStates::LOAD_BIRD;
 
 	UpdateMusicStream(_bgm);
 
@@ -161,4 +163,9 @@ void DrawVolumeBar()
 	{
 		StartTimer(volumeBarTimer, 4.0f);
 	}
+}
+
+void SetCurrBGM(char* bgm)
+{
+	currBGM = bgm;
 }

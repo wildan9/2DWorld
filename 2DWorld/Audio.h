@@ -41,7 +41,7 @@ class Audio
 	void UnloadBGM();
 
 public:
-	void Update(std::string& bgm);
+	void Update();
 	void LoadResources();
 	void FreeResources();
 
@@ -68,3 +68,4 @@ T Audio::LoadAudioData(const char* audio)
 
 void DrawVolumeBar();
 void PlayClickSound();
+void SetCurrBGM(char* bgm);
