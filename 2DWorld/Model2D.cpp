@@ -42,6 +42,8 @@ Model2D LoadModel2D(const std::vector<std::string>& texturesPath)
             if (p == "") continue;           
             m.textures->LoadTextureFile(p.c_str());
         }
+
+        m.currTexture = &m.textures->at(0);
     }
 
     return m;

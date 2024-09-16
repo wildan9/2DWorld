@@ -83,8 +83,6 @@ Player CreatePlayer()
     p.model = LoadModel2D(texturesPaths);
     p.model.animData = CreateAnimData();
 
-    p.model.currTexture = &p.model.textures->at(0);
-
     playerSound.Load();
 
     return p;
