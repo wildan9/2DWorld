@@ -134,7 +134,6 @@ void Player::Update()
 
     if (!isWalk && isPunch)
     {
-        model.textures->at(0) = model.textures->at(2);
         animCurrFrame = 2;
         frameSpeed = 16;
         numFrames = 3;

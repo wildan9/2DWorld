@@ -20,7 +20,7 @@
  </tileset>
  <layer id="1" name="Ground/terrain" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYGBgmMwKwaQAmB50vJETgjdxItggDAIX+BF4MTcCE+KfYUU1CxkPFntIwYPBnh1AvBOKT9HQHnQ8as/A2IOOQWAjUhqAYVD6O8s/fPAZOmEQwBbOsLAeCHvOs2LiUXsGjz1DIb0BALjQjIQ=
+   eJxjYGBgmMwKwaQAmB50vJETgrGBC/wIvJgbgQnxzyCZi45BAJ0/EPaQggeLPfjih1r2YLN31B7624OMCYGz/MMHn6ETBgH0cEYO74Gw5zwrJh61Z/DYMxTSGwASdH8E
   </data>
  </layer>
  <layer id="2" name="Ground overlay" width="26" height="20">
@@ -30,7 +30,7 @@
  </layer>
  <layer id="3" name="Objects" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJy9lE0vA0EYx0eITXd3tssR4SJOFRrhVKI4cZHwJVB8AS8XfA69aYNIRWK93VwcKjhxb+MtPoP/ZKbZ6b7M7jbhn/zS58nMPv95np3tUYqQkuBCiuPA9g/a4WtyfgYOKSFFyuN0mhAbvCGuxMiH4TMCRkEW5AVMWcp/x0TtmkVI3eKxrErC3Ks9jf+W23jtdpyvA1widgQP4M6T34q4JK2r1K25sdzDNPrLgxx1z3uO+DUVnnd2uajEfH704DVW54mq8y2DkG2wAzTJawnvaBlkbHdvvxHu01DGCs6P8ewJOA2pIfcTpCHpXgygxrfuz6PuQZRPFbN5pM1rfYY6V2kRs7sRd8cJ4N6z5s0dxbNx+onSLHqdA1PiTjybhLyAd/T4AWqgDsYx2wk9vs8Mjd4TpVb6CdMKzrMK1mhzXKD8/QT9D7K5l2OeYQMz2zR5fIU5Xev+mPVTxZ59zPPA8w0kubcNfaLul+6PVXNL6rOr+FaZTw799GBPL5g0W/dRifkUUHseHgtg/Q99VP0UzfBnk/r8Rz+/fsOKIg==
+   eJy9lE0vA0EYx0eITbc723JEuIhThUY4lShOXCR8CRRfwMsFn0Nv2iBSkVhvNxeHCk7c23iLz+A/2dnsdHZnutuEf/JLnicz87zN7B4lCClxLgQ7Cmz/YFq9Jvpn4JASUqSunUoRkgZvsCsR/GHkGQGjIAvyHBYri5hMYzx2zSakbru2qEpMXxSLtWe4drnN9dtRXwe4hO1wHsCd5N9yuySs6/J0G42+p2n0lwc56td7Dvs1ofY7u3xEiTU7/H5+zPCaWJwnqve3koRsgx1gCLmWcEfLIJP29/Yn1Xk8Zexw/xhnT8CpIoYn+e49DQnvYgAxvs2gr3sHUfJUMZtH2rjWl9T7Oi1idjf87Tgh3Etrsu9ozspErUnULHqdA1P8TTxbhLyAd/T4AWqgDsYx2wlTPTdZM7T5nmZqpR+VVlDPKlijjXaBuvcT9h9kcy9HrGEDM9u0XPsKc7o2gzbrp4o9+5jngfQNxHm3nj4R98sM2rq5xc2zq/lWWZ4c+unBnl4wabWeRyeWp4DY88ixANb/MI+un6KlPhs3z3/08wuccpJc
   </data>
  </layer>
  <layer id="7" name="Object Overlay" width="26" height="20">
