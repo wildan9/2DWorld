@@ -34,7 +34,7 @@ class RLCamera2D : public ::Camera2D
     math::vec2 GetDir() const;
 
 public:
-    RLCamera2D() : ::Camera2D{ offset = { 0.0f, 0.0f }, target = { 0.0f, 0.0f }, rotation = 0.0f, zoom = 1.5f } {}
+    RLCamera2D() : ::Camera2D{ offset = { 0.0f, 0.0f }, target = { 0.0f, 0.0f }, rotation = 0.0f, zoom = 1.7f } {}
     
     void Update(const math::vec2& playerPos, const math::rec& rec, int screenWidth, int screenHeight, bool scrollable);
 
