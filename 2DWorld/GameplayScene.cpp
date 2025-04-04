@@ -167,7 +167,7 @@ void GameplayScene::LoadResources()
 
     for (int i = 0; i < 10; i++)
     {
-        _bats[i] = CreateBat(math::vec2{ 100.0f + i * 14, 100.0f + i * 12 });
+        _bats[i] = CreateBat(math::vec2{ 100.0f + i * 14 + GetRandomValue(2, 6), 100.0f + i * 12 + GetRandomValue(3, 5) });
     }
 }
 
@@ -309,6 +309,7 @@ static void DrawLoadingScreen()
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize)
 {
     cellSize = cellSize * 4;
+
     // Draw vertical lines
     for (int x = 0; x <= screenWidth; x += cellSize)
     {
