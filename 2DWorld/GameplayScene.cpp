@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023-2024 Wildan R Wijanarko
+*   Copyright (c) 2023-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@
 bool showGrid = 0, worldCollision = 1, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
 
 static Rectangle GetRecBottomSide(const Rectangle& rec);
+static void DrawGrid(int screenWidth, int screenHeight, int cellSize);
 static bool OnTouch(const Player& player, float targetPosX);
 static void DrawLoadingScreen();
 
@@ -199,18 +200,14 @@ void GameplayScene::Draw()
         }
     _camera.EndMode();
 
-    if (showGrid)
-    {
-        rlPushMatrix();
-        rlTranslatef(0, 25 * 50, 0);
-        rlRotatef(90, 1, 0, 0);
-        DrawGrid(100, 50);
-        rlPopMatrix();
-    }
-
     if (onSwitch)
     {
         DrawLoadingScreen();
+    }
+
+    if (showGrid)
+    {
+        DrawGrid(GetScreenWidth(), GetScreenHeight(), 12);
     }
 
     std::ostringstream ssCameraZoom;
@@ -307,4 +304,20 @@ static void DrawLoadingScreen()
 
     // Draw the blinking loading text
     DrawTextEx(GetFontDefault(), text, math::rl_vec(textPos), 40.0f, 2, Fade(BLACK, alpha));
+}
+
+static void DrawGrid(int screenWidth, int screenHeight, int cellSize)
+{
+    cellSize = cellSize * 4;
+    // Draw vertical lines
+    for (int x = 0; x <= screenWidth; x += cellSize)
+    {
+        DrawLine(x, 0, x, screenHeight, LIGHTGRAY);
+    }
+
+    // Draw horizontal lines
+    for (int y = 0; y <= screenHeight; y += cellSize)
+    {
+        DrawLine(0, y, screenWidth, y, LIGHTGRAY);
+    }
 }
