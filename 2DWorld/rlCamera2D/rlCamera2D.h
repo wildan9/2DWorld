@@ -55,6 +55,11 @@ public:
         return _rec;
     }
 
+    inline float GetCameraZoom() const
+    {
+        return zoom;
+    }
+
 private:
     math::rec _rec{ 0, 0, 0, 0 };
     float _cameraSpeed = 5.5f;

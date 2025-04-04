@@ -28,6 +28,9 @@
 #include "rlTileMap/ray_tilemap.h"
 #include "rlgl.h"
 
+#include <sstream>
+#include <iomanip>
+
 bool showGrid = 0, worldCollision = 1, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
 
 static Rectangle GetRecBottomSide(const Rectangle& rec);
@@ -210,10 +213,15 @@ void GameplayScene::Draw()
         DrawLoadingScreen();
     }
 
+    std::ostringstream ssCameraZoom;
+    ssCameraZoom << "Camera Zoom: " << std::fixed << std::setprecision(1) << _camera.GetCameraZoom();
+
     std::string strPlayerPos{};
     strPlayerPos = strPlayerPos + "X: " + std::to_string((int)player.pos.x) + " Y: " + std::to_string((int)player.pos.y);
+
     DrawText(strPlayerPos.c_str(), 15, GetScreenHeight() - 30, 24, WHITE);
     DrawText(TextFormat("Tiles Drawn: %d", (int)RayTiled::GetTileDrawStats()), 5, 25, 20, WHITE);
+    DrawText(ssCameraZoom.str().c_str(), GetScreenWidth() - 140, GetScreenHeight() - 30, 16, WHITE);
 }
 
 static bool OnTouch(const Player& player, float targetPosX)
