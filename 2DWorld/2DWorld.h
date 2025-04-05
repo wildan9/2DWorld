@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2024 Wildan R Wijanarko
+*   Copyright (c) 2022-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -49,5 +49,5 @@ public:
 	void ShutDown();
 
 private:
-	Audio _audio{};
+	Audio audio{};
 };

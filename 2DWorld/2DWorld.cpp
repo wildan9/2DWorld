@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2024 Wildan R Wijanarko
+*   Copyright (c) 2022-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ void Engine::Start()
     UnloadImage(icon);
     SetActiveScene(std::make_shared<TitleScene>());
 
-    _audio.LoadResources();
+    audio.LoadResources();
 }
 
 void Engine::Update()
@@ -71,7 +71,7 @@ void Engine::Update()
     case WorldStates::GAMEPLAY:
     {
         GetCurrScene()->Update();
-        _audio.Update();
+        audio.Update();
     } break;
     default:
         break;
@@ -99,7 +99,7 @@ void Engine::Render()
 
 void Engine::ShutDown()
 {
-    _audio.FreeResources();
+    audio.FreeResources();
     GetCurrScene()->FreeResources();
 
     CloseAudioDevice();

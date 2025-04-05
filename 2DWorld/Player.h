@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2024 Wildan R Wijanarko
+*   Copyright (c) 2022-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -24,29 +24,33 @@
 *
 **********************************************************************************************/
 
+#pragma once
+
 #include "Model2D.h"
 #include "rlTileMap/ray_tilemap.h"
 
-struct Player : RayTiled::TileLayer::Drawable
+class Player : public RayTiled::TileLayer::Drawable
 {
-    Model2D model;
-    math::rec rec;
-    math::vec2 pos;
-    math::vec2 lastPos;
-    math::vec2 dir;
-    
+private:
+    Model2D model;  
     int animCurrFrame;
-    float facing;
     bool isWalk;
     float rot;
     float scl;
     float rad;
+ 
+public:
+    Rectangle rec;
+    Vector2 pos;
+    Vector2 lastPos;
+    Vector2 dir;
+    float facing;
 
+    void Start();
     void Update();
     void Draw() const;
     
     float GetY() override { return pos.y - rad; }
-};
 
-Player CreatePlayer();
-void DeletePlayer(Player& player);
+    ~Player();
+};

@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023-2024 Wildan R Wijanarko
+*   Copyright (c) 2023-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -49,17 +49,17 @@ void TitleScene::Update()
 
 void TitleScene::LoadResources()
 {
-	_earthTexture = LoadTexture("resources/textures/screens_bg/earth.png");
+	earthTexture = LoadTexture("resources/textures/screens_bg/earth.png");
 }
 
 void TitleScene::FreeResources()
 {
-	UnloadTexture(_earthTexture);
+	UnloadTexture(earthTexture);
 }
 
 void TitleScene::Draw()
 {
-	DrawTextureV(_earthTexture, {}, WHITE);
+	DrawTextureV(earthTexture, {}, WHITE);
 	DrawText("Walking", 15, 20, 40, GREEN);
 	DrawCenteredText(164, "Welcome to 2DWorld!", 24, GREEN);
 	DrawCenteredText(220, "PRESS ENTER to Walking!", 19, GREEN);

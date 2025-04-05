@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023-2024 Wildan R Wijanarko
+*   Copyright (c) 2023-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ public:
 	void FreeResources();
 
 private:
-	Music _bgm{};
+	Music bgm{};
 };
 
 template<typename T>

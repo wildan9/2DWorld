@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023-2024 Wildan R Wijanarko
+*   Copyright (c) 2023-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -50,8 +50,8 @@ public:
 	void Draw() override;
 
 private:
-	RLCamera2D _camera{};
-	math::rec _mapRec{};
-	float _batsLifetime = 20.0f;
-	std::array<Bat, 10> _bats{};
+	RLCamera2D camera{};
+	Rectangle mapRec{};
+	float batsLifetime = 20.0f;
+	std::array<Bat, 10> bats{};
 };

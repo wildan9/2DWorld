@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2024 Wildan R Wijanarko
+*   Copyright (c) 2022-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,11 @@
 
 #include "Animal.h"
 
-Bat CreateBat(math::vec2 pos)
+Bat CreateBat(Vector2 pos)
 {
     Bat b;
     b.pos = pos;
-    b.speed = math::vec2{ 0.7f, 0.9f };
+    b.speed = Vector2{ 0.7f, 0.9f };
     b.scl = 0.6f;
     b.facing = 1.0f;
 

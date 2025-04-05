@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023-2024 Wildan R Wijanarko
+*   Copyright (c) 2023-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ char* currBGM;
 
 void Audio::LoadResources()
 {
-	_bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
+	bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
 	clickSound = LoadAudioData<Sound>("resources/sounds/menu_selection_click.wav");
 }
 
@@ -61,18 +61,18 @@ void Audio::Update()
 	case BGMStates::LOAD_BIRD:
 	{
 		UnloadBGM();
-		_bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
-		_bgm.looping = 1;
+		bgm = LoadAudioData<Music>("resources/sounds/birds-isaiah658.ogg");
+		bgm.looping = 1;
 		currBGM = "";
-		PlayMusicStream(_bgm);
+		PlayMusicStream(bgm);
 	} break;
 	case BGMStates::LOAD_HARP:
 	{
 		UnloadBGM();
-		_bgm = LoadAudioData<Music>("resources/sounds/harp.ogg");
-		_bgm.looping = 1;
+		bgm = LoadAudioData<Music>("resources/sounds/harp.ogg");
+		bgm.looping = 1;
 		currBGM = "";
-		PlayMusicStream(_bgm);
+		PlayMusicStream(bgm);
 	} break;
 	default:
 		break;
@@ -82,7 +82,7 @@ void Audio::Update()
 	else if (currBGM == "harp") bgmState = BGMStates::LOAD_HARP;
 	else if (currBGM == "bird") bgmState = BGMStates::LOAD_BIRD;
 
-	UpdateMusicStream(_bgm);
+	UpdateMusicStream(bgm);
 
 	if (IsKeyPressed(KEY_L) && volume.master < 1.0f && !volume.muted)
 	{
@@ -117,11 +117,11 @@ void Audio::FreeResources()
 
 void Audio::UnloadBGM()
 {
-	StopMusicStream(_bgm);
+	StopMusicStream(bgm);
 
-	_bgm.frameCount = 0;
+	bgm.frameCount = 0;
 
-	UnloadMusicStream(_bgm);
+	UnloadMusicStream(bgm);
 }
 
 void PlayClickSound()

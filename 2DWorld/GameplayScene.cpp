@@ -44,7 +44,7 @@ RayTiled::UserLayer* testUserLayer = nullptr;
 
 RayTiled::TileLayer* objectTileLayer = nullptr;
 
-math::rec houseDoor{ 484.0f, 625.0f, 9, 9 };
+Rectangle houseDoor{ 484.0f, 625.0f, 9, 9 };
 
 Player player;
 
@@ -52,7 +52,7 @@ Timer mapSwitchTimer;
 
 void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
 {
-    DrawRectangleLines(houseDoor.x, houseDoor.y, houseDoor.w, houseDoor.h, RED);
+    DrawRectangleLines(houseDoor.x, houseDoor.y, houseDoor.width, houseDoor.height, RED);
     player.Draw();
 }
 
@@ -135,10 +135,10 @@ void GameplayScene::Start()
 
 void GameplayScene::Update()
 {
-    _mapRec = (enteringHouse) ? math::rec{ 10.0f, 10.0f, 28.5f * 28.5f / 2.0f, 24.8f * 24.8f / 2.0f } 
-    : math::rec{ 10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f };
+    mapRec = (enteringHouse) ? Rectangle{ 10.0f, 10.0f, 28.5f * 28.5f / 2.0f, 24.8f * 24.8f / 2.0f } 
+    : Rectangle{ 10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f };
 
-    _camera.Update(player.pos, _mapRec, GetScreenWidth(), GetScreenHeight(), isCameraScrollable);
+    camera.Update(player.pos, mapRec, GetScreenWidth(), GetScreenHeight(), isCameraScrollable);
 
     // Our debug button
     if (IsKeyPressed(KEY_H))
@@ -148,13 +148,13 @@ void GameplayScene::Update()
 
     player.Update();
     
-    for (auto& bat : _bats)
+    for (auto& bat : bats)
     {
         bat.Update();
     }
 
-    if (enteringHouse) houseDoor = math::rec{ 100.0f, 300.0f, 9, 9 };
-    else houseDoor = math::rec{ 484.0f, 625.0f, 9, 9 };
+    if (enteringHouse) houseDoor = Rectangle{ 100.0f, 300.0f, 9, 9 };
+    else houseDoor = Rectangle{ 484.0f, 625.0f, 9, 9 };
 
     CollisionChecking();
 }
@@ -163,42 +163,41 @@ void GameplayScene::LoadResources()
 {
     InitWorldMap();
 
-    player = CreatePlayer();
+    player.Start();
 
     for (int i = 0; i < 10; i++)
     {
-        _bats[i] = CreateBat(math::vec2{ 100.0f + i * 14 + GetRandomValue(2, 6), 100.0f + i * 12 + GetRandomValue(3, 5) });
+        bats[i] = CreateBat(Vector2{ 100.0f + i * 14 + GetRandomValue(2, 6), 100.0f + i * 12 + GetRandomValue(3, 5) });
     }
 }
 
 void GameplayScene::FreeResources()
 {
-    for (auto& bat : _bats)
+    for (auto& bat : bats)
     {
         DeleteBat(bat);
     }
-    
-    DeletePlayer(player);
+
     RayTiled::UnloadTileMap(map, 1);
 }
 
 void GameplayScene::Draw()
 {
-    _camera.BeginMode();
+    camera.BeginMode();
         if (!onSwitch)
         {
-            RayTiled::DrawTileMap(map, &_camera);
+            RayTiled::DrawTileMap(map, &camera);
         }
 
         if (!enteringHouse)
         {
-            for (const auto& bat : _bats)
+            for (const auto& bat : bats)
             {
                 bat.Draw();
             }
-            DrawRectangleLinesEx(math::rl_rec(_mapRec), 12, BLACK);
+            DrawRectangleLinesEx(mapRec, 12, BLACK);
         }
-    _camera.EndMode();
+    camera.EndMode();
 
     if (onSwitch)
     {
@@ -211,7 +210,7 @@ void GameplayScene::Draw()
     }
 
     std::ostringstream ssCameraZoom;
-    ssCameraZoom << "Camera Zoom: " << std::fixed << std::setprecision(1) << _camera.GetCameraZoom();
+    ssCameraZoom << "Camera Zoom: " << std::fixed << std::setprecision(1) << camera.GetCameraZoom();
 
     std::string strPlayerPos{};
     strPlayerPos = strPlayerPos + "X: " + std::to_string((int)player.pos.x) + " Y: " + std::to_string((int)player.pos.y);
@@ -232,18 +231,18 @@ static bool OnTouch(const Player& player, float targetPosX)
 void GameplayScene::CollisionChecking()
 {
     std::vector<RayTiled::CollisionRecord> collisions;
-    if (GetCollisions(map, math::rl_rec(player.rec), collisions))
+    if (GetCollisions(map, player.rec, collisions))
     {
         player.pos = player.lastPos;
     }
 
-    if (houseDoor.check_collision(player.rec) && !enteringHouse && !onSwitch)
+    if (CheckCollisionRecs(houseDoor, player.rec) && !enteringHouse && !onSwitch)
     {
         onSwitch = 1;
         isCameraScrollable = 0;
         InitHouseMap();
-        player.pos = math::vec2{ 200.0f, 200.0f };
-        _camera.zoom = 2.0f;
+        player.pos = Vector2{ 200.0f, 200.0f };
+        camera.zoom = 2.0f;
         enteringHouse = 1;
 
         SetCurrBGM("harp");
@@ -258,13 +257,13 @@ void GameplayScene::CollisionChecking()
         onSwitch = 0;
     }
 
-    if (houseDoor.check_collision(player.rec) && enteringHouse && !onSwitch)
+    if (CheckCollisionRecs(houseDoor, player.rec) && enteringHouse && !onSwitch)
     {
         onSwitch = 1;
         isCameraScrollable = 1;
         InitWorldMap();
-        player.pos = math::vec2{ 484.0f, 650.0f };
-        _camera.zoom = 2.0f;
+        player.pos = Vector2{ 484.0f, 650.0f };
+        camera.zoom = 2.0f;
         enteringHouse = 0;
 
         SetCurrBGM("bird");
@@ -292,10 +291,10 @@ static void DrawLoadingScreen()
     static bool fadeOut = 1;                 // Direction of fading
     static float blinkSpeed = 1.0f;          // Speed of blinking (lower value = faster blink)
 
-    math::vec2 textPos = { (float)GetScreenWidth()/2.0f - 80.0f, (float)GetScreenHeight() - 300.0f }; // Centered position
+    Vector2 textPos {(float)GetScreenWidth()/2.0f - 80.0f, (float)GetScreenHeight() - 300.0f}; // Centered position
 
     // Update alpha transparency
-    if (fadeOut) alpha -= blinkSpeed * GetFrameTime();
+    if (fadeOut) alpha -= blinkSpeed*GetFrameTime();
     else alpha += blinkSpeed * GetFrameTime();
 
     // Clamp the alpha between 0 and 1
@@ -303,7 +302,7 @@ static void DrawLoadingScreen()
     else if (alpha >= 1.0f) { alpha = 1.0f; fadeOut = 1; }
 
     // Draw the blinking loading text
-    DrawTextEx(GetFontDefault(), text, math::rl_vec(textPos), 40.0f, 2, Fade(BLACK, alpha));
+    DrawTextEx(GetFontDefault(), text, textPos, 40.0f, 2, Fade(BLACK, alpha));
 }
 
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize)

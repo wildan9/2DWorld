@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2024 Wildan R Wijanarko
+*   Copyright (c) 2024-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -30,13 +30,13 @@
 #include "ObjectTexures.h"
 
 #include <array>
+#include <string>
 #include <memory>
 
 struct RecFrame
 {
     float facing;
-    std::array<math
-    ::rec, 2> recData;
+    std::array<Rectangle, 2> recData;
 };
 
 struct AnimationData
@@ -48,7 +48,7 @@ struct AnimationData
 
 struct Model2D
 {
-    math::trans2d trans;
+    Trans2D trans;
     Texture2D* currTexture;
     std::unique_ptr<AnimationData> animData;
     std::unique_ptr<ObjectTexures> textures;

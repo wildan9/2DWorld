@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2024 Wildan R Wijanarko
+*   Copyright (c) 2022-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 #include "Player.h"
 
-static void UpdatePlayerTrans(math::trans2d& trans, math::vec2 pos, float rot, float scl);
+static void UpdatePlayerTrans(Trans2D& trans, Vector2 pos, float rot, float scl);
 
 static struct
 {
@@ -37,7 +37,7 @@ static struct
 
     inline void Load()
     {
-        landStep = LoadSound("resources/sounds/land_step.wav");
+        landStep = LoadSound("resources/sounds/land_stewav");
     }
 
     inline void Unload()
@@ -60,16 +60,15 @@ static struct
 
 } playerSound;
 
-Player CreatePlayer()
+void Player::Start()
 {
-    Player p;
-    p.pos = math::vec2{ 300.0f, 300.0f };
-    p.rot = 0.0f;
-    p.scl = 0.6f;
-    p.rad = 10.0f;
-    p.facing = 1.0f;
-    p.isWalk = 1;
-    p.rec = math::rec{ p.pos.x, p.pos.y, 10.0f, 15.0f };
+    pos = Vector2{ 300.0f, 300.0f };
+    rot = 0.0f;
+    scl = 0.6f;
+    rad = 10.0f;
+    facing = 1.0f;
+    isWalk = 1;
+    rec = Rectangle{ pos.x, pos.y, 10.0f, 15.0f };
 
     const std::vector<std::string> texturesPaths
     {
@@ -80,23 +79,21 @@ Player CreatePlayer()
         "resources/textures/character/horse_riding/walk.png"
     };
 
-    p.model = LoadModel2D(texturesPaths);
-    p.model.animData = CreateAnimData();
+    model = LoadModel2D(texturesPaths);
+    model.animData = CreateAnimData();
 
     playerSound.Load();
-
-    return p;
 }
 
-void DeletePlayer(Player& player)
+Player::~Player()
 {
-    UnloadModel2D(player.model);
+    UnloadModel2D(model);
     playerSound.Unload();
 }
 
 void Player::Update()
 {
-    dir = math::vec2_input_dir();
+    dir = Vector2InputDir();
 
     lastPos = pos;
 
@@ -108,11 +105,11 @@ void Player::Update()
     int frameSpeed = 6;
     int numFrames = 2;
 
-    if (dir.length() != 0)
+    if (Vector2Length(dir) != 0)
     {
         isWalk = 1;
 
-        pos = pos - dir.normalize().scale(speed);
+        pos = pos - Vector2Scale(Vector2Normalize(dir), speed);
         animCurrFrame = (isOnHorse) ? 5 : 3;
 
         if (dir.x < 0.0f) facing = 1.0f;
@@ -140,19 +137,19 @@ void Player::Update()
     rec.x = pos.x - 10.0f;
     rec.y = pos.y - 10.0f;
 
-    math::vec2 playerDrawPos = math::vec2{ pos.x - 15.0f, pos.y - 15.0f };
+    Vector2 playerDrawPos = Vector2{ pos.x - 15.0f, pos.y - 15.0f };
     UpdatePlayerTrans(model.trans, playerDrawPos, rot, scl);
     UpdateAnim(model, facing, frameSpeed, numFrames, animCurrFrame, 1);
 }
 
 void Player::Draw() const
 {
-    DrawRectangleLines(rec.x, rec.y, rec.w, rec.h, GREEN);
-    DrawCircleLinesV(math::rl_vec(pos), rad, RED);
+    DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, GREEN);
+    DrawCircleLinesV(pos, rad, RED);
     DrawModel2D(model);
 }
 
-static void UpdatePlayerTrans(math::trans2d& trans, math::vec2 pos, float rot, float scl)
+static void UpdatePlayerTrans(Trans2D& trans, Vector2 pos, float rot, float scl)
 {
     trans.pos = pos;
     trans.rot = rot;

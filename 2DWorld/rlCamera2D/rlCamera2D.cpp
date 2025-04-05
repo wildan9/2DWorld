@@ -24,62 +24,63 @@
 *
 **********************************************************************************************/
 
-#include "RLCamera2D.h"
+#include "rlCamera2D.h"
+#include "raymath.h"
 
-math::rec GetRecX1(const math::rec& r);
-math::rec GetRecX2(const math::rec& r);
-math::rec GetRecY1(const math::rec& r);
-math::rec GetRecY2(const math::rec& r);
+Rectangle GetRecX1(const Rectangle& r);
+Rectangle GetRecX2(const Rectangle& r);
+Rectangle GetRecY1(const Rectangle& r);
+Rectangle GetRecY2(const Rectangle& r);
 
-math::vec2 RLCamera2D::GetDir() const
+Vector2 RLCamera2D::GetDir() const
 {
-    math::vec2 dir{};
-    math::vec2 worldMousePos(math::to_vec2(GetScreenToWorld2D(GetMousePosition(), *this)));
+    Vector2 dir{};
+    Vector2 worldMousePos = GetScreenToWorld2D(GetMousePosition(), *this);
 
-    if (GetRecY1(_rec).check_collision(worldMousePos))
+    if (CheckCollisionPointRec(worldMousePos, GetRecY1(rec)))
     {
-        dir.x += _cameraSpeed;
+        dir.x += cameraSpeed;
     }
-    if (GetRecY2(_rec).check_collision(worldMousePos))
+    if (CheckCollisionPointRec(worldMousePos, GetRecY2(rec)))
     {
-        dir.x -= _cameraSpeed;
+        dir.x -= cameraSpeed;
     }
-    if (GetRecX1(_rec).check_collision(worldMousePos))
+    if (CheckCollisionPointRec(worldMousePos, GetRecX1(rec)))
     {
-        dir.y += _cameraSpeed;
+        dir.y += cameraSpeed;
     }
-    if (GetRecX2(_rec).check_collision(worldMousePos))
+    if (CheckCollisionPointRec(worldMousePos, GetRecX2(rec)))
     {
-        dir.y -= _cameraSpeed;
+        dir.y -= cameraSpeed;
     }
 
     return dir;
 }
 
-void RLCamera2D::Update(const math::vec2& playerPos, const math::rec& rec, int screenWidth, int screenHeight, bool scrollable)
+void RLCamera2D::Update(const Vector2& playerPos, const Rectangle& mapRec, int screenWidth, int screenHeight, bool scrollable)
 {
-    offset = { screenWidth / 2.0f, screenHeight / 2.0f };
+    offset = {screenWidth/2.0f, screenHeight/2.0f};
 
-    _freeMode = IsMouseButtonDown(MOUSE_RIGHT_BUTTON);
+    freeMode = IsMouseButtonDown(MOUSE_RIGHT_BUTTON);
 
-    const math::vec2 cameraTarget = (_freeMode) ? math::to_vec2(target) + GetDir() : playerPos;
+    const Vector2 cameraTarget = (freeMode) ? target + GetDir() : playerPos;
 
-    target = math::rl_vec(cameraTarget);
+    target = cameraTarget;
     
-    float minX = rec.w, minY = rec.h, maxX = 0, maxY = 0;
+    float minX = mapRec.width, minY = mapRec.height, maxX = 0, maxY = 0;
 
-    minX = std::fminf(rec.x, minX);
-    maxX = std::fmaxf(rec.x + rec.w, maxX);
-    minY = std::fminf(rec.y, minY);
-    maxY = std::fmaxf(rec.y + rec.h, maxY);
+    minX = fminf(mapRec.x, minX);
+    maxX = fmaxf(mapRec.x + mapRec.width, maxX);
+    minY = fminf(mapRec.y, minY);
+    maxY = fmaxf(mapRec.y + mapRec.height, maxY);
 
     Vector2 max = GetWorldToScreen2D({ maxX, maxY }, *this);
     Vector2 min = GetWorldToScreen2D({ minX, minY }, *this);
 
-    if (max.x < screenWidth) offset.x = screenWidth - (max.x - screenWidth / 2);
-    if (max.y < screenHeight) offset.y = screenHeight - (max.y - screenHeight / 2);
-    if (min.x > 0) offset.x = screenWidth / 2 - min.x;
-    if (min.y > 0) offset.y = screenHeight / 2 - min.y;
+    if (max.x < screenWidth) offset.x = screenWidth - (max.x - screenWidth/2);
+    if (max.y < screenHeight) offset.y = screenHeight - (max.y - screenHeight/2);
+    if (min.x > 0) offset.x = screenWidth/2 - min.x;
+    if (min.y > 0) offset.y = screenHeight/2 - min.y;
 
     if (scrollable)
     {
@@ -87,48 +88,48 @@ void RLCamera2D::Update(const math::vec2& playerPos, const math::rec& rec, int s
         if ((GetMouseWheelMove() < 0.0f) && zoom > 1.0f) zoom -= 0.1f;
     }
 
-    _rec.x = target.x - offset.x / zoom;
-    _rec.y = target.y - offset.y / zoom;
+    rec.x = target.x - offset.x/zoom;
+    rec.y = target.y - offset.y/zoom;
 
-    _rec.w  = screenWidth / zoom;
-    _rec.h = screenHeight / zoom;
+    rec.width  = screenWidth/zoom;
+    rec.height  = screenHeight/zoom;
 }
 
-inline math::rec GetRecX1(const math::rec& r)
+inline Rectangle GetRecX1(const Rectangle& r)
 {
-    float fullArea = r.w * r.h;
+    float fullArea = r.width*r.height;
     float bottomArea = fullArea - (fullArea * 0.9f);
 
-    float y = r.y + (fullArea - bottomArea) / r.w;
+    float y = r.y + (fullArea - bottomArea)/r.width;
 
-    return { r.x, y, r.w, bottomArea / r.w };
+    return { r.x, y, r.width, bottomArea/r.width };
 }
 
-inline math::rec GetRecX2(const math::rec& r)
+inline Rectangle GetRecX2(const Rectangle& r)
 {
-    float fullArea = r.w * r.h;
-    float bottomArea = fullArea - (fullArea * 0.9f);
+    float fullArea = r.width*r.height;
+    float bottomArea = fullArea - (fullArea*0.9f);
 
-    return { r.x, r.y, r.w, bottomArea / r.w };
+    return { r.x, r.y, r.width, bottomArea/r.width };
 }
 
-inline math::rec GetRecY1(const math::rec& r)
+inline Rectangle GetRecY1(const Rectangle& r)
 {
-    float fullArea = r.w * r.h;
-    float rightArea = fullArea - (fullArea * 0.9f);
+    float fullArea = r.width*r.height;
+    float rightArea = fullArea - (fullArea*0.9f);
 
-    float x = r.x + (fullArea - rightArea) / r.h;
+    float x = r.x + (fullArea - rightArea)/r.height;
 
-    return { x, r.y, rightArea / r.h, r.h };
+    return { x, r.y, rightArea/r.height, r.height };
 }
 
-inline math::rec GetRecY2(const math::rec& r)
+inline Rectangle GetRecY2(const Rectangle& r)
 {
-    float fullArea = r.w * r.h;
+    float fullArea = r.width*r.height;
     float leftArea = fullArea * 0.1f;
 
     float x = r.x;
-    float width = leftArea / r.h;
+    float width = leftArea/r.height;
 
-    return { x, r.y, width, r.h };
+    return { x, r.y, width, r.height };
 }

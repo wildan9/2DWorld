@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2022-2024 Wildan R Wijanarko
+*   Copyright (c) 2022-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -24,13 +24,15 @@
 *
 **********************************************************************************************/
 
+#pragma once
+
 #include "Model2D.h"
 
 struct Bat
 {
     Model2D model;
-    math::vec2 speed;
-    math::vec2 pos;
+    Vector2 speed;
+    Vector2 pos;
     int animCurrFrame;
     float scl;
     float facing;
@@ -39,5 +41,5 @@ struct Bat
     void Draw() const;
 };
 
-Bat CreateBat(math::vec2 pos);
+Bat CreateBat(Vector2 pos);
 void DeleteBat(Bat& bat);

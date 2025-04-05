@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2024 Wildan R Wijanarko
+*   Copyright (c) 2024-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@
 Model2D LoadModel2D(const std::vector<std::string>& texturesPath)
 {
     Model2D m;
-    m.trans = math::trans2d();
+    m.trans = Trans2D();
     m.textures = std::make_unique<ObjectTexures>();
 
     if (!texturesPath.empty())
@@ -62,7 +62,7 @@ std::unique_ptr<AnimationData> CreateAnimData()
     auto a = std::make_unique<AnimationData>();
     a->currFrame = 0;
     a->frameCounter = 0;
-    a->recFrame.recData = std::array<math::rec, 2>();
+    a->recFrame.recData = std::array<Rectangle, 2>();
     a->recFrame.facing = 1.0f;
 
     return a;
@@ -74,20 +74,20 @@ void UpdateAnim(Model2D& model, float facing, int frameSpeed, int numFrames, int
 
     if (animData == nullptr) return;
     
-    math::trans2d trans = model.trans;
+    Trans2D trans = model.trans;
     model.currTexture = &model.textures->at(frame);
     Texture2D texture = *model.currTexture;
 
-    animData->recFrame.recData[0] = math::rec{
-        animData->currFrame * (float)texture.width/numFrames,
-        0.0f, facing * (float)texture.width/numFrames,
+    animData->recFrame.recData[0] = Rectangle{
+        animData->currFrame*(float)texture.width/numFrames,
+        0.0f, facing*(float)texture.width/numFrames,
         (float)texture.height
     };
 
-    animData->recFrame.recData[1] = math::rec{
+    animData->recFrame.recData[1] = Rectangle{
         trans.pos.x, trans.pos.y,
-        trans.scl * (float)texture.width/numFrames,
-        trans.scl * (float)texture.height
+        trans.scl*(float)texture.width/numFrames,
+        trans.scl*(float)texture.height
     };
 
     if (!animate) return;
@@ -105,9 +105,9 @@ void DrawModel2D(const Model2D& model)
 {
     const AnimationData* animData = model.animData.get();
 
-    math::vec2 ori;
-    math::rec  src;
-    math::rec  dst;
+    Vector2 ori;
+    Rectangle  src;
+    Rectangle  dst;
 
     if (model.currTexture == nullptr) return;
 
@@ -116,13 +116,13 @@ void DrawModel2D(const Model2D& model)
 
     if (animData == nullptr)
     {
-        ori = math::vec2();
-        src = { 0.0f, 0.0f, (float)tex.width, (float)tex.height };
-        dst = { model.trans.pos.x, model.trans.pos.y, (float)tex.width * model.trans.scl, (float)tex.height * model.trans.scl };
+        ori = Vector2();
+        src = {0.0f, 0.0f, (float)tex.width, (float)tex.height};
+        dst = {model.trans.pos.x, model.trans.pos.y, (float)tex.width*model.trans.scl, (float)tex.height*model.trans.scl};
     }
     else
     {
-        ori = math::vec2();
+        ori = Vector2();
         src = animData->recFrame.recData[0];
         dst = animData->recFrame.recData[1];
     }
@@ -132,22 +132,22 @@ void DrawModel2D(const Model2D& model)
         float w = (float)tex.width;
         float h = (float)tex.height;
 
-        math::vec2 vertices[4];
+        Vector2 vertices[4];
 
         if (rot == 0.0f)
         {
             float x = dst.x - ori.x;
             float y = dst.y - ori.y;
 
-            vertices[0] = { x, y };                    // Top-left
-            vertices[1] = { x, y + dst.h };            // Bottom-left
-            vertices[2] = { x + dst.w, y + dst.h };    // Bottom-right
-            vertices[3] = { x + dst.w, y };            // Top-right
+            vertices[0] = {x, y};                    // Top-left
+            vertices[1] = {x, y + dst.height};            // Bottom-left
+            vertices[2] = {x + dst.width, y + dst.height};    // Bottom-right
+            vertices[3] = {x + dst.width, y};            // Top-right
         }
         else
         {
-            float sinrot = std::sinf(rot * DEG2RAD);
-            float cosrot = std::cosf(rot * DEG2RAD);
+            float sinrot = sinf(rot*DEG2RAD);
+            float cosrot = cosf(rot*DEG2RAD);
 
             float x = dst.x;
             float y = dst.y;
@@ -155,10 +155,10 @@ void DrawModel2D(const Model2D& model)
             float dx = -ori.x;
             float dy = -ori.y;
 
-            vertices[0] = { x + dx * cosrot - dy * sinrot, y + dx * sinrot + dy * cosrot }; // Top-left
-            vertices[1] = { x + dx * cosrot - (dy + dst.h) * sinrot, y + dx * sinrot + (dy + dst.h) * cosrot }; // Bottom-left
-            vertices[2] = { x + (dx + dst.w) * cosrot - (dy + dst.h) * sinrot, y + (dx + dst.w) * sinrot + (dy + dst.h) * cosrot }; // Bottom-right
-            vertices[3] = { x + (dx + dst.w) * cosrot - dy * sinrot, y + (dx + dst.w) * sinrot + dy * cosrot }; // Top-right
+            vertices[0] = {x + dx*cosrot - dy*sinrot, y + dx*sinrot + dy*cosrot}; // Top-left
+            vertices[1] = {x + dx*cosrot - (dy + dst.height)*sinrot, y + dx*sinrot + (dy + dst.height)*cosrot}; // Bottom-left
+            vertices[2] = {x + (dx + dst.width)*cosrot - (dy + dst.height)*sinrot, y + (dx + dst.width) * sinrot + (dy + dst.height)*cosrot}; // Bottom-right
+            vertices[3] = {x + (dx + dst.width)*cosrot - dy*sinrot, y + (dx + dst.width)*sinrot + dy*cosrot}; // Top-right
         }
 
         rlSetTexture(tex.id);
@@ -170,13 +170,13 @@ void DrawModel2D(const Model2D& model)
         rlTexCoord2f(src.x/w, src.y/h);
         rlVertex2f(vertices[0].x, vertices[0].y);
 
-        rlTexCoord2f(src.x/w, (src.y + src.h)/h);
+        rlTexCoord2f(src.x/w, (src.y + src.height)/h);
         rlVertex2f(vertices[1].x, vertices[1].y);
 
-        rlTexCoord2f((src.x + src.w)/w, (src.y + src.h)/h);
+        rlTexCoord2f((src.x + src.width)/w, (src.y + src.height)/h);
         rlVertex2f(vertices[2].x, vertices[2].y);
 
-        rlTexCoord2f((src.x + src.w)/w, src.y/h);
+        rlTexCoord2f((src.x + src.width)/w, src.y/h);
         rlVertex2f(vertices[3].x, vertices[3].y);
 
         rlEnd();
