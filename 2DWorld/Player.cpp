@@ -109,7 +109,7 @@ void Player::Update()
     {
         isWalk = 1;
 
-        pos = pos - Vector2Scale(Vector2Normalize(dir), speed);
+        pos = pos - Vector2Scale(dir, speed);
         animCurrFrame = (isOnHorse) ? 5 : 3;
 
         if (dir.x < 0.0f) facing = 1.0f;

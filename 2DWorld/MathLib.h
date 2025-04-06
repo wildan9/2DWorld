@@ -2,7 +2,7 @@
 *
 *   LICENSE: MIT
 *
-*   Copyright (c) 2023-2024 Wildan R Wijanarko
+*   Copyright (c) 2023-2025 Wildan R Wijanarko
 *
 *   Permission is hereby granted, free of charge, to any person obtaining a copy
 *   of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,13 @@
 #include "raylib.h"
 #include "raymath.h"
 
+typedef struct Trans2D
+{
+	Vector2 pos;
+	float rot;
+	float scl;
+};
+
 inline Vector2 Vector2InputDir()
 {
 	Vector2 dir{ 0 };
@@ -38,12 +45,5 @@ inline Vector2 Vector2InputDir()
 	if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) dir.y -= 1.0f;
 	if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) dir.y += 1.0f;
 
-	return dir;
+	return Vector2Normalize(dir);
 }
-
-typedef struct Trans2D
-{
-	Vector2 pos;
-	float rot;
-	float scl;
-};
