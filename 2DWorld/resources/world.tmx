@@ -25,7 +25,7 @@
  </layer>
  <layer id="4" name="Doors/windows/roof" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt1TEOwVAYwPFXqYFjOAOJmU0sZpewsLobCSuH4BJIvG4iWoYnbfj9kiZNl/fl/9J8IQAAAAAAAAAAAABQ5ZCHcMzrnqL5NrHRNnGn5/a7+N5ph9Btpz3nFy1io2vi+yjarx/aD+P7KD5j9/FWPzYaJO70qv0yC2GVpT3nF51io7NOjTRr1T0BVYpdv//CvqdcVfNL8e0L+55yVc2LXX/L0+97yr1rPrXrG2Ve9wB/aOIfaKxe3QMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfuwMIbxle
+   eJzt1TEKwjAYgNEU6qDH8AwKzrqJN/ASLrp6NwVd9RB6CRVMNxFbFVJa9D0ohC4JXwh/CAAAAAAAAAAAAABUOeQhHPOmT9F+m9hom7jTc/tdXHc7IfQ6aff5RYvY6Jr4Por264f2o7gex2/iPt4axEbDxJ1etV9mIayytPv8olNsdNYJvlbM+n0N855yVc0vxb8a5j3lqpoXs/6Wp5/3lHvXfGbWt8q86QP8oak30Fr9pg8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB87A43kBkL
   </data>
  </layer>
  <objectgroup id="8" name="CollisionObjects">
