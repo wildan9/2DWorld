@@ -30,10 +30,10 @@ static void UpdatePlayerTrans(Trans2D& trans, Vector2 pos, float rot, float scl)
 
 static struct
 {
-    float dt;
+    float dt = 0.0f;
     const float ut = 0.084f;
 
-    Sound landStep;
+    Sound landStep{};
 
     inline void Load()
     {
