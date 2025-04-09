@@ -167,17 +167,14 @@ void GameplayScene::LoadResources()
 
     for (int i = 0; i < 10; i++)
     {
-        bats[i] = CreateBat(Vector2{ 100.0f + i * 14 + GetRandomValue(2, 6), 100.0f + i * 12 + GetRandomValue(3, 5) });
+        bats[i].Start();
+
+        bats[i].pos = Vector2{ 100.0f + i*14 + GetRandomValue(2, 6), 100.0f + i*12 + GetRandomValue(3, 5) };
     }
 }
 
 void GameplayScene::FreeResources()
 {
-    for (auto& bat : bats)
-    {
-        DeleteBat(bat);
-    }
-
     RayTiled::UnloadTileMap(map, 1);
 }
 

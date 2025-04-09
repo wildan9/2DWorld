@@ -36,10 +36,9 @@ struct Bat
     int animCurrFrame;
     float scl;
     float facing;
-
+    void Start();
     void Update();
     void Draw() const;
-};
 
-Bat CreateBat(Vector2 pos);
-void DeleteBat(Bat& bat);
+    ~Bat();
+};

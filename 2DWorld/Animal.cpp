@@ -26,28 +26,25 @@
 
 #include "Animal.h"
 
-Bat CreateBat(Vector2 pos)
+void Bat::Start()
 {
-    Bat b;
-    b.pos = pos;
-    b.speed = Vector2{ 0.7f, 0.9f };
-    b.scl = 0.6f;
-    b.facing = 1.0f;
+    pos = pos;
+    speed = Vector2{ 0.7f, 0.9f };
+    scl = 0.6f;
+    facing = 1.0f;
 
     const std::vector<std::string> texturesPaths
     {
         "resources/textures/animals/bat/fly.png"
     };
 
-    b.model = LoadModel2D(texturesPaths);
-    b.model.animData = CreateAnimData();
-
-    return b;
+    model = LoadModel2D(texturesPaths);
+    model.animData = CreateAnimData();
 }
 
-void DeleteBat(Bat& bat)
+Bat::~Bat()
 {
-    UnloadModel2D(bat.model);
+    UnloadModel2D(model);
 }
 
 void Bat::Update()
