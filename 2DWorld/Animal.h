@@ -27,8 +27,9 @@
 #pragma once
 
 #include "Model2D.h"
+#include "rlTileMap/ray_tilemap.h"
 
-struct Bat
+struct Animal
 {
     Model2D model;
     Vector2 speed;
@@ -36,9 +37,27 @@ struct Bat
     int animCurrFrame;
     float scl;
     float facing;
-    void Start();
-    void Update();
-    void Draw() const;
+    virtual void Start() = 0;
+    virtual void Update() = 0;
+    virtual void Draw() const = 0;
+};
+
+struct Bat : public Animal
+{
+    void Start() override;
+    void Update() override;
+    void Draw() const override;
 
     ~Bat();
+};
+
+struct Horse : public Animal, public RayTiled::TileLayer::Drawable
+{
+    void Start() override;
+    void Update() override;
+    void Draw() const override;
+
+    float GetY() override { return pos.y - 12.0f; }
+
+    ~Horse();
 };

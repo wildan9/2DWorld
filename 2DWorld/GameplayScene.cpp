@@ -47,6 +47,7 @@ RayTiled::TileLayer* objectTileLayer = nullptr;
 Rectangle houseDoor{ 484.0f, 625.0f, 9, 9 };
 
 Player player;
+Horse horse;
 
 Timer mapSwitchTimer;
 
@@ -54,6 +55,7 @@ void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawab
 {
     DrawRectangleLines(houseDoor.x, houseDoor.y, houseDoor.width, houseDoor.height, RED);
     player.Draw();
+    horse.Draw();
 }
 
 void DrawCollisionLayer(RayTiled::ObjectLayer& layer, Camera2D* camera, Vector2 bounds)
@@ -153,6 +155,8 @@ void GameplayScene::Update()
         bat.Update();
     }
 
+    horse.Update();
+
     if (enteringHouse) houseDoor = Rectangle{ 100.0f, 300.0f, 9, 9 };
     else houseDoor = Rectangle{ 484.0f, 625.0f, 9, 9 };
 
@@ -168,9 +172,11 @@ void GameplayScene::LoadResources()
     for (int i = 0; i < 10; i++)
     {
         bats[i].Start();
-
         bats[i].pos = Vector2{ 100.0f + i*14 + GetRandomValue(2, 6), 100.0f + i*12 + GetRandomValue(3, 5) };
     }
+
+    horse.Start();
+    horse.pos = Vector2{912.0f, 626.0f};
 }
 
 void GameplayScene::FreeResources()
@@ -271,12 +277,12 @@ void GameplayScene::CollisionChecking()
 
 static Rectangle GetRecBottomSide(const Rectangle& rec)
 {
-    float fullArea = rec.width * rec.height;
-    float bottomArea = fullArea - fullArea * 0.85f;
+    float fullArea = rec.width*rec.height;
+    float bottomArea = fullArea - fullArea*0.85f;
 
-    float y = rec.y + (fullArea - bottomArea) / rec.width;
+    float y = rec.y + (fullArea - bottomArea)/rec.width;
 
-    return { rec.x, y, rec.width, bottomArea / rec.width };
+    return { rec.x, y, rec.width, bottomArea/rec.width };
 }
 
 static void DrawLoadingScreen()
@@ -292,7 +298,7 @@ static void DrawLoadingScreen()
 
     // Update alpha transparency
     if (fadeOut) alpha -= blinkSpeed*GetFrameTime();
-    else alpha += blinkSpeed * GetFrameTime();
+    else alpha += blinkSpeed*GetFrameTime();
 
     // Clamp the alpha between 0 and 1
     if (alpha <= 0.0f) { alpha = 0.0f; fadeOut = 0; }
@@ -304,7 +310,7 @@ static void DrawLoadingScreen()
 
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize)
 {
-    cellSize = cellSize * 4;
+    cellSize = cellSize*4;
 
     // Draw vertical lines
     for (int x = 0; x <= screenWidth; x += cellSize)

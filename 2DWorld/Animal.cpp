@@ -26,7 +26,7 @@
 
 #include "Animal.h"
 
-void Bat::Start()
+void Bat::Start() 
 {
     pos = pos;
     speed = Vector2{ 0.7f, 0.9f };
@@ -76,6 +76,47 @@ void Bat::Update()
 }
 
 void Bat::Draw() const
+{
+    DrawRectangleLines(pos.x, pos.y, 15, 15, GREEN);
+    DrawModel2D(model);
+}
+
+void Horse::Start()
+{
+    pos = pos;
+    speed = Vector2{ 0.7f, 0.9f };
+    scl = 0.6f;
+    facing = 1.0f;
+
+    const std::vector<std::string> texturesPaths
+    {
+        "resources/textures/animals/horse/idle.png"
+    };
+
+    model = LoadModel2D(texturesPaths);
+    model.animData = CreateAnimData();
+}
+
+Horse::~Horse()
+{
+    UnloadModel2D(model);
+}
+
+void Horse::Update()
+{
+    int frameSpeed = 4;
+    int numFrames = 13;
+
+    animCurrFrame = 1;
+
+    model.trans.pos = pos;
+    model.trans.scl = 0.8f;
+    model.trans.rot = 0.0f;
+
+    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrFrame, 1);
+}
+
+void Horse::Draw() const
 {
     DrawRectangleLines(pos.x, pos.y, 15, 15, GREEN);
     DrawModel2D(model);
