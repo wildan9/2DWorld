@@ -36,6 +36,7 @@ struct Animal
     Vector2 pos;
     int animCurrFrame;
     float scl;
+    float rad;
     float facing;
     virtual void Start() = 0;
     virtual void Update() = 0;
@@ -57,7 +58,7 @@ struct Horse : public Animal, public RayTiled::TileLayer::Drawable
     void Update() override;
     void Draw() const override;
 
-    float GetY() override { return pos.y - 12.0f; }
+    float GetY() override { return pos.y - rad; }
 
     ~Horse();
 };

@@ -51,11 +51,21 @@ Horse horse;
 
 Timer mapSwitchTimer;
 
+void DrawHorseObject(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
+{
+    horse.Draw();
+}
+
 void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
 {
-    DrawRectangleLines(houseDoor.x, houseDoor.y, houseDoor.width, houseDoor.height, RED);
-    player.Draw();
-    horse.Draw();
+    if (&drawable == &player)
+    {
+        player.Draw();
+    }
+    else if (&drawable == &horse)
+    {
+        horse.Draw();
+    }
 }
 
 void DrawCollisionLayer(RayTiled::ObjectLayer& layer, Camera2D* camera, Vector2 bounds)
@@ -87,15 +97,15 @@ void InitWorldMap()
     RayTiled::UnloadTileMap(map, 1);
     RayTiled::LoadTileMap("resources/world.tmx", map);
 
-    testUserLayer = RayTiled::InsertTileMapLayer<RayTiled::UserLayer>(map, map.Layers.back()->LayerId);
-
     auto playerLayer = RayTiled::FindLayer(map, "Objects");
     if (playerLayer && playerLayer->Type == RayTiled::TileLayerType::Tile)
     {
         objectTileLayer = static_cast<RayTiled::TileLayer*>(playerLayer);
 
         objectTileLayer->CustomDrawalbeFunction = DrawObjectLayerItem;
+
         objectTileLayer->AddDrawable(&player);
+        objectTileLayer->AddDrawable(&horse);
     }
 
     auto collisionlayer = RayTiled::FindLayer(map, "CollisionObjects");
@@ -177,6 +187,7 @@ void GameplayScene::LoadResources()
 
     horse.Start();
     horse.pos = Vector2{912.0f, 626.0f};
+    horse.rad = 1.8f;
 }
 
 void GameplayScene::FreeResources()
