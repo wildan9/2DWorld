@@ -102,7 +102,7 @@ void Player::Update()
     bool isPunch = IsKeyDown(KEY_E);
     bool isOnHorse = 0;
 
-    int frameSpeed = 6;
+    float frameSpeed = 6.0f;
     int numFrames = 2;
 
     if (Vector2Length(dir) != 0)

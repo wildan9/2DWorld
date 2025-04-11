@@ -39,9 +39,6 @@ static bool OnTouch(const Player& player, float targetPosX);
 static void DrawLoadingScreen();
 
 RayTiled::TileMap map;
-
-RayTiled::UserLayer* testUserLayer = nullptr;
-
 RayTiled::TileLayer* objectTileLayer = nullptr;
 
 Rectangle houseDoor{ 484.0f, 625.0f, 9, 9 };
@@ -50,11 +47,6 @@ Player player;
 Horse horse;
 
 Timer mapSwitchTimer;
-
-void DrawHorseObject(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
-{
-    horse.Draw();
-}
 
 void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
 {
@@ -120,8 +112,6 @@ void InitHouseMap()
 {
     RayTiled::UnloadTileMap(map, 1);
     RayTiled::LoadTileMap("resources/house.tmx", map);
-
-    testUserLayer = RayTiled::InsertTileMapLayer<RayTiled::UserLayer>(map, map.Layers.back()->LayerId);
 
     auto playerLayer = RayTiled::FindLayer(map, "Objects");
     if (playerLayer && playerLayer->Type == RayTiled::TileLayerType::Tile)

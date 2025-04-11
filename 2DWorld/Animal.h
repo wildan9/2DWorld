@@ -34,10 +34,12 @@ struct Animal
     Model2D model;
     Vector2 speed;
     Vector2 pos;
+    
     int animCurrFrame;
     float scl;
     float rad;
     float facing;
+
     virtual void Start() = 0;
     virtual void Update() = 0;
     virtual void Draw() const = 0;

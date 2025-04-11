@@ -49,7 +49,7 @@ Bat::~Bat()
 
 void Bat::Update()
 {
-    int frameSpeed = 10;
+    float frameSpeed = 10.0f;
     int numFrames = 6;
 
     animCurrFrame = 1;
@@ -104,7 +104,7 @@ Horse::~Horse()
 
 void Horse::Update()
 {
-    int frameSpeed = 4;
+    float frameSpeed = 4.4f;
     int numFrames = 13;
 
     animCurrFrame = 1;

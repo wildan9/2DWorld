@@ -68,7 +68,7 @@ std::unique_ptr<AnimationData> CreateAnimData()
     return a;
 }
 
-void UpdateAnim(Model2D& model, float facing, int frameSpeed, int numFrames, int frame, bool animate)
+void UpdateAnim(Model2D& model, float facing, float frameSpeed, int numFrames, int frame, bool animate)
 {
     auto animData = model.animData.get();
 

@@ -42,7 +42,7 @@ struct RecFrame
 struct AnimationData
 {
     int currFrame;
-    int frameCounter;
+    float frameCounter;
     RecFrame recFrame;
 };
 
@@ -56,6 +56,6 @@ struct Model2D
 
 std::unique_ptr<AnimationData> CreateAnimData();
 Model2D LoadModel2D(const std::vector<std::string>& texturesPath = {});
-void UpdateAnim(Model2D& model, float facing, int frameSpeed, int numFrames, int frame, bool animate);
+void UpdateAnim(Model2D& model, float facing, float frameSpeed, int numFrames, int frame, bool animate);
 void UnloadModel2D(Model2D& model);
 void DrawModel2D(const Model2D& model);
