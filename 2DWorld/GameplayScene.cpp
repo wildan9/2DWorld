@@ -155,7 +155,10 @@ void GameplayScene::Update()
         bat.Update();
     }
 
-    horse.Update();
+    if (!enteringHouse)
+    {
+        horse.Update();
+    }
 
     if (enteringHouse) houseDoor = Rectangle{ 100.0f, 300.0f, 9, 9 };
     else houseDoor = Rectangle{ 484.0f, 625.0f, 9, 9 };
