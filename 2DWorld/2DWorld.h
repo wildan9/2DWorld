@@ -26,11 +26,6 @@
 
 #pragma once
 
-#include <vector>
-#include <atomic>
-#include <thread>
-#include <string>
-
 #include "Audio.h"
 #include "MathLib.h"
 #include "TitleScene.h"
