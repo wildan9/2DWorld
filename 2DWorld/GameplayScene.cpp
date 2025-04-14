@@ -30,6 +30,16 @@
 
 #include <sstream>
 #include <iomanip>
+#include <thread>
+#include <atomic>
+#include <chrono>
+
+static std::atomic<bool> dataLoaded{0};
+static std::atomic<int> dataProgress{0};
+
+std::thread loaderThread;
+enum class MapState { STATE_WAITING, STATE_LOADING_HOME, STATE_LOADING_WORLD };
+MapState state = MapState::STATE_WAITING;
 
 bool showGrid = 0, worldCollision = 1, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
 
@@ -37,6 +47,7 @@ static Rectangle GetRecBottomSide(const Rectangle& rec);
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize);
 static bool OnTouch(const Player& player, float targetPosX);
 static void DrawLoadingScreen();
+static void LoadDataThread();
 
 RayTiled::TileMap map;
 RayTiled::TileLayer* objectTileLayer = nullptr;
@@ -47,6 +58,8 @@ Player player;
 Horse horse;
 
 Timer mapSwitchTimer;
+
+static int framesCounter = 0;
 
 void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
 {
@@ -186,6 +199,11 @@ void GameplayScene::LoadResources()
 void GameplayScene::FreeResources()
 {
     RayTiled::UnloadTileMap(map, 1);
+
+    if (loaderThread.joinable())
+    {
+        loaderThread.join();
+    }
 }
 
 void GameplayScene::Draw()
@@ -206,7 +224,7 @@ void GameplayScene::Draw()
         }
     camera.EndMode();
 
-    if (onSwitch)
+    if (state == MapState::STATE_LOADING_HOME || state == MapState::STATE_LOADING_WORLD)
     {
         DrawLoadingScreen();
     }
@@ -243,39 +261,93 @@ void GameplayScene::CollisionChecking()
         player.pos = player.lastPos;
     }
 
-    if (CheckCollisionRecs(houseDoor, player.rec) && !enteringHouse && !onSwitch)
+    switch (state)
     {
-        onSwitch = 1;
-        isCameraScrollable = 0;
-        InitHouseMap();
-        player.pos = Vector2{ 200.0f, 200.0f };
-        camera.zoom = 2.0f;
-        enteringHouse = 1;
+        case MapState::STATE_WAITING:
+        {
+            if (IsKeyPressed(KEY_B) && !enteringHouse)
+            {
+                dataLoaded.store(0, std::memory_order_relaxed);
+                dataProgress.store(0, std::memory_order_relaxed);
 
-        SetCurrBGM("harp");
+                loaderThread = std::thread(LoadDataThread);
+                TraceLog(LOG_INFO, "Loading thread initialized successfully");
 
-        StartTimer(mapSwitchTimer, 2.5f);
-    }
+                state = MapState::STATE_LOADING_HOME;
+                onSwitch = 1;
+            }
+            else if (IsKeyPressed(KEY_B) && enteringHouse)
+            {
+                dataLoaded.store(0, std::memory_order_relaxed);
+                dataProgress.store(0, std::memory_order_relaxed);
 
-    UpdateTimer(mapSwitchTimer);
+                loaderThread = std::thread(LoadDataThread);
+                TraceLog(LOG_INFO, "Loading thread initialized successfully");
 
-    if (onSwitch && IsTimerDone(mapSwitchTimer))
-    {
-        onSwitch = 0;
-    }
+                state = MapState::STATE_LOADING_WORLD;
+                onSwitch = 1;
+            }
+        } break;
 
-    if (CheckCollisionRecs(houseDoor, player.rec) && enteringHouse && !onSwitch)
-    {
-        onSwitch = 1;
-        isCameraScrollable = 1;
-        InitWorldMap();
-        player.pos = Vector2{ 484.0f, 650.0f };
-        camera.zoom = 2.0f;
-        enteringHouse = 0;
+        case MapState::STATE_LOADING_HOME:
+        {
+            RayTiled::UnloadTileMap(map, 1);
 
-        SetCurrBGM("bird");
+            framesCounter++;
+            if (dataLoaded.load(std::memory_order_relaxed))
+            {
+                framesCounter = 0;
+                if (loaderThread.joinable())
+                {
+                    loaderThread.join();
+                    TraceLog(LOG_INFO, "Loading thread terminated successfully");
+                }
 
-        StartTimer(mapSwitchTimer, 2.5f);
+                dataLoaded.store(0, std::memory_order_relaxed);
+                dataProgress.store(0, std::memory_order_relaxed);
+
+                isCameraScrollable = 0;
+                InitHouseMap();
+                player.pos = Vector2{ 200.0f, 200.0f };
+                camera.zoom = 2.0f;
+                enteringHouse = 1;
+
+                SetCurrBGM("harp");
+
+                state = MapState::STATE_WAITING;
+                onSwitch = 0;
+            }
+        } break;
+
+        case MapState::STATE_LOADING_WORLD:
+        {
+            RayTiled::UnloadTileMap(map, 1);
+
+            framesCounter++;
+            if (dataLoaded.load(std::memory_order_relaxed))
+            {
+                framesCounter = 0;
+                if (loaderThread.joinable())
+                {
+                    loaderThread.join();
+                    TraceLog(LOG_INFO, "Loading thread terminated successfully");
+                }
+
+                dataLoaded.store(0, std::memory_order_relaxed);
+                dataProgress.store(0, std::memory_order_relaxed);
+
+                isCameraScrollable = 1;
+                InitWorldMap();
+                player.pos = Vector2{ 484.0f, 650.0f };
+                camera.zoom = 2.0f;
+                enteringHouse = 0;
+
+                SetCurrBGM("bird");
+
+                state = MapState::STATE_WAITING;
+                onSwitch = 0;
+            }
+        } break;
     }
 }
 
@@ -327,4 +399,22 @@ static void DrawGrid(int screenWidth, int screenHeight, int cellSize)
     {
         DrawLine(0, y, screenWidth, y, LIGHTGRAY);
     }
+}
+
+static void LoadDataThread()
+{
+    auto start = std::chrono::steady_clock::now();
+
+    while (1)
+    {
+        auto now = std::chrono::steady_clock::now();
+        int elapsedMs = std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count();
+
+        if (elapsedMs >= 5000) break;
+
+        dataProgress.store(elapsedMs/10, std::memory_order_relaxed);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+
+    dataLoaded.store(1, std::memory_order_relaxed);
 }
