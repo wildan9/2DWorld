@@ -181,8 +181,6 @@ void GameplayScene::Update()
 
 void GameplayScene::LoadResources()
 {
-    InitWorldMap();
-
     player.Start();
 
     for (int i = 0; i < 10; i++)
@@ -194,6 +192,12 @@ void GameplayScene::LoadResources()
     horse.Start();
     horse.pos = Vector2{912.0f, 626.0f};
     horse.rad = 1.8f;
+
+    isCameraScrollable = 1;
+    InitWorldMap();
+    player.pos = Vector2{ 484.0f, 650.0f };
+    camera.zoom = 2.0f;
+    enteringHouse = 0;
 }
 
 void GameplayScene::FreeResources()
