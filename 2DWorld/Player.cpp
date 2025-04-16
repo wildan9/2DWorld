@@ -37,7 +37,7 @@ static struct
 
     inline void Load()
     {
-        landStep = LoadSound("resources/sounds/land_stewav");
+        landStep = LoadSound("resources/sounds/land_step.wav");
     }
 
     inline void Unload()

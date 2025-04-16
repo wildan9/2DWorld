@@ -61,6 +61,79 @@ Timer mapSwitchTimer;
 
 static int framesCounter = 0;
 
+typedef struct Lightning
+{
+    Model2D model;
+    Rectangle rec;
+    Sound sound;
+    bool isShown;
+    float timer;
+};
+Lightning lightning{};
+
+Lightning InitLightning()
+{
+    Lightning lgh{};
+
+    const std::vector<std::string> lightningPaths
+    {
+        "resources/spritesheet/lightning.png"
+    };
+
+    lgh.model = LoadModel2D(lightningPaths);
+    lgh.model.animData = CreateAnimData();
+    lgh.model.trans.pos = Vector2{710.0f, 480.0f};
+    lgh.model.trans.rot = 0.0f;
+    lgh.model.trans.scl = 0.45f;
+    lgh.rec = Rectangle{700.0f, 555.0f, 200.0f, 130.0f};
+    lgh.timer = 10.0f;
+    lgh.sound = LoadSound("resources/sounds/thunder.wav");
+
+    return lgh;
+}
+
+void UpdateLightning(Lightning& lightning)
+{
+    if (lightning.isShown)
+    {
+        if (lightning.timer > 0.0f)
+        {
+            lightning.timer -= GetFrameTime();
+
+            if (lightning.timer < 0.0f)
+            {
+                lightning.timer = 10.0f;
+
+                lightning.model.animData->currFrame = 0;
+                lightning.model.animData->frameCounter = 0;
+                lightning.model.animData->recFrame.recData = std::array<Rectangle, 2>();
+                lightning.model.animData->recFrame.facing = 1.0f;
+            }
+        }
+
+        if (lightning.timer < 1.0f)
+        {
+            PlaySound(lightning.sound);
+            UpdateAnim(lightning.model, 1.0f, 9.4f, 9, 1, 1);
+        }
+    }
+
+    lightning.isShown = CheckCollisionRecs(player.rec, lightning.rec);
+}
+
+void DrawLightning(const Lightning& lightning)
+{
+    Rectangle rec = lightning.rec;
+    DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, RED);
+    DrawModel2D(lightning.model);
+}
+
+void DestroyLightning(Lightning& lightning)
+{
+    UnloadSound(lightning.sound);
+    UnloadModel2D(lightning.model);
+}
+
 void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
 {
     if (&drawable == &player)
@@ -150,8 +223,8 @@ void GameplayScene::Start()
 
 void GameplayScene::Update()
 {
-    mapRec = (enteringHouse) ? Rectangle{ 10.0f, 10.0f, 28.5f * 28.5f / 2.0f, 24.8f * 24.8f / 2.0f } 
-    : Rectangle{ 10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f };
+    mapRec = (enteringHouse) ? Rectangle{10.0f, 10.0f, 28.5f * 28.5f / 2.0f, 24.8f * 24.8f / 2.0f} 
+    : Rectangle{10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f};
 
     camera.Update(player.pos, mapRec, GetScreenWidth(), GetScreenHeight(), isCameraScrollable);
 
@@ -173,10 +246,11 @@ void GameplayScene::Update()
         horse.Update();
     }
 
-    if (enteringHouse) houseDoor = Rectangle{ 100.0f, 300.0f, 9, 9 };
-    else houseDoor = Rectangle{ 484.0f, 625.0f, 9, 9 };
+    if (enteringHouse) houseDoor = Rectangle{100.0f, 300.0f, 9, 9};
+    else houseDoor = Rectangle{484.0f, 625.0f, 9, 9};
 
     CollisionChecking();
+    UpdateLightning(lightning);
 }
 
 void GameplayScene::LoadResources()
@@ -186,7 +260,7 @@ void GameplayScene::LoadResources()
     for (int i = 0; i < 10; i++)
     {
         bats[i].Start();
-        bats[i].pos = Vector2{ 100.0f + i*14 + GetRandomValue(2, 6), 100.0f + i*12 + GetRandomValue(3, 5) };
+        bats[i].pos = Vector2{100.0f + i*14 + GetRandomValue(2, 6), 100.0f + i*12 + GetRandomValue(3, 5)};
     }
 
     horse.Start();
@@ -195,9 +269,11 @@ void GameplayScene::LoadResources()
 
     isCameraScrollable = 1;
     InitWorldMap();
-    player.pos = Vector2{ 484.0f, 650.0f };
+    player.pos = Vector2{484.0f, 650.0f};
     camera.zoom = 2.0f;
     enteringHouse = 0;
+
+    lightning = InitLightning();
 }
 
 void GameplayScene::FreeResources()
@@ -208,6 +284,8 @@ void GameplayScene::FreeResources()
     {
         loaderThread.join();
     }
+
+    DestroyLightning(lightning);
 }
 
 void GameplayScene::Draw()
@@ -219,12 +297,14 @@ void GameplayScene::Draw()
         }
 
         if (!enteringHouse)
-        {
+        {   
             for (const auto& bat : bats)
             {
                 bat.Draw();
             }
             DrawRectangleLinesEx(mapRec, 12, BLACK);
+            DrawLightning(lightning);
+
         }
     camera.EndMode();
 
