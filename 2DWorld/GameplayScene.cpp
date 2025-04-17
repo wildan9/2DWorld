@@ -104,10 +104,7 @@ void UpdateLightning(Lightning& lightning)
             {
                 lightning.timer = 10.0f;
 
-                lightning.model.animData->currFrame = 0;
-                lightning.model.animData->frameCounter = 0;
-                lightning.model.animData->recFrame.recData = std::array<Rectangle, 2>();
-                lightning.model.animData->recFrame.facing = 1.0f;
+                lightning.model.animData->Reset();
             }
         }
 

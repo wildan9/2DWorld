@@ -183,3 +183,11 @@ void DrawModel2D(const Model2D& model)
         rlSetTexture(0);
     }
 }
+
+void AnimationData::Reset()
+{
+    currFrame = 0;
+    frameCounter = 0;
+    recFrame.recData = std::array<Rectangle, 2>();
+    recFrame.facing = 1.0f;
+}

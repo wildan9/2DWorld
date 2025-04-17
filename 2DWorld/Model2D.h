@@ -44,6 +44,8 @@ struct AnimationData
     int currFrame;
     float frameCounter;
     RecFrame recFrame;
+
+    void Reset();
 };
 
 struct Model2D
