@@ -87,7 +87,7 @@ Lightning InitLightning()
     lgh.model.trans.scl = 0.45f;
     lgh.rec = Rectangle{700.0f, 555.0f, 200.0f, 130.0f};
     lgh.timer = 10.0f;
-    lgh.sound = LoadSound("resources/sounds/thunder.wav");
+    lgh.sound = LoadSound("resources/sounds/thunder_explosion_hit.wav");
 
     return lgh;
 }
