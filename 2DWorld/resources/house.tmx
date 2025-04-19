@@ -20,12 +20,12 @@
  </tileset>
  <layer id="1" name="Ground/terrain" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYGBgmMwKwaQAmB50vJETgrGBC/wIvJgbgQnxzyCZi45BAJ0/EPaQggeLPfjih1r2YLN31B7624OMCYGz/MMHn6ETBgH0cEYO74Gw5zwrJh61Z/DYMxTSGwASdH8E
+   eJxjYGBgmMwKwaQAmB50vJETgrGBC/wIvJgbgQnxzyCZi45BAJ0/EPaQggeLPfjih1r2YLN31B7624OMCYGz/MMHn6ETBgH0cEYO71F7Ru0ZivYAAPUsf5A=
   </data>
  </layer>
  <layer id="2" name="Ground overlay" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2CAABcDAyMQM3HR1hoDoPmGQGxEY3sSgOYnAnESje0ZBaOAEFgHxOvx4A1Usuc5EL/Ag1+O2oMVKDAyMCjiwUqMVLKIQgAALZoh5Q==
+   eJxjYBgFo2CAABcDAyMQM3HR1hoDoPmGQGxEY3sSgOYnAnESje0ZBaNgFIwCegAAZmwCFA==
   </data>
  </layer>
  <layer id="3" name="Objects" width="26" height="20">
