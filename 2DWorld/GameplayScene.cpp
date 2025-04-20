@@ -103,8 +103,8 @@ void UpdateLightning(Lightning& lightning)
             if (lightning.timer < 0.0f)
             {
                 lightning.timer = 10.0f;
-
                 lightning.model.animData->Reset();
+                lightning.model.trans.pos = Vector2{(float)GetRandomValue(610.0f, 760.0f), (float)GetRandomValue(410.0f, 480.0f)};
             }
         }
 
