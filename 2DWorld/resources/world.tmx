@@ -10,12 +10,12 @@
  </layer>
  <layer id="2" name="Ground overlay" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2etNwlAYgOFCSQRdxDFUHMHEf17mUMdQxDFcxIgLWUIb67FI7UVO4HmS7wcXTfO9OaCQJAAAAAAAu2s+2PYV7J/JMEkO8zkafn+sqsd1miQ3wdym/3Ot++AsazDN57xGj+ds9/NgXvRorTgX09KcBGdEj/4VHU6DFlVnRI/+na3pUMx9NovBap706N1dvvNx0OEgmwfvH1tTdCkmbLGkR1z0iIsecdEjLnrERY+46BEXPeIS9lh+ljvLd69HOxcNdhb2WGS/48r56M1lxf/kZVWvV+/pqkt5PvT4YTb4+hxwOa8bdl2H7web62N3ejTX1e7K5+wtOHNVQ7WuejgT3dAjLnrEpe4eNz2veHwySpLjtN6MR+2ufRd13YN21u0xvN/56N/sl79Nw/vD24/B7arv0fmbNq8x637W+Wiujx40p0dc9IiLHnHRAwAAAAAAAAAAAAAAAAAAAAAAAAAA+vUJjfWNQQ==
+   eJzt2e1NwlAUgOFCMYIu4hgKjmDiPz/mUMdQxDFcxIgLWUIb67WVWqjcwPMk5wcUDTlvLgokCQAAAADA7pr1tv0M9s+onyRH+Rz3v1+r6nGdJslNMLfp/zzXfTDOGkzyOW/Q4znb/SyYFz3WVpyLSWlOgzOiR/eKDmdBi6ozokf3xjUdirnPZt5bzpMenbvLdz4MOhxm8+Dvx9YUXYoJWyzoERc94qJHXPSIix5x0SMuesRFj7iEPRaf5U7z3euxnosWOwt7zLPfceV8dOay4j15WdXr1Xu67FKeDz1+mPa+PgdczOuKXTfh+8H2utidHu1tanflc/YWnLmqodqmejgTm6FHXPSIS9M9rnpccX00SJKTtNkMB+s9911Ut+f5QbPHNb1OM3V7DO93Pro3/eV/0/D+8PZjcLvqe3T+Zp3XmLqfdT7a66IH7ekRFz3iokdc9AAAAAAAAAAAAAAAAAAAAAAAAAAAgG59AooHjhg=
   </data>
  </layer>
  <layer id="3" name="Objects" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2ltKw0AUgOE2bZ/7pChCXYVYXYUXcAUqtj65BEHF6ya8ogtpBfXZV8WNOCEJTqdzjVNL6//BEDNJo5zTk5lMrFQAAAAAAAAAYDKtJ+P+C6A6Jye/dpTot+pxV1+hI451peMX5MibKRe2eKvmlXOvxf5NYj8ndUietHxyoev7EH2feb9aE6Y+2Lnqw7dO5Jp4rw73wV9oLmzzqNA5VpN8DXDlgjns3yszhhd8x2T5PMZxM1t9qM8SxbEt4jlSPuPGQuQcxL7etCg7r1qMEE/uW3qhz+etfL9sTphTmdlycVA3f64VENO2uE6vNthHTsx81qsKuppoW/KGMDHWr1JXEcabjqih/Zr7vGnnyoUcpw2x3VRi5sqFjhr7tUalsiv29/55Plz3qqdq/DhtJ8R+nGxrLl+MPVZl1kx01PnXjPTzWWO4XTbi/N5p4psL+fveE9/vvmjPmu95yJwYGZ8c2GLerf20lOmZ+57clKbGVI55X8lNJ+/3maeangFj3SOnSbGWqxt705if1rOYrzSytprf79N50k6JudJjMrh9ICdGak46tcEa0dXDXL6NuUZ4K651R56GHNezGkjbSd1cDz7vEptKPahb7l1uL+KZ8DVvb1X9OcxhJ488nhf1sJRvl6mLIKHr4/xP4vjFeKfB+GE2O6LrhrxvQVxyrF1xJy8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgNQ3M65ozg==
+   eJzt2ktKw0AYwPE0bdeuFEWopxCrp/ABbtyq2LryCIKKz0v4RA/SCurareJFnNAEp9N5xqml9f+DIc0kRvm+fpnJxCQBAAAAAAAAgPG0lo76L4DqnJz82lGq36rHXX2FljjWlo5fkCNvplzY4q2aU869Fvs3qf2czCF50vLJha7vQ/R95v1qTZj6YOeqD986kWvivTLYB3+hubDNo0LnWFPkq48rF8xh/16ZMbzgOybL5zGOm9nqQ32WKI5tEs+h8hk35iPnIPb1JkXZedVChHhy39ILfT5v5Ptlc8KcysyWi4Oa+ecaATFtiut0qv195MTMZ72qoKuJpiVvCBNj/SpzFWG8aYka2q+6z5t0rlzIcVoX2w0lZq5c6KixX60nya7Y3/vn+XDdq54q8eO0nRL7UbKtuXwx9liVWTPRUedf09Lns/pgu6zH+b2TxDcX8ve9I77fXdGeNd/zkDkxenxyYIt5u/rTMqZn7ntyU5oaUznmXSU3rbzfZ55qegaMdY+cJMVarm7szWJ+WuvFfLneayv5/T6bJ+2UmCs9pv3bB3JipOakVe2vEV09zObbmGuEt+Jad+RpwHGtVwNZOxGftxJ9Pfi8S5xS6kHdcu9yexHPhK95e6voz2EOO37k8byoh8V8u0RdBAldH+d/EkcvxjsNxg+zmSFdN+R9C+KSY+2KO3kBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGS+AU4eaME=
   </data>
  </layer>
  <layer id="7" name="Object Overlay" width="100" height="100">
@@ -25,7 +25,7 @@
  </layer>
  <layer id="4" name="Doors/windows/roof" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt1TEKwjAYgNEU6qDH8AwKzrqJN/ASLrp6NwVd9RB6CRVMNxFbFVJa9D0ohC4JXwh/CAAAAAAAAAAAAABUOeQhHPOmT9F+m9hom7jTc/tdXHc7IfQ6aff5RYvY6Jr4Por264f2o7gex2/iPt4axEbDxJ1etV9mIayytPv8olNsdNYJvlbM+n0N855yVc0vxb8a5j3lqpoXs/6Wp5/3lHvXfGbWt8q86QP8oak30Fr9pg8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB87A43kBkL
+   eJzt1TEKwjAYgNEU2kHPo+Csm3gDL+Giq3dT0FUPoZdQwXQTsS1iSkXfg0LokvCF8IcAAAAAAAAAAAAAQJ1DHsIx7/oU328TG20Td3puv4vrXhFCv0i7zy9axEbXxPdRtl8/tB/F9Th+E/fRaBAbDRN3etV+mYWwytLu84tOsdFZJ3hbOev3Lcx7qtU1v5T/Wpj3VKtrXs76W55+3lOtqfnMrP8q864P8Iem3gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDH7mj9GOk=
   </data>
  </layer>
  <objectgroup id="8" name="CollisionObjects">
