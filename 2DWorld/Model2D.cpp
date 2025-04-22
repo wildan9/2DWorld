@@ -79,15 +79,15 @@ void UpdateAnim(Model2D& model, float facing, float frameSpeed, int numFrames, i
     Texture2D texture = *model.currTexture;
 
     animData->recFrame.recData[0] = Rectangle{
-        animData->currFrame*(float)texture.width/numFrames,
-        0.0f, facing*(float)texture.width/numFrames,
-        (float)texture.height
+        animData->currFrame*static_cast<float>(texture.width/numFrames),
+        0.0f, facing*static_cast<float>(texture.width/numFrames),
+        static_cast<float>(texture.height)
     };
 
     animData->recFrame.recData[1] = Rectangle{
         trans.pos.x, trans.pos.y,
-        trans.scl*(float)texture.width/numFrames,
-        trans.scl*(float)texture.height
+        trans.scl*static_cast<float>(texture.width/numFrames),
+        trans.scl*static_cast<float>(texture.height)
     };
 
     if (!animate) return;
@@ -117,8 +117,8 @@ void DrawModel2D(const Model2D& model)
     if (animData == nullptr)
     {
         ori = Vector2();
-        src = {0.0f, 0.0f, (float)tex.width, (float)tex.height};
-        dst = {model.trans.pos.x, model.trans.pos.y, (float)tex.width*model.trans.scl, (float)tex.height*model.trans.scl};
+        src = {0.0f, 0.0f, static_cast<float>(tex.width), static_cast<float>(tex.height)};
+        dst = {model.trans.pos.x, model.trans.pos.y, static_cast<float>(tex.width*model.trans.scl), static_cast<float>(tex.height*model.trans.scl)};
     }
     else
     {
@@ -129,8 +129,8 @@ void DrawModel2D(const Model2D& model)
 
     if (tex.id > 0)
     {
-        float w = (float)tex.width;
-        float h = (float)tex.height;
+        float w = static_cast<float>(tex.width);
+        float h = static_cast<float>(tex.height);
 
         Vector2 vertices[4];
 

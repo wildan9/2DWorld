@@ -104,7 +104,7 @@ void UpdateLightning(Lightning& lightning)
             {
                 lightning.timer = 10.0f;
                 lightning.model.animData->Reset();
-                lightning.model.trans.pos = Vector2{(float)GetRandomValue(610.0f, 760.0f), (float)GetRandomValue(410.0f, 480.0f)};
+                lightning.model.trans.pos = Vector2{static_cast<float>(GetRandomValue(610.0f, 760.0f)), static_cast<float>(GetRandomValue(410.0f, 480.0f))};
             }
         }
 
@@ -319,7 +319,7 @@ void GameplayScene::Draw()
     ssCameraZoom << "Camera Zoom: " << std::fixed << std::setprecision(1) << camera.GetCameraZoom();
 
     std::string strPlayerPos{};
-    strPlayerPos = strPlayerPos + "X: " + std::to_string((int)player.pos.x) + " Y: " + std::to_string((int)player.pos.y);
+    strPlayerPos = strPlayerPos + "X: " + std::to_string(static_cast<int>(player.pos.x)) + " Y: " + std::to_string(static_cast<int>(player.pos.y));
 
     DrawText(strPlayerPos.c_str(), 15, GetScreenHeight() - 30, 24, WHITE);
     DrawText(TextFormat("Tiles Drawn: %d", (int)RayTiled::GetTileDrawStats()), 5, 25, 20, WHITE);
@@ -451,7 +451,7 @@ static void DrawLoadingScreen()
     static bool fadeOut = 1;                 // Direction of fading
     static float blinkSpeed = 1.0f;          // Speed of blinking (lower value = faster blink)
 
-    Vector2 textPos {(float)GetScreenWidth()/2.0f - 80.0f, (float)GetScreenHeight() - 300.0f}; // Centered position
+    Vector2 textPos {static_cast<float>(GetScreenWidth())/2.0f - 80.0f, static_cast<float>(GetScreenHeight()) - 300.0f}; // Centered position
 
     // Update alpha transparency
     if (fadeOut) alpha -= blinkSpeed*GetFrameTime();
