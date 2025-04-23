@@ -26,9 +26,6 @@
 
 #pragma once
 
-#include <atomic>
-#include <vector>
-
 #include "Scene.h"
 #include "Timer.h"
 #include "Audio.h"

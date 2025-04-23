@@ -29,9 +29,6 @@
 #include "Timer.h"
 #include "raylib.h"
 
-#include <thread>
-#include <atomic>
-#include <cassert>
 #include <stdexcept>
 
 class Audio

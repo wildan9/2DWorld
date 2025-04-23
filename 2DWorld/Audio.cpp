@@ -26,6 +26,8 @@
 
 #include "Audio.h"
 
+#include <cassert>
+
 enum class BGMStates
 {
 	IDLE = 0,
