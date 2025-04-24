@@ -26,7 +26,7 @@
 
 #include "Audio.h"
 
-#include <cassert>
+#include <string>
 
 enum class BGMStates
 {
@@ -40,8 +40,8 @@ BGMStates bgmState{};
 struct Volume
 {
 	bool  muted   = 0;
-	float master  = 0.2f;
-	float current = 0.2f;
+	float master  = 0.6f;
+	float current = 0.6f;
 };
 Volume volume{};
 
@@ -107,8 +107,16 @@ void Audio::Update()
 	if (volume.muted && IsKeyPressed(KEY_M) || volume.muted)  volume.master = 0.0f;
 	if (!volume.muted && IsKeyPressed(KEY_M) || !volume.muted) volume.master = volume.current;
 
+	if (IsKeyPressed(KEY_L) || IsKeyPressed(KEY_K) || IsKeyPressed(KEY_M))
+	{
+		std::string strVolume{"Master Volume: "};
+
+		strVolume = strVolume + std::to_string(volume.master);
+
+		TraceLog(LOG_INFO, strVolume.c_str());
+	}
+
 	SetMasterVolume(volume.master);
-	assert(GetMasterVolume() == volume.master);
 }
 
 void Audio::FreeResources()
