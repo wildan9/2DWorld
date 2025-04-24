@@ -149,7 +149,7 @@ void DrawVolumeBar()
 		"Volume: # # # # # # # # #", "Volume: # # # # # # # # # #"
 	};
 
-	const Color volumeColors[]{ RED, GREEN, LIME, DARKGREEN };
+	const Color volumeColors[] {RED, GREEN, LIME, DARKGREEN};
 
 	const unsigned volume = GetMasterVolume() * 10;
 
@@ -159,10 +159,10 @@ void DrawVolumeBar()
 
 		int volumeColor = 1;
 
-		if (volume < 1) volumeColor = 0; 
-		else if (volume >= 1 && volume < 3) volumeColor = 1; 
-		else if (volume >= 3 && volume < 7) volumeColor = 2; 
-		else if (volume >= 7) volumeColor = 3;
+		if (volume < 2) volumeColor = 0; 
+		else if (volume >= 2 && volume < 4) volumeColor = 1; 
+		else if (volume >= 4 && volume < 8) volumeColor = 2; 
+		else if (volume >= 8) volumeColor = 3;
 
 		const char* strVolume = strVolumeArr[volume];
 
