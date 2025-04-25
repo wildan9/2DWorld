@@ -28,16 +28,9 @@
 #include "rlTileMap/ray_tilemap.h"
 #include "rlgl.h"
 
-#include <sstream>
 #include <iomanip>
-#include <thread>
-#include <atomic>
-#include <chrono>
+#include <sstream>
 
-static std::atomic<bool> dataLoaded{0};
-static std::atomic<int> dataProgress{0};
-
-std::thread loaderThread;
 enum class MapState { STATE_WAITING, STATE_LOADING_HOME, STATE_LOADING_WORLD };
 MapState state = MapState::STATE_WAITING;
 
@@ -46,8 +39,6 @@ bool showGrid = 0, worldCollision = 1, enteringHouse = 0, onSwitch = 0, isCamera
 static Rectangle GetRecBottomSide(const Rectangle& rec);
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize);
 static bool OnTouch(const Player& player, float targetPosX);
-static void DrawLoadingScreen();
-static void LoadDataThread();
 
 RayTiled::TileMap map;
 RayTiled::TileLayer* objectTileLayer = nullptr;
@@ -223,7 +214,14 @@ void GameplayScene::Update()
     mapRec = (enteringHouse) ? Rectangle{10.0f, 10.0f, 28.5f * 28.5f / 2.0f, 24.8f * 24.8f / 2.0f} 
     : Rectangle{10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f};
 
-    camera.Update(player.pos, mapRec, GetScreenWidth(), GetScreenHeight(), isCameraScrollable);
+    if (onSwitch)
+    {
+        camera.target = Vector2Zero();
+    }
+    else
+    {
+        camera.Update(player.pos, mapRec, GetScreenWidth(), GetScreenHeight(), isCameraScrollable);
+    }
 
     // Our debug button
     if (IsKeyPressed(KEY_H))
@@ -276,12 +274,6 @@ void GameplayScene::LoadResources()
 void GameplayScene::FreeResources()
 {
     RayTiled::UnloadTileMap(map, 1);
-
-    if (loaderThread.joinable())
-    {
-        loaderThread.join();
-    }
-
     DestroyLightning(lightning);
 }
 
@@ -304,11 +296,6 @@ void GameplayScene::Draw()
 
         }
     camera.EndMode();
-
-    if (state == MapState::STATE_LOADING_HOME || state == MapState::STATE_LOADING_WORLD)
-    {
-        DrawLoadingScreen();
-    }
 
     if (showGrid)
     {
@@ -348,23 +335,11 @@ void GameplayScene::CollisionChecking()
         {
             if (IsKeyPressed(KEY_B) && !enteringHouse)
             {
-                dataLoaded.store(0, std::memory_order_relaxed);
-                dataProgress.store(0, std::memory_order_relaxed);
-
-                loaderThread = std::thread(LoadDataThread);
-                TraceLog(LOG_INFO, "Loading thread initialized successfully");
-
                 state = MapState::STATE_LOADING_HOME;
                 onSwitch = 1;
             }
             else if (IsKeyPressed(KEY_B) && enteringHouse)
             {
-                dataLoaded.store(0, std::memory_order_relaxed);
-                dataProgress.store(0, std::memory_order_relaxed);
-
-                loaderThread = std::thread(LoadDataThread);
-                TraceLog(LOG_INFO, "Loading thread initialized successfully");
-
                 state = MapState::STATE_LOADING_WORLD;
                 onSwitch = 1;
             }
@@ -374,60 +349,32 @@ void GameplayScene::CollisionChecking()
         {
             RayTiled::UnloadTileMap(map, 1);
 
-            framesCounter++;
-            if (dataLoaded.load(std::memory_order_relaxed))
-            {
-                framesCounter = 0;
-                if (loaderThread.joinable())
-                {
-                    loaderThread.join();
-                    TraceLog(LOG_INFO, "Loading thread terminated successfully");
-                }
+            player.pos = Vector2{ 200.0f, 200.0f };
+            isCameraScrollable = 0;
+            InitHouseMap();
+            camera.zoom = 2.0f;
+            enteringHouse = 1;
 
-                dataLoaded.store(0, std::memory_order_relaxed);
-                dataProgress.store(0, std::memory_order_relaxed);
+            SetCurrBGM("harp");
 
-                isCameraScrollable = 0;
-                InitHouseMap();
-                player.pos = Vector2{ 200.0f, 200.0f };
-                camera.zoom = 2.0f;
-                enteringHouse = 1;
-
-                SetCurrBGM("harp");
-
-                state = MapState::STATE_WAITING;
-                onSwitch = 0;
-            }
+            state = MapState::STATE_WAITING;
+            onSwitch = 0;
         } break;
 
         case MapState::STATE_LOADING_WORLD:
         {
             RayTiled::UnloadTileMap(map, 1);
 
-            framesCounter++;
-            if (dataLoaded.load(std::memory_order_relaxed))
-            {
-                framesCounter = 0;
-                if (loaderThread.joinable())
-                {
-                    loaderThread.join();
-                    TraceLog(LOG_INFO, "Loading thread terminated successfully");
-                }
+            player.pos = Vector2{ 484.0f, 650.0f };
+            isCameraScrollable = 1;
+            InitWorldMap();
+            camera.zoom = 2.0f;
+            enteringHouse = 0;
 
-                dataLoaded.store(0, std::memory_order_relaxed);
-                dataProgress.store(0, std::memory_order_relaxed);
+            SetCurrBGM("bird");
 
-                isCameraScrollable = 1;
-                InitWorldMap();
-                player.pos = Vector2{ 484.0f, 650.0f };
-                camera.zoom = 2.0f;
-                enteringHouse = 0;
-
-                SetCurrBGM("bird");
-
-                state = MapState::STATE_WAITING;
-                onSwitch = 0;
-            }
+            state = MapState::STATE_WAITING;
+            onSwitch = 0;
         } break;
     }
 }
@@ -440,29 +387,6 @@ static Rectangle GetRecBottomSide(const Rectangle& rec)
     float y = rec.y + (fullArea - bottomArea)/rec.width;
 
     return { rec.x, y, rec.width, bottomArea/rec.width };
-}
-
-static void DrawLoadingScreen()
-{
-    DrawRectangle(0, 0, 512, 512, DARKBLUE); // Draw the background
-
-    static const char* text = "Loading...";  // Static text for the loading screen
-    static float alpha = 1.0f;               // Initial alpha transparency
-    static bool fadeOut = 1;                 // Direction of fading
-    static float blinkSpeed = 1.0f;          // Speed of blinking (lower value = faster blink)
-
-    Vector2 textPos {static_cast<float>(GetScreenWidth())/2.0f - 80.0f, static_cast<float>(GetScreenHeight()) - 300.0f}; // Centered position
-
-    // Update alpha transparency
-    if (fadeOut) alpha -= blinkSpeed*GetFrameTime();
-    else alpha += blinkSpeed*GetFrameTime();
-
-    // Clamp the alpha between 0 and 1
-    if (alpha <= 0.0f) { alpha = 0.0f; fadeOut = 0; }
-    else if (alpha >= 1.0f) { alpha = 1.0f; fadeOut = 1; }
-
-    // Draw the blinking loading text
-    DrawTextEx(GetFontDefault(), text, textPos, 40.0f, 2, Fade(BLACK, alpha));
 }
 
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize)
@@ -480,22 +404,4 @@ static void DrawGrid(int screenWidth, int screenHeight, int cellSize)
     {
         DrawLine(0, y, screenWidth, y, LIGHTGRAY);
     }
-}
-
-static void LoadDataThread()
-{
-    auto start = std::chrono::steady_clock::now();
-
-    while (1)
-    {
-        auto now = std::chrono::steady_clock::now();
-        int elapsedMs = std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count();
-
-        if (elapsedMs >= 5000) break;
-
-        dataProgress.store(elapsedMs/10, std::memory_order_relaxed);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-
-    dataLoaded.store(1, std::memory_order_relaxed);
 }
