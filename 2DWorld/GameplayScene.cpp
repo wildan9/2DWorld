@@ -333,12 +333,12 @@ void GameplayScene::CollisionChecking()
     {
         case MapState::STATE_WAITING:
         {
-            if (IsKeyPressed(KEY_B) && !enteringHouse)
+            if (CheckCollisionRecs(player.rec, houseDoor) && !enteringHouse)
             {
                 state = MapState::STATE_LOADING_HOME;
                 onSwitch = 1;
             }
-            else if (IsKeyPressed(KEY_B) && enteringHouse)
+            else if (CheckCollisionRecs(player.rec, houseDoor) && enteringHouse)
             {
                 state = MapState::STATE_LOADING_WORLD;
                 onSwitch = 1;
