@@ -33,8 +33,6 @@
 #include "Animal.h"
 #include "rlCamera2D/rlCamera2D.h"
 
-#include "Prop.cpp"
-
 class GameplayScene : public Scene
 {
 	void CollisionChecking();

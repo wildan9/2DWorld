@@ -339,7 +339,6 @@
     <ClCompile Include="GameplayScene.cpp" />
     <ClCompile Include="Model2D.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Prop.cpp" />
     <ClCompile Include="rlCamera2D\rlCamera2D.cpp" />
     <ClCompile Include="rlTileMap\PUGIXML\pugixml.cpp" />
     <ClCompile Include="rlTileMap\ray_tilemap.cpp" />
