@@ -59,6 +59,8 @@ typedef struct Lightning
     Sound sound;
     bool isShown;
     float timer;
+    int currTexture;
+    int numFrame;
 };
 Lightning lightning{};
 
@@ -68,7 +70,10 @@ Lightning InitLightning()
 
     const std::vector<std::string> lightningPaths
     {
-        "resources/spritesheet/lightning.png"
+        "resources/spritesheet/lightning.png",
+        "resources/spritesheet/lightning_2.png",
+        "resources/spritesheet/lightning_3.png",
+        "resources/spritesheet/lightning_4.png"
     };
 
     lgh.model = LoadModel2D(lightningPaths);
@@ -79,6 +84,8 @@ Lightning InitLightning()
     lgh.rec = Rectangle{700.0f, 555.0f, 200.0f, 130.0f};
     lgh.timer = 10.0f;
     lgh.sound = LoadSound("resources/sounds/thunder_explosion_hit.wav");
+    lgh.currTexture = 1;
+    lgh.numFrame = 9;
 
     return lgh;
 }
@@ -94,15 +101,25 @@ void UpdateLightning(Lightning& lightning)
             if (lightning.timer < 0.0f)
             {
                 lightning.timer = 10.0f;
+                lightning.currTexture = GetRandomValue(1, 4);
                 lightning.model.animData->Reset();
                 lightning.model.trans.pos = Vector2{static_cast<float>(GetRandomValue(610.0f, 760.0f)), static_cast<float>(GetRandomValue(410.0f, 480.0f))};
+            
+                if (lightning.currTexture != 4)
+                {
+                    lightning.numFrame = 9;
+                }
+                else
+                {
+                    lightning.numFrame = 16;
+                }
             }
         }
 
         if (lightning.timer < 1.0f)
         {
             PlaySound(lightning.sound);
-            UpdateAnim(lightning.model, 1.0f, 9.4f, 9, 1, 1);
+            UpdateAnim(lightning.model, 1.0f, 9.4f, lightning.numFrame, lightning.currTexture, 1);
         }
     }
 
