@@ -33,7 +33,7 @@ class Player : public RayTiled::TileLayer::Drawable
 {
 private:
     Model2D model;  
-    int animCurrFrame;
+    int animCurrTexture;
     bool isWalk;
     float rot;
     float scl;

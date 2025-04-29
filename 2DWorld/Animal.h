@@ -35,7 +35,7 @@ struct Animal
     Vector2 speed;
     Vector2 pos;
     
-    int animCurrFrame;
+    int animCurrTexture;
     float scl;
     float rad;
     float facing;

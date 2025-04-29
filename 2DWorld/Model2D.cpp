@@ -68,14 +68,14 @@ std::unique_ptr<AnimationData> CreateAnimData()
     return a;
 }
 
-void UpdateAnim(Model2D& model, float facing, float frameSpeed, int numFrames, int frame, bool animate)
+void UpdateAnim(Model2D& model, float facing, float frameSpeed, int numFrames, int currTexture, bool animate)
 {
     auto animData = model.animData.get();
 
     if (animData == nullptr) return;
     
     Trans2D trans = model.trans;
-    model.currTexture = &model.textures->at(frame);
+    model.currTexture = &model.textures->at(currTexture);
     Texture2D texture = *model.currTexture;
 
     animData->recFrame.recData[0] = Rectangle{

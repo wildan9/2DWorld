@@ -110,7 +110,7 @@ void Player::Update()
         isWalk = 1;
 
         pos = pos - Vector2Scale(dir, speed);
-        animCurrFrame = (isOnHorse) ? 5 : 3;
+        animCurrTexture = (isOnHorse) ? 5 : 3;
 
         if (dir.x < 0.0f) facing = 1.0f;
         if (dir.x > 0.0f) facing = -1.0f;
@@ -124,12 +124,12 @@ void Player::Update()
     else
     {
         isWalk = 0;
-        animCurrFrame = (isOnHorse) ? 4 : 1;
+        animCurrTexture = (isOnHorse) ? 4 : 1;
     }
 
     if (!isWalk && isPunch)
     {
-        animCurrFrame = 2;
+        animCurrTexture = 2;
         frameSpeed = 16;
         numFrames = 3;
     }
@@ -139,7 +139,7 @@ void Player::Update()
 
     Vector2 playerDrawPos = Vector2{ pos.x - 15.0f, pos.y - 15.0f };
     UpdatePlayerTrans(model.trans, playerDrawPos, rot, scl);
-    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrFrame, 1);
+    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrTexture, 1);
 }
 
 void Player::Draw() const

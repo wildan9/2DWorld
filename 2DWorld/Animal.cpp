@@ -52,7 +52,7 @@ void Bat::Update()
     float frameSpeed = 10.0f;
     int numFrames = 6;
 
-    animCurrFrame = 1;
+    animCurrTexture = 1;
 
     model.trans.pos = pos;
     model.trans.scl = 1.0f;
@@ -72,7 +72,7 @@ void Bat::Update()
 
     pos = pos + speed;
 
-    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrFrame, 1);
+    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrTexture, 1);
 }
 
 void Bat::Draw() const
@@ -107,13 +107,13 @@ void Horse::Update()
     float frameSpeed = 4.4f;
     int numFrames = 13;
 
-    animCurrFrame = 1;
+    animCurrTexture = 1;
 
     model.trans.pos = pos;
     model.trans.scl = 0.8f;
     model.trans.rot = 0.0f;
 
-    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrFrame, 1);
+    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrTexture, 1);
 }
 
 void Horse::Draw() const
