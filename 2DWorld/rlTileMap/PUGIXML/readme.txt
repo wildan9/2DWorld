@@ -1,6 +1,6 @@
 pugixml 1.14 - an XML processing library
 
-Copyright (C) 2006-2024, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
+Copyright (C) 2006-2025, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
 Report bugs and download new versions at https://pugixml.org/
 
 This is the distribution of pugixml, which is a C++ XML processing library,
