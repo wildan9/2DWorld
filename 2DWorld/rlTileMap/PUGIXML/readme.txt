@@ -26,7 +26,7 @@ The distribution contains the following folders:
 
 This library is distributed under the MIT License:
 
-Copyright (c) 2006-2024 Arseny Kapoulkine
+Copyright (c) 2006-2025 Arseny Kapoulkine
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
