@@ -36,6 +36,7 @@
 class GameplayScene : public Scene
 {
 	void CollisionChecking();
+	void DrawHUD();
 
 public:
 	void Start() override;

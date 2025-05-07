@@ -294,6 +294,24 @@ void GameplayScene::FreeResources()
     DestroyLightning(lightning);
 }
 
+void GameplayScene::DrawHUD()
+{
+    if (showGrid)
+    {
+        DrawGrid(GetScreenWidth(), GetScreenHeight(), 12);
+    }
+
+    std::ostringstream ssCameraZoom;
+    ssCameraZoom << "Camera Zoom: " << std::fixed << std::setprecision(1) << camera.GetCameraZoom();
+
+    std::string strPlayerPos{};
+    strPlayerPos = strPlayerPos + "X: " + std::to_string(static_cast<int>(player.pos.x)) + " Y: " + std::to_string(static_cast<int>(player.pos.y));
+
+    DrawText(strPlayerPos.c_str(), 15, GetScreenHeight() - 30, 24, WHITE);
+    DrawText(TextFormat("Tiles Drawn: %d", (int)RayTiled::GetTileDrawStats()), 5, 25, 20, WHITE);
+    DrawText(ssCameraZoom.str().c_str(), GetScreenWidth() - 140, GetScreenHeight() - 30, 16, WHITE);
+}
+
 void GameplayScene::Draw()
 {
     camera.BeginMode();
@@ -314,20 +332,7 @@ void GameplayScene::Draw()
         }
     camera.EndMode();
 
-    if (showGrid)
-    {
-        DrawGrid(GetScreenWidth(), GetScreenHeight(), 12);
-    }
-
-    std::ostringstream ssCameraZoom;
-    ssCameraZoom << "Camera Zoom: " << std::fixed << std::setprecision(1) << camera.GetCameraZoom();
-
-    std::string strPlayerPos{};
-    strPlayerPos = strPlayerPos + "X: " + std::to_string(static_cast<int>(player.pos.x)) + " Y: " + std::to_string(static_cast<int>(player.pos.y));
-
-    DrawText(strPlayerPos.c_str(), 15, GetScreenHeight() - 30, 24, WHITE);
-    DrawText(TextFormat("Tiles Drawn: %d", (int)RayTiled::GetTileDrawStats()), 5, 25, 20, WHITE);
-    DrawText(ssCameraZoom.str().c_str(), GetScreenWidth() - 140, GetScreenHeight() - 30, 16, WHITE);
+    DrawHUD();
 }
 
 static bool OnTouch(const Player& player, float targetPosX)
