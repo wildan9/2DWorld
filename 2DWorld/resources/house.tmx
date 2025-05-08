@@ -35,7 +35,7 @@
  </layer>
  <layer id="7" name="Object Overlay" width="26" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYGBgaOJlYGgGYhD4yMfA8ImPAQ4I8UFATYCBQR2IzYHYAog1BCDiwkAzBXkZ6AL0sdjDAhRjpYP9SkA7lIFYjgS7/gogMDYghSS+j4t8t/lwMzD4ArEfEP9DMtMLyPYGYmUkMQt+wubx8eHnUwvs4cLPJwdsAMbPRiqmB3cccUcIxADdEEuHdFkFtKMaiBWgdi3iYWBYDMQ7gGlhJxBvBeJtQMwKDFs2KoTvQAIfoB99eTHZtAI5WMyfBwzbUGB4hgFxLQ9t7R8F1AWFo/GFFQAADsEfTw==
+   eJxjYGBgaOJlYGgGYhD4yMfA8ImPAQ4I8UFATYCBQR2IzYHYAog1BCDiwkAzBXkZ6AL0sdjDAhRjpYP9SkA7lIFYDs2uF3zY1YPAXwEExgakkMT3cZHvNh9uBgZfIPYD4n9IZnoB2d5ArIwkZsFP2Dw+Pvx8aoE9XPj55IANwPjZSMX04I4j7giBGKAbYumQLquAdlQDsQLUrkU8DAyLgXgHMC3sBOKtQLwNiFmBYctGhfAdSOAD9KMvLyabViAHi/nzgGEbCgzPMCCu5aGt/aOAuqBwNL6wAgCPZSBF
   </data>
  </layer>
  <layer id="4" name="Doors/windows/roof" width="26" height="20">
