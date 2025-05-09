@@ -66,6 +66,9 @@
     <ClInclude Include="rlTileMap\PUGIXML\pugixml.hpp">
       <Filter>rlTileMap\PUGIXML</Filter>
     </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2DWorld.cpp">
