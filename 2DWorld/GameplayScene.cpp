@@ -47,6 +47,7 @@ Rectangle houseDoor{ 484.0f, 625.0f, 9, 9 };
 
 Player player;
 Horse horse;
+Frog frog;
 
 Timer mapSwitchTimer;
 
@@ -149,6 +150,10 @@ void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawab
     {
         horse.Draw();
     }
+    else if (&drawable == &frog)
+    {
+        frog.Draw();
+    }
 }
 
 void DrawCollisionLayer(RayTiled::ObjectLayer& layer, Camera2D* camera, Vector2 bounds)
@@ -189,6 +194,7 @@ void InitWorldMap()
 
         objectTileLayer->AddDrawable(&player);
         objectTileLayer->AddDrawable(&horse);
+        objectTileLayer->AddDrawable(&frog);
     }
 
     auto collisionlayer = RayTiled::FindLayer(map, "CollisionObjects");
@@ -256,6 +262,7 @@ void GameplayScene::Update()
     if (!enteringHouse)
     {
         horse.Update();
+        frog.Update();
     }
 
     if (enteringHouse) houseDoor = Rectangle{100.0f, 300.0f, 9, 9};
@@ -278,6 +285,8 @@ void GameplayScene::LoadResources()
     horse.Start();
     horse.pos = Vector2{912.0f, 626.0f};
     horse.rad = 1.8f;
+
+    frog.Start();
 
     isCameraScrollable = 1;
     InitWorldMap();

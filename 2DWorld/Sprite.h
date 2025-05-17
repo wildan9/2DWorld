@@ -43,11 +43,17 @@ private:
     float frameScale;
     float frameFacing;
 
+    int frameColumns;
+    int frameRows;
+
 public:
     Sprite(Vector2 position_, const char* spriteSheetPath_, int frameColumns_, int frameRows_, float frameFacing_)
     {
         spriteSheet = LoadTexture(spriteSheetPath_);
         position = position_;
+
+        frameColumns = frameColumns_;
+        frameRows = frameRows_;
 
         frameWidth = spriteSheet.width/frameColumns_;
         frameHeight = spriteSheet.height/frameRows_;
@@ -78,9 +84,9 @@ public:
         frameScale = frameScale_;
     }
 
-    void Update(Vector2 position_, float frameScale_, float frameSpeed_, int selectedRow_, float frameFacing_)
+    void Update(Vector2 position_, float frameScale_, float frameSpeed_, int selectedRow_, float frameFacing_, int factor_ = 0)
     {
-        const int framesPerRow = spriteSheet.width/frameWidth;
+        const int framesPerRow = spriteSheet.width/frameWidth*(frameColumns - factor_)/frameColumns;
 
         frameScale = frameScale_;
         frameSpeed = frameSpeed_;

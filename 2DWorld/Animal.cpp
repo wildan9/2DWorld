@@ -121,3 +121,34 @@ void Horse::Draw() const
     DrawRectangleLines(pos.x, pos.y, 15, 15, GREEN);
     DrawModel2D(model);
 }
+
+void Frog::Start()
+{
+    frameCol = 8;
+    frameRow = 3;
+    selectedRow = 0;
+    frameFacing = 1.0f;
+    frameScale = 1.0f;
+    frameSpeed = 8;
+
+    pos = Vector2{514.0f, 380.0f};
+
+    sprite = std::make_unique<Sprite>(pos, "resources/Spritesheet/frog_sprite_sheet.png", frameCol, frameRow, frameFacing);
+}
+
+void Frog::Update()
+{
+    int factor = 2;
+
+    sprite->Update(pos, frameScale, frameSpeed, selectedRow, factor);
+}
+
+void Frog::Draw() const
+{
+    sprite->Draw();
+}
+
+Frog::~Frog()
+{
+
+}

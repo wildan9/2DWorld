@@ -26,6 +26,7 @@
 
 #pragma once
 
+#include "Sprite.h"
 #include "Model2D.h"
 #include "rlTileMap/ray_tilemap.h"
 
@@ -63,4 +64,26 @@ struct Horse : public Animal, public RayTiled::TileLayer::Drawable
     float GetY() override { return pos.y - rad; }
 
     ~Horse();
+};
+
+struct Frog : public RayTiled::TileLayer::Drawable
+{
+    Vector2 pos;
+    std::unique_ptr<Sprite> sprite;
+    
+    int frameCol;
+    int frameRow;
+    int selectedRow;
+
+    float frameFacing;
+    float frameScale;
+    float frameSpeed;
+
+    void Start();
+    void Update();
+    void Draw() const;
+
+    float GetY() override { return pos.y - 1.0; }
+
+    ~Frog();
 };
