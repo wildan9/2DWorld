@@ -138,9 +138,7 @@ void Frog::Start()
 
 void Frog::Update()
 {
-    int factor = 2;
-
-    sprite->Update(pos, frameScale, frameSpeed, selectedRow, frameFacing, factor);
+    sprite->Update(pos, frameScale, frameSpeed, selectedRow, frameFacing, 6);
 }
 
 void Frog::Draw() const
