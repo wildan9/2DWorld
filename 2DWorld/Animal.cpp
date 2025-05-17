@@ -140,7 +140,7 @@ void Frog::Update()
 {
     int factor = 2;
 
-    sprite->Update(pos, frameScale, frameSpeed, selectedRow, factor);
+    sprite->Update(pos, frameScale, frameSpeed, selectedRow, frameFacing, factor);
 }
 
 void Frog::Draw() const
