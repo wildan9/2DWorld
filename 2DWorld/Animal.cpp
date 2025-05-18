@@ -134,15 +134,17 @@ void Frog::Start()
     pos = Vector2{514.0f, 380.0f};
 
     sprite = std::make_unique<Sprite>(pos, "resources/Spritesheet/frog_sprite_sheet.png", frameCol, frameRow, frameFacing);
+    rad = 10.0f;
 }
 
 void Frog::Update()
 {
-    sprite->Update(pos, frameScale, frameSpeed, selectedRow, frameFacing, 6);
+    sprite->Update(Vector2{pos.x - rad - 5, pos.y - rad - 5}, frameScale, frameSpeed, selectedRow, frameFacing, 6);
 }
 
 void Frog::Draw() const
 {
+    DrawCircleLinesV(pos, rad, GREEN);
     sprite->Draw();
 }
 

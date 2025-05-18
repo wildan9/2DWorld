@@ -78,12 +78,13 @@ struct Frog : public RayTiled::TileLayer::Drawable
     float frameFacing;
     float frameScale;
     float frameSpeed;
+    float rad;
 
     void Start();
     void Update();
     void Draw() const;
 
-    float GetY() override { return pos.y - 1.0; }
+    float GetY() override { return pos.y - rad; }
 
     ~Frog();
 };
