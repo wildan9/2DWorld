@@ -129,26 +129,36 @@ void Frog::Start()
     selectedRow = 0;
     frameFacing = 1.0f;
     frameScale = 0.7f;
-    frameSpeed = 4;
+    frameSpeed = 8;
 
     pos = Vector2{514.0f, 380.0f};
 
     sprite = std::make_unique<Sprite>(pos, "resources/Spritesheet/frog_sprite_sheet.png", frameCol, frameRow, frameFacing);
     rad = 10.0f;
+
+    rec = Rectangle{pos.x - 60, pos.y - 60, 140.0f, 140.0f};
+
+    sound = LoadSound("resources/sounds/frog-croaking-sound-effect-322956.wav");
 }
 
-void Frog::Update()
+void Frog::Update(const Rectangle& playerRec)
 {
+    if (CheckCollisionRecs(rec, playerRec) && !IsSoundPlaying(sound))
+    {
+        PlaySound(sound);
+    }
+
     sprite->Update(Vector2{pos.x - rad - 5, pos.y - rad - 5}, frameScale, frameSpeed, selectedRow, frameFacing, 6);
 }
 
 void Frog::Draw() const
 {
     DrawCircleLinesV(pos, rad, GREEN);
+    DrawRectangleLinesEx(rec, 0.4f, RED);
     sprite->Draw();
 }
 
 Frog::~Frog()
 {
-
+    UnloadSound(sound);
 }

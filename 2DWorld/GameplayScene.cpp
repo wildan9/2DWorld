@@ -262,7 +262,7 @@ void GameplayScene::Update()
     if (!enteringHouse)
     {
         horse.Update();
-        frog.Update();
+        frog.Update(player.rec);
     }
 
     if (enteringHouse) houseDoor = Rectangle{100.0f, 300.0f, 9, 9};

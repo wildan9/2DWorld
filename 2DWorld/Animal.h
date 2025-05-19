@@ -69,6 +69,8 @@ struct Horse : public Animal, public RayTiled::TileLayer::Drawable
 struct Frog : public RayTiled::TileLayer::Drawable
 {
     Vector2 pos;
+    Sound sound;
+    Rectangle rec;
     std::unique_ptr<Sprite> sprite;
     
     int frameCol;
@@ -81,7 +83,7 @@ struct Frog : public RayTiled::TileLayer::Drawable
     float rad;
 
     void Start();
-    void Update();
+    void Update(const Rectangle& playerRec);
     void Draw() const;
 
     float GetY() override { return pos.y - rad; }
