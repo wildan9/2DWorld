@@ -127,7 +127,7 @@ void Frog::Start()
     frameCol = 8;
     frameRow = 3;
     selectedRow = 0;
-    frameFacing = 1.0f;
+    frameFacing = -1.0f;
     frameScale = 0.7f;
     frameSpeed = 8;
 
