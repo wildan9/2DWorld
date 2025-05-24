@@ -65,6 +65,59 @@ typedef struct Lightning
 };
 Lightning lightning{};
 
+typedef struct Fire
+{
+    std::unique_ptr<Sprite> sprite;
+    bool moveNext;
+    int selectedRow;
+    Rectangle rec;
+};
+Fire fire{};
+
+Fire IniFire()
+{
+    Fire fire{};
+    fire.moveNext = 0;
+    fire.selectedRow = 0;
+    fire.rec = Rectangle{604.0f, 282.0f, 24, 24};
+    fire.sprite = std::make_unique<Sprite>(Vector2{619.0f, 299.0f}, "resources/Spritesheet/fire4_64.png", 10, 6, 1.0f);
+
+    return fire;
+}
+
+void UpdateFire(Fire& fire)
+{
+    if (fire.sprite->GetCurrentFrame() >= 9 && !fire.moveNext)
+    {
+        fire.selectedRow = fire.selectedRow + 1;
+        fire.moveNext = 1;
+    }
+    else if (fire.sprite->GetCurrentFrame() < 9 && fire.selectedRow == 6)
+    {
+        fire.selectedRow = 0;
+        fire.moveNext = 0;
+    }
+    else if (fire.sprite->GetCurrentFrame() < 9)
+    {
+        fire.moveNext = 0;
+    }
+
+    if (fire.sprite != nullptr)
+    {
+        fire.sprite->Update(Vector2{fire.rec.x - 5, fire.rec.y - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10);
+    }
+}
+
+void DrawFire(const Fire& fire)
+{
+    DrawRectangleLinesEx(fire.rec, 0.8f, RED);
+    
+    if (fire.sprite != nullptr)
+    {
+        fire.sprite->Draw();
+    }
+}
+
 Lightning InitLightning()
 {
     Lightning lgh{};
@@ -270,6 +323,7 @@ void GameplayScene::Update()
 
     CollisionChecking();
     UpdateLightning(lightning);
+    UpdateFire(fire);
 }
 
 void GameplayScene::LoadResources()
@@ -295,6 +349,7 @@ void GameplayScene::LoadResources()
     enteringHouse = 0;
 
     lightning = InitLightning();
+    fire = IniFire();
 }
 
 void GameplayScene::FreeResources()
@@ -336,6 +391,7 @@ void GameplayScene::Draw()
                 bat.Draw();
             }
             DrawRectangleLinesEx(mapRec, 12, BLACK);
+            DrawFire(fire);
             DrawLightning(lightning);
 
         }
