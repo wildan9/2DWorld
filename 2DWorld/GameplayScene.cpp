@@ -104,7 +104,7 @@ void UpdateFire(Fire& fire)
 
     if (fire.sprite != nullptr)
     {
-        fire.sprite->Update(Vector2{fire.rec.x - 5, fire.rec.y - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10);
+        fire.sprite->Update(Vector2{fire.rec.x - 5, fire.rec.y - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
     }
 }
 
@@ -287,8 +287,8 @@ void GameplayScene::Start()
 
 void GameplayScene::Update()
 {
-    mapRec = (enteringHouse) ? Rectangle{10.0f, 10.0f, 28.5f * 28.5f / 2.0f, 24.8f * 24.8f / 2.0f} 
-    : Rectangle{10.0f, 10.0f, 51.5f * 51.5f / 2.0f, 51.5f * 51.5f / 2.0f};
+    mapRec = (enteringHouse) ? Rectangle{10.0f, 10.0f, 28.5f*28.5f/2.0f, 24.8f*24.8f/2.0f} 
+    : Rectangle{10.0f, 10.0f, 51.5f*51.5f/2.0f, 51.5f*51.5f/2.0f};
 
     if (onSwitch)
     {

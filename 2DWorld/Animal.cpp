@@ -129,7 +129,7 @@ void Frog::Start()
     selectedRow = 0;
     frameFacing = -1.0f;
     frameScale = 0.7f;
-    frameSpeed = 8;
+    frameSpeed = 8.0f;
 
     pos = Vector2{517.0f, 390.0f};
 
@@ -148,7 +148,7 @@ void Frog::Update(const Rectangle& playerRec)
         PlaySound(sound);
     }
 
-    sprite->Update(Vector2{pos.x - rad - 5, pos.y - rad - 5}, frameScale, frameSpeed, selectedRow, frameFacing, 6);
+    sprite->Update(Vector2{pos.x - rad - 5, pos.y - rad - 5}, frameScale, frameSpeed, selectedRow, frameFacing, 6, 0);
 }
 
 void Frog::Draw() const
