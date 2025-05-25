@@ -128,13 +128,13 @@ void Frog::Start()
     frameRow = 3;
     selectedRow = 0;
     frameFacing = -1.0f;
-    frameScale = 0.7f;
+    frameScale = 0.4f;
     frameSpeed = 8.0f;
 
     pos = Vector2{517.0f, 390.0f};
 
     sprite = std::make_unique<Sprite>(pos, "resources/Spritesheet/frog_sprite_sheet.png", frameCol, frameRow, frameFacing);
-    rad = 10.0f;
+    rad = 6.0f;
 
     rec = Rectangle{pos.x - 60, pos.y - 60, 140.0f, 140.0f};
 
