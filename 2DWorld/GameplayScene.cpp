@@ -45,6 +45,8 @@ RayTiled::TileLayer* objectTileLayer = nullptr;
 
 Rectangle houseDoor{ 484.0f, 625.0f, 9, 9 };
 
+Rectangle cameraRec {};
+
 Player player;
 Horse horse;
 Frog frog;
@@ -91,24 +93,27 @@ Fire IniFire()
 
 void UpdateFire(Fire& fire)
 {
-    if (fire.sprite->GetCurrentFrame() >= 9 && !fire.moveNext)
+    if (CheckCollisionRecs(cameraRec, Rectangle{fire.rec.x - 20, fire.rec.y - 20, 50.f, 50.0f}))
     {
-        fire.selectedRow = fire.selectedRow + 1;
-        fire.moveNext = 1;
-    }
-    else if (fire.sprite->GetCurrentFrame() < 9 && fire.selectedRow == 6)
-    {
-        fire.selectedRow = 0;
-        fire.moveNext = 0;
-    }
-    else if (fire.sprite->GetCurrentFrame() < 9)
-    {
-        fire.moveNext = 0;
-    }
+        if (fire.sprite->GetCurrentFrame() >= 9 && !fire.moveNext)
+        {
+            fire.selectedRow = fire.selectedRow + 1;
+            fire.moveNext = 1;
+        }
+        else if (fire.sprite->GetCurrentFrame() < 9 && fire.selectedRow == 6)
+        {
+            fire.selectedRow = 0;
+            fire.moveNext = 0;
+        }
+        else if (fire.sprite->GetCurrentFrame() < 9)
+        {
+            fire.moveNext = 0;
+        }
 
-    if (fire.sprite != nullptr)
-    {
-        fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
+        if (fire.sprite != nullptr)
+        {
+            fire.sprite->Update(Vector2{ fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10 }, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
+        }
     }
 }
 
@@ -298,6 +303,8 @@ void GameplayScene::Update()
 {
     mapRec = (enteringHouse) ? Rectangle{10.0f, 10.0f, 28.5f*28.5f/2.0f, 24.8f*24.8f/2.0f} 
     : Rectangle{10.0f, 10.0f, 51.5f*51.5f/2.0f, 51.5f*51.5f/2.0f};
+
+    cameraRec = camera.GetRec();
 
     if (onSwitch)
     {
