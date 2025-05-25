@@ -65,21 +65,25 @@ typedef struct Lightning
 };
 Lightning lightning{};
 
-typedef struct Fire
+struct Fire : public RayTiled::TileLayer::Drawable
 {
     std::unique_ptr<Sprite> sprite;
+    float rad;
     bool moveNext;
     int selectedRow;
     Rectangle rec;
+
+    float GetY() override { return rec.y - rad; }
 };
 Fire fire{};
 
 Fire IniFire()
 {
     Fire fire{};
+    fire.rad = 10.0f;
     fire.moveNext = 0;
     fire.selectedRow = 0;
-    fire.rec = Rectangle{604.0f, 282.0f, 24, 24};
+    fire.rec = Rectangle{616.5f, 292.5f, 24, 24};
     fire.sprite = std::make_unique<Sprite>(Vector2{619.0f, 299.0f}, "resources/Spritesheet/fire4_64.png", 10, 6, 1.0f);
 
     return fire;
@@ -104,13 +108,13 @@ void UpdateFire(Fire& fire)
 
     if (fire.sprite != nullptr)
     {
-        fire.sprite->Update(Vector2{fire.rec.x - 5, fire.rec.y - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
+        fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
     }
 }
 
 void DrawFire(const Fire& fire)
 {
-    DrawRectangleLinesEx(fire.rec, 0.8f, RED);
+    DrawCircleLines(fire.rec.x, fire.rec.y, fire.rad, RED);
     
     if (fire.sprite != nullptr)
     {
@@ -207,6 +211,10 @@ void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawab
     {
         frog.Draw();
     }
+    else if (&drawable == &fire)
+    {
+        DrawFire(fire);
+    }
 }
 
 void DrawCollisionLayer(RayTiled::ObjectLayer& layer, Camera2D* camera, Vector2 bounds)
@@ -248,6 +256,7 @@ void InitWorldMap()
         objectTileLayer->AddDrawable(&player);
         objectTileLayer->AddDrawable(&horse);
         objectTileLayer->AddDrawable(&frog);
+        objectTileLayer->AddDrawable(&fire);
     }
 
     auto collisionlayer = RayTiled::FindLayer(map, "CollisionObjects");
@@ -391,7 +400,6 @@ void GameplayScene::Draw()
                 bat.Draw();
             }
             DrawRectangleLinesEx(mapRec, 12, BLACK);
-            DrawFire(fire);
             DrawLightning(lightning);
 
         }
