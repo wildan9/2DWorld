@@ -84,7 +84,7 @@ void RLCamera2D::Update(const Vector2& playerPos, const Rectangle& mapRec, int s
 
     if (scrollable)
     {
-        if ((GetMouseWheelMove() > 0.0f) && zoom < 2.0f) zoom += 0.1f;
+        if ((GetMouseWheelMove() > 0.0f) && zoom < 2.5f) zoom += 0.1f;
         if ((GetMouseWheelMove() < 0.0f) && zoom > 1.0f) zoom -= 0.1f;
     }
 
