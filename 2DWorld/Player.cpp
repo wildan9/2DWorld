@@ -26,8 +26,6 @@
 
 #include "Player.h"
 
-static void UpdatePlayerTrans(Trans2D& trans, Vector2 pos, float rot, float scl);
-
 static struct
 {
     float dt = 0.0f;
@@ -70,53 +68,65 @@ void Player::Start()
     isWalk = 1;
     rec = Rectangle{ pos.x, pos.y, 10.0f, 15.0f };
 
-    const std::vector<std::string> texturesPaths
-    {
-        "resources/textures/character/friendly_man_idle.png",
-        "resources/textures/character/friendly_man_punch.png",
-        "resources/textures/character/friendly_man_walk.png",
-        "resources/textures/character/horse_riding/idle.png",
-        "resources/textures/character/horse_riding/walk.png"
-    };
-
-    model = LoadModel2D(texturesPaths);
-    model.animData = CreateAnimData();
-
     playerSound.Load();
+
+    frameCol = 9;
+    frameRow = 7;
+    selectedRow = 1;
+    frameFacing = 1.0f;
+    frameScale = 0.4f;
+    frameSpeed = 8.0f;
+    totalRows = 2;
+    rad = 10.0f;
+
+    pos = Vector2{ 517.0f, 390.0f };
+
+    sprite = std::make_unique<Sprite>(pos, "resources/Spritesheet/player.png", frameCol, frameRow, frameFacing);
 }
 
 Player::~Player()
 {
-    UnloadModel2D(model);
     playerSound.Unload();
+}
+
+static inline Vector2 Vector2InputDir()
+{
+    Vector2 dir{ 0 };
+
+    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) dir.x -= 1.0f;
+    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) dir.x += 1.0f;
+    if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) dir.y -= 1.0f;
+    if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) dir.y += 1.0f;
+
+    return Vector2Normalize(dir);
 }
 
 void Player::Update()
 {
+    sprite->Update(Vector2{ pos.x - rad - 15, pos.y - rad - 5 }, frameScale, frameSpeed, selectedRow, frameFacing, totalRows, 0);
+
     dir = Vector2InputDir();
 
     lastPos = pos;
+    frameFacing = facing*-1.0f;
 
     float speed = (IsKeyDown(KEY_SPACE)) ? 2.2f : 1.2f;
 
-    bool isPunch = IsKeyDown(KEY_E);
+    bool isConjuring = IsKeyDown(KEY_E);
     bool isOnHorse = 0;
-
-    float frameSpeed = 6.0f;
-    int numFrames = 2;
 
     if (Vector2Length(dir) != 0)
     {
         isWalk = 1;
 
         pos = pos - Vector2Scale(dir, speed);
-        animCurrTexture = (isOnHorse) ? 5 : 3;
 
         if (dir.x < 0.0f) facing = 1.0f;
         if (dir.x > 0.0f) facing = -1.0f;
 
-        numFrames = 6;
-        frameSpeed = 12;
+        totalRows = 8;
+        selectedRow = 0;
+        frameSpeed = 12.0f;
 
         float st = (speed > 2.0f) ? 0.33f : 0.23f;
         playerSound.Play("land", st);
@@ -124,34 +134,27 @@ void Player::Update()
     else
     {
         isWalk = 0;
-        animCurrTexture = (isOnHorse) ? 4 : 1;
+        totalRows = 2;
+        frameSpeed = 4.0f;
+        selectedRow = 1;
     }
 
-    if (!isWalk && isPunch)
+    if (!isWalk && isConjuring)
     {
-        animCurrTexture = 2;
-        frameSpeed = 16;
-        numFrames = 3;
+        totalRows = 7;
+        frameSpeed = 9.0f;
+        selectedRow = 2;
     }
 
     rec.x = pos.x - 10.0f;
     rec.y = pos.y - 10.0f;
 
     Vector2 playerDrawPos = Vector2{ pos.x - 15.0f, pos.y - 15.0f };
-    UpdatePlayerTrans(model.trans, playerDrawPos, rot, scl);
-    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrTexture, 1);
 }
 
 void Player::Draw() const
 {
     DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, GREEN);
     DrawCircleLinesV(pos, rad, RED);
-    DrawModel2D(model);
-}
-
-static void UpdatePlayerTrans(Trans2D& trans, Vector2 pos, float rot, float scl)
-{
-    trans.pos = pos;
-    trans.rot = rot;
-    trans.scl = scl;
+    sprite->Draw();
 }

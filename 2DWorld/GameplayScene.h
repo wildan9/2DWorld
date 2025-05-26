@@ -49,5 +49,5 @@ private:
 	RLCamera2D camera{};
 	Rectangle mapRec{};
 	float batsLifetime = 20.0f;
-	std::array<Bat, 10> bats{};
+	//std::array<Bat, 10> bats{};
 };

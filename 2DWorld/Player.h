@@ -26,18 +26,25 @@
 
 #pragma once
 
-#include "Model2D.h"
+#include "Sprite.h"
 #include "rlTileMap/ray_tilemap.h"
 
 class Player : public RayTiled::TileLayer::Drawable
 {
 private:
-    Model2D model;  
-    int animCurrTexture;
+    std::unique_ptr<Sprite> sprite;
     bool isWalk;
     float rot;
     float scl;
     float rad;
+
+    int frameCol;
+    int frameRow;
+    int selectedRow;
+    int totalRows;
+    float frameFacing;
+    float frameScale;
+    float frameSpeed;
  
 public:
     Rectangle rec;

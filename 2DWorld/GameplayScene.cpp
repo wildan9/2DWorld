@@ -43,12 +43,12 @@ static bool OnTouch(const Player& player, float targetPosX);
 RayTiled::TileMap map;
 RayTiled::TileLayer* objectTileLayer = nullptr;
 
-Rectangle houseDoor{ 484.0f, 625.0f, 9, 9 };
+Rectangle houseDoor {484.0f, 625.0f, 9, 9};
 
 Rectangle cameraRec {};
 
 Player player;
-Horse horse;
+//Horse horse;
 Frog frog;
 
 Timer mapSwitchTimer;
@@ -57,7 +57,7 @@ static int framesCounter = 0;
 
 typedef struct Lightning
 {
-    Model2D model;
+    //Model2D model;
     Rectangle rec;
     Sound sound;
     bool isShown;
@@ -127,80 +127,80 @@ void DrawFire(const Fire& fire)
     }
 }
 
-Lightning InitLightning()
-{
-    Lightning lgh{};
-
-    const std::vector<std::string> lightningPaths
-    {
-        "resources/spritesheet/lightning.png",
-        "resources/spritesheet/lightning_2.png",
-        "resources/spritesheet/lightning_3.png",
-        "resources/spritesheet/lightning_4.png"
-    };
-
-    lgh.model = LoadModel2D(lightningPaths);
-    lgh.model.animData = CreateAnimData();
-    lgh.model.trans.pos = Vector2{710.0f, 480.0f};
-    lgh.model.trans.rot = 0.0f;
-    lgh.model.trans.scl = 0.45f;
-    lgh.rec = Rectangle{700.0f, 555.0f, 200.0f, 130.0f};
-    lgh.timer = 10.0f;
-    lgh.sound = LoadSound("resources/sounds/thunder_explosion_hit.wav");
-    lgh.animCurrTexture = 1;
-    lgh.numFrame = 9;
-
-    return lgh;
-}
-
-void UpdateLightning(Lightning& lightning)
-{
-    if (lightning.isShown)
-    {
-        if (lightning.timer > 0.0f)
-        {
-            lightning.timer -= GetFrameTime();
-
-            if (lightning.timer < 0.0f)
-            {
-                lightning.timer = 10.0f;
-                lightning.animCurrTexture = GetRandomValue(1, 4);
-                lightning.model.animData->Reset();
-                lightning.model.trans.pos = Vector2{static_cast<float>(GetRandomValue(610.0f, 760.0f)), static_cast<float>(GetRandomValue(410.0f, 480.0f))};
-            
-                if (lightning.animCurrTexture != 4)
-                {
-                    lightning.numFrame = 9;
-                }
-                else
-                {
-                    lightning.numFrame = 16;
-                }
-            }
-        }
-
-        if (lightning.timer < 1.0f)
-        {
-            PlaySound(lightning.sound);
-            UpdateAnim(lightning.model, 1.0f, 9.4f, lightning.numFrame, lightning.animCurrTexture, 1);
-        }
-    }
-
-    lightning.isShown = CheckCollisionRecs(player.rec, lightning.rec);
-}
-
-void DrawLightning(const Lightning& lightning)
-{
-    Rectangle rec = lightning.rec;
-    DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, RED);
-    DrawModel2D(lightning.model);
-}
-
-void DestroyLightning(Lightning& lightning)
-{
-    UnloadSound(lightning.sound);
-    UnloadModel2D(lightning.model);
-}
+//Lightning InitLightning()
+//{
+//    Lightning lgh{};
+//
+//    const std::vector<std::string> lightningPaths
+//    {
+//        "resources/spritesheet/lightning.png",
+//        "resources/spritesheet/lightning_2.png",
+//        "resources/spritesheet/lightning_3.png",
+//        "resources/spritesheet/lightning_4.png"
+//    };
+//
+//    lgh.model = LoadModel2D(lightningPaths);
+//    lgh.model.animData = CreateAnimData();
+//    lgh.model.trans.pos = Vector2{710.0f, 480.0f};
+//    lgh.model.trans.rot = 0.0f;
+//    lgh.model.trans.scl = 0.45f;
+//    lgh.rec = Rectangle{700.0f, 555.0f, 200.0f, 130.0f};
+//    lgh.timer = 10.0f;
+//    lgh.sound = LoadSound("resources/sounds/thunder_explosion_hit.wav");
+//    lgh.animCurrTexture = 1;
+//    lgh.numFrame = 9;
+//
+//    return lgh;
+//}
+//
+//void UpdateLightning(Lightning& lightning)
+//{
+//    if (lightning.isShown)
+//    {
+//        if (lightning.timer > 0.0f)
+//        {
+//            lightning.timer -= GetFrameTime();
+//
+//            if (lightning.timer < 0.0f)
+//            {
+//                lightning.timer = 10.0f;
+//                lightning.animCurrTexture = GetRandomValue(1, 4);
+//                lightning.model.animData->Reset();
+//                lightning.model.trans.pos = Vector2{static_cast<float>(GetRandomValue(610.0f, 760.0f)), static_cast<float>(GetRandomValue(410.0f, 480.0f))};
+//            
+//                if (lightning.animCurrTexture != 4)
+//                {
+//                    lightning.numFrame = 9;
+//                }
+//                else
+//                {
+//                    lightning.numFrame = 16;
+//                }
+//            }
+//        }
+//
+//        if (lightning.timer < 1.0f)
+//        {
+//            PlaySound(lightning.sound);
+//            //UpdateAnim(lightning.model, 1.0f, 9.4f, lightning.numFrame, lightning.animCurrTexture, 1);
+//        }
+//    }
+//
+//    lightning.isShown = CheckCollisionRecs(player.rec, lightning.rec);
+//}
+//
+//void DrawLightning(const Lightning& lightning)
+//{
+//    Rectangle rec = lightning.rec;
+//    DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, RED);
+//    //DrawModel2D(lightning.model);
+//}
+//
+//void DestroyLightning(Lightning& lightning)
+//{
+//    UnloadSound(lightning.sound);
+//    //UnloadModel2D(lightning.model);
+//}
 
 void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
 {
@@ -208,10 +208,10 @@ void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawab
     {
         player.Draw();
     }
-    else if (&drawable == &horse)
+    /*else if (&drawable == &horse)
     {
         horse.Draw();
-    }
+    }*/
     else if (&drawable == &frog)
     {
         frog.Draw();
@@ -259,7 +259,7 @@ void InitWorldMap()
         objectTileLayer->CustomDrawalbeFunction = DrawObjectLayerItem;
 
         objectTileLayer->AddDrawable(&player);
-        objectTileLayer->AddDrawable(&horse);
+        //objectTileLayer->AddDrawable(&horse);
         objectTileLayer->AddDrawable(&frog);
         objectTileLayer->AddDrawable(&fire);
     }
@@ -323,14 +323,14 @@ void GameplayScene::Update()
 
     player.Update();
     
-    for (auto& bat : bats)
+    /*for (auto& bat : bats)
     {
         bat.Update();
-    }
+    }*/
 
     if (!enteringHouse)
     {
-        horse.Update();
+        //horse.Update();
         frog.Update(player.rec);
     }
 
@@ -338,7 +338,7 @@ void GameplayScene::Update()
     else houseDoor = Rectangle{484.0f, 625.0f, 9, 9};
 
     CollisionChecking();
-    UpdateLightning(lightning);
+    //UpdateLightning(lightning);
     UpdateFire(fire);
 }
 
@@ -346,15 +346,15 @@ void GameplayScene::LoadResources()
 {
     player.Start();
 
-    for (int i = 0; i < 10; i++)
+    /*for (int i = 0; i < 10; i++)
     {
         bats[i].Start();
         bats[i].pos = Vector2{100.0f + i*14 + GetRandomValue(2, 6), 100.0f + i*12 + GetRandomValue(3, 5)};
-    }
+    }*/
 
-    horse.Start();
+    /*horse.Start();
     horse.pos = Vector2{912.0f, 626.0f};
-    horse.rad = 1.8f;
+    horse.rad = 1.8f;*/
 
     frog.Start();
 
@@ -364,14 +364,14 @@ void GameplayScene::LoadResources()
     camera.zoom = 2.0f;
     enteringHouse = 0;
 
-    lightning = InitLightning();
+    //lightning = InitLightning();
     fire = IniFire();
 }
 
 void GameplayScene::FreeResources()
 {
     RayTiled::UnloadTileMap(map, 1);
-    DestroyLightning(lightning);
+    //DestroyLightning(lightning);
 }
 
 void GameplayScene::DrawHUD()
@@ -402,12 +402,12 @@ void GameplayScene::Draw()
 
         if (!enteringHouse)
         {   
-            for (const auto& bat : bats)
+            /*for (const auto& bat : bats)
             {
                 bat.Draw();
-            }
+            }*/
             DrawRectangleLinesEx(mapRec, 12, BLACK);
-            DrawLightning(lightning);
+            //DrawLightning(lightning);
 
         }
     camera.EndMode();

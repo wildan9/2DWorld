@@ -26,101 +26,101 @@
 
 #include "Animal.h"
 
-void Bat::Start() 
-{
-    pos = pos;
-    speed = Vector2{ 0.7f, 0.9f };
-    scl = 0.6f;
-    facing = 1.0f;
-
-    const std::vector<std::string> texturesPaths
-    {
-        "resources/textures/animals/bat/fly.png"
-    };
-
-    model = LoadModel2D(texturesPaths);
-    model.animData = CreateAnimData();
-}
-
-Bat::~Bat()
-{
-    UnloadModel2D(model);
-}
-
-void Bat::Update()
-{
-    float frameSpeed = 10.0f;
-    int numFrames = 6;
-
-    animCurrTexture = 1;
-
-    model.trans.pos = pos;
-    model.trans.scl = 1.0f;
-    model.trans.rot = 0.0f;
-
-    const float flyRadius = 1200.0f;
-
-    if (pos.x >= flyRadius || pos.x <= 0)
-    {
-        speed.x *= -1.0f;
-        facing *= -1.0f;
-    }
-    if (pos.y >= flyRadius || pos.y <= 0)
-    {
-        speed.y *= -1.0f;
-    }
-
-    pos = pos + speed;
-
-    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrTexture, 1);
-}
-
-void Bat::Draw() const
-{
-    DrawRectangleLines(pos.x, pos.y, 15, 15, GREEN);
-    DrawModel2D(model);
-}
-
-void Horse::Start()
-{
-    pos = pos;
-    speed = Vector2{ 0.7f, 0.9f };
-    scl = 0.6f;
-    facing = 1.0f;
-
-    const std::vector<std::string> texturesPaths
-    {
-        "resources/textures/animals/horse/idle.png"
-    };
-
-    model = LoadModel2D(texturesPaths);
-    model.animData = CreateAnimData();
-}
-
-Horse::~Horse()
-{
-    UnloadModel2D(model);
-}
-
-void Horse::Update()
-{
-    float frameSpeed = 4.4f;
-    int numFrames = 13;
-
-    animCurrTexture = 1;
-
-    model.trans.pos = pos;
-    model.trans.scl = 0.8f;
-    model.trans.rot = 0.0f;
-
-    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrTexture, 1);
-}
-
-void Horse::Draw() const
-{
-    DrawRectangleLines(pos.x, pos.y, 15, 15, GREEN);
-    DrawModel2D(model);
-}
+//void Bat::Start() 
+//{
+//    pos = pos;
+//    speed = Vector2{ 0.7f, 0.9f };
+//    scl = 0.6f;
+//    facing = 1.0f;
+//
+//    const std::vector<std::string> texturesPaths
+//    {
+//        "resources/textures/animals/bat/fly.png"
+//    };
+//
+//    model = LoadModel2D(texturesPaths);
+//    model.animData = CreateAnimData();
+//}
+//
+//Bat::~Bat()
+//{
+//    UnloadModel2D(model);
+//}
+//
+//void Bat::Update()
+//{
+//    float frameSpeed = 10.0f;
+//    int numFrames = 6;
+//
+//    animCurrTexture = 1;
+//
+//    model.trans.pos = pos;
+//    model.trans.scl = 1.0f;
+//    model.trans.rot = 0.0f;
+//
+//    const float flyRadius = 1200.0f;
+//
+//    if (pos.x >= flyRadius || pos.x <= 0)
+//    {
+//        speed.x *= -1.0f;
+//        facing *= -1.0f;
+//    }
+//    if (pos.y >= flyRadius || pos.y <= 0)
+//    {
+//        speed.y *= -1.0f;
+//    }
+//
+//    pos = pos + speed;
+//
+//    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrTexture, 1);
+//}
+//
+//void Bat::Draw() const
+//{
+//    DrawRectangleLines(pos.x, pos.y, 15, 15, GREEN);
+//    DrawModel2D(model);
+//}
+//
+//void Horse::Start()
+//{
+//    pos = pos;
+//    speed = Vector2{ 0.7f, 0.9f };
+//    scl = 0.6f;
+//    facing = 1.0f;
+//
+//    const std::vector<std::string> texturesPaths
+//    {
+//        "resources/textures/animals/horse/idle.png"
+//    };
+//
+//    model = LoadModel2D(texturesPaths);
+//    model.animData = CreateAnimData();
+//}
+//
+//Horse::~Horse()
+//{
+//    UnloadModel2D(model);
+//}
+//
+//void Horse::Update()
+//{
+//    float frameSpeed = 4.4f;
+//    int numFrames = 13;
+//
+//    animCurrTexture = 1;
+//
+//    model.trans.pos = pos;
+//    model.trans.scl = 0.8f;
+//    model.trans.rot = 0.0f;
+//
+//    UpdateAnim(model, facing, frameSpeed, numFrames, animCurrTexture, 1);
+//}
+//
+//void Horse::Draw() const
+//{
+//    DrawRectangleLines(pos.x, pos.y, 15, 15, GREEN);
+//    DrawModel2D(model);
+//}
 
 void Frog::Start()
 {

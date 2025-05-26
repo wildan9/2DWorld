@@ -104,7 +104,7 @@ public:
             position = position_;
 
             frameCounter++;
-            if (frameCounter >= (GetFPS() / frameSpeed))
+            if (frameCounter >= (GetFPS()/frameSpeed))
             {
                 currentFrame++;
                 if (currentFrame >= framesPerRow) currentFrame = 0;
@@ -112,8 +112,8 @@ public:
                 const int row = selectedRow_;
                 const int col = currentFrame;
 
-                frameRec.x = col * frameWidth;
-                frameRec.y = row * frameHeight;
+                frameRec.x = col*frameWidth;
+                frameRec.y = row*frameHeight;
 
                 frameCounter = 0;
             }
@@ -126,7 +126,7 @@ public:
 
             // Get current FPS and calculate animation speed
             float animationFPS = static_cast<float>(GetFPS());
-            float secondsPerFrame = 1.0f / animationFPS;
+            float secondsPerFrame = 1.0f/animationFPS;
 
             timeAccumulator += GetFrameTime();
 

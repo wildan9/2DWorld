@@ -24,9 +24,6 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MathLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="rlCamera2D\rlCamera2D.h">
       <Filter>rlCamera2D</Filter>
     </ClInclude>
@@ -42,9 +39,6 @@
     <ClInclude Include="GameplayScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectTexures.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -52,9 +46,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Animal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rlTileMap\ray_tilemap.h">
@@ -96,9 +87,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TitleScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="rlTileMap\ray_tilemap.cpp">

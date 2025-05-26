@@ -337,7 +337,6 @@
     <ClCompile Include="2DWorld.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="GameplayScene.cpp" />
-    <ClCompile Include="Model2D.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="rlCamera2D\rlCamera2D.cpp" />
     <ClCompile Include="rlTileMap\PUGIXML\pugixml.cpp" />
@@ -353,7 +352,6 @@
     <ClInclude Include="Animal.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="GameplayScene.h" />
-    <ClInclude Include="Model2D.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="rlCamera2D\rlCamera2D.h" />
     <ClInclude Include="rlTileMap\PUGIXML\pugiconfig.hpp" />
@@ -361,11 +359,9 @@
     <ClInclude Include="rlTileMap\ray_tilemap.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="ObjectTexures.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="MathLib.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="rlTileMap\PUGIXML\readme.txt" />
