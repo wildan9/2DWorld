@@ -10,7 +10,7 @@
  </layer>
  <layer id="2" name="Ground overlay" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2d1NwlAYgOEWMIIu4hgKjmDinT9zqGMo4hguYsQL17EEGsuxSG2pnMDzJN9FAQ353hwUSBIAAAAAgN01Sbf9DPbPoJMkR4s57izfV9bjupskN8Hcdv/nue6DYdZgtJjzCj2es91PgnnRo7H8XIwKcxqcET3al3c4C1qUnRE92jcM9v+ZLl/fZzNN5/OkR+vuFjvvB10Os3nw92Nr8i75hC1m9IiLHnHRIy56xEWPuOgRFz3iokdcwh6zz3LHi93r0cxFjZ2FPabZ77hyPlpzWfKevKjs9eq9O+9SnA89fhin358DzuZ1za6r8P1gfW3sTo/6NrW74jl7C85c2VBuUz2cic3QIy56xKXqHtc9Lr9/0EuSk2616feaPfddtGrP04Nqj6t6P9Ws2mN4u/PRvvEv/5uGt4fXj8F12ffo/E2T15hVP+t81NdGD+rTIy56xEWPuOgBAAAAAAAAAAAAAAAAAAAAAAAAAADt+gLJZ46r
+   eJzt2e1NwlAUgOEWMIIu4hgKjmDiPz/mUMdQxDFcxIiJ81gCjeVapLZUbuB5kvOjgIacNxcFkgQAAAAAYHdN0m0/g/0z6CTJ0WKOO8v3lfW47ibJTTC33f95rvtgmDUYLea8Qo/nbPeTYF70aCw/F6PCnAZnRI/25R3OghZlZ0SP9g2D/X+my9f32UzT+Tzp0bq7xc77QZfDbB78/diavEs+YYsZPeKiR1z0iIsecdEjLnrERY+46BGXsMfss9zxYvd6NHNRY2dhj2n2O66cj9ZclrwnLyp7vXrvzrsU50OPH8bp9+eAs3lds+sqfD9YXxu706O+Te2ueM7egjNXNpTbVA9nYjP0iIsecam6x3WPy+8f9JLkpFtt+r1mz30Xrdrz9KDa46reTzWr9hje7ny0b/zL/6bh7eH1Y3Bd9j06f9PkNWbVzzof9bXRg/r0iIsecdEjLnoAAAAAAAAAAAAAAAAAAAAAAAAAAEC7vgBJ346q
   </data>
  </layer>
  <layer id="3" name="Objects" width="100" height="100">

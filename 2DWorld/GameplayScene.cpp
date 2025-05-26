@@ -71,7 +71,9 @@ struct Fire : public RayTiled::TileLayer::Drawable
 {
     std::unique_ptr<Sprite> sprite;
     float rad;
+    Timer timer;
     bool moveNext;
+    bool isDrawn;
     int selectedRow;
     Rectangle rec;
 
@@ -86,6 +88,7 @@ Fire IniFire()
     fire.moveNext = 0;
     fire.selectedRow = 0;
     fire.rec = Rectangle{616.5f, 292.5f, 24, 24};
+    StartTimer(fire.timer, 0.7f);
     fire.sprite = std::make_unique<Sprite>(Vector2{619.0f, 299.0f}, "resources/Spritesheet/fire4_64.png", 10, 6, 1.0f);
 
     return fire;
@@ -93,7 +96,18 @@ Fire IniFire()
 
 void UpdateFire(Fire& fire)
 {
-    if (CheckCollisionRecs(cameraRec, Rectangle{fire.rec.x - 20, fire.rec.y - 20, 50.f, 50.0f}))
+    if (CheckCollisionRecs(player.rec, fire.rec) && IsKeyDown(KEY_E))
+    {
+        UpdateTimer(fire.timer);
+    }
+
+    if (IsTimerDone(fire.timer))
+    {
+        fire.isDrawn = !fire.isDrawn;
+        StartTimer(fire.timer, 0.7f);
+    }
+
+    if (CheckCollisionRecs(cameraRec, Rectangle{fire.rec.x - 20, fire.rec.y - 20, 50.f, 50.0f}) && fire.isDrawn)
     {
         if (fire.sprite->GetCurrentFrame() >= 9 && !fire.moveNext)
         {
@@ -121,7 +135,7 @@ void DrawFire(const Fire& fire)
 {
     DrawCircleLines(fire.rec.x, fire.rec.y, fire.rad, RED);
     
-    if (fire.sprite != nullptr)
+    if (fire.sprite != nullptr && fire.isDrawn)
     {
         fire.sprite->Draw();
     }
