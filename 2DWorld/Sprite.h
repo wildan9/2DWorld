@@ -46,7 +46,7 @@ private:
     int frameColumns;
     int frameRows;
 
-    float timeAccumulator = 0.0f;
+    float timeAccumulator;
 
 public:
     Sprite(Vector2 position_, const char* spriteSheetPath_, int frameColumns_, int frameRows_, float frameFacing_)
@@ -70,6 +70,7 @@ public:
         frameCounter = 0;
         frameSpeed = 8.0f;
         frameScale = 2.0f;
+        timeAccumulator = 0.0f;
         frameFacing = frameFacing_;
     }
 
