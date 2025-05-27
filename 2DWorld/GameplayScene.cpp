@@ -48,7 +48,7 @@ Rectangle houseDoor {484.0f, 625.0f, 9, 9};
 Rectangle cameraRec {};
 
 Player player;
-//Horse horse;
+Horse horse;
 Frog frog;
 
 Timer mapSwitchTimer;
@@ -222,10 +222,10 @@ void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawab
     {
         player.Draw();
     }
-    /*else if (&drawable == &horse)
+    else if (&drawable == &horse)
     {
         horse.Draw();
-    }*/
+    }
     else if (&drawable == &frog)
     {
         frog.Draw();
@@ -273,7 +273,7 @@ void InitWorldMap()
         objectTileLayer->CustomDrawalbeFunction = DrawObjectLayerItem;
 
         objectTileLayer->AddDrawable(&player);
-        //objectTileLayer->AddDrawable(&horse);
+        objectTileLayer->AddDrawable(&horse);
         objectTileLayer->AddDrawable(&frog);
         objectTileLayer->AddDrawable(&fire);
     }
@@ -337,14 +337,14 @@ void GameplayScene::Update()
 
     player.Update();
     
-    /*for (auto& bat : bats)
+    for (auto& bat : bats)
     {
         bat.Update();
-    }*/
+    }
 
     if (!enteringHouse)
     {
-        //horse.Update();
+        horse.Update();
         frog.Update(player.rec);
     }
 
@@ -360,15 +360,15 @@ void GameplayScene::LoadResources()
 {
     player.Start();
 
-    /*for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
     {
         bats[i].Start();
         bats[i].pos = Vector2{100.0f + i*14 + GetRandomValue(2, 6), 100.0f + i*12 + GetRandomValue(3, 5)};
-    }*/
+    }
 
-    /*horse.Start();
+    horse.Start();
     horse.pos = Vector2{912.0f, 626.0f};
-    horse.rad = 1.8f;*/
+    horse.rad = 1.8f;
 
     frog.Start();
 
@@ -416,10 +416,10 @@ void GameplayScene::Draw()
 
         if (!enteringHouse)
         {   
-            /*for (const auto& bat : bats)
+            for (const auto& bat : bats)
             {
                 bat.Draw();
-            }*/
+            }
             DrawRectangleLinesEx(mapRec, 12, BLACK);
             //DrawLightning(lightning);
 

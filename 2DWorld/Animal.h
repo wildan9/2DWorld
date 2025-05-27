@@ -65,13 +65,12 @@
 //    ~Horse();
 //};
 
-struct Frog : public RayTiled::TileLayer::Drawable
+struct Animal
 {
     Vector2 pos;
-    Sound sound;
     Rectangle rec;
     std::unique_ptr<Sprite> sprite;
-    
+
     int frameCol;
     int frameRow;
     int selectedRow;
@@ -80,6 +79,29 @@ struct Frog : public RayTiled::TileLayer::Drawable
     float frameScale;
     float frameSpeed;
     float rad;
+};
+
+struct Bat : public Animal
+{
+    Vector2 speed;
+
+    void Start();
+    void Update();
+    void Draw() const;
+};
+
+struct Horse : public Animal, RayTiled::TileLayer::Drawable
+{
+    void Start();
+    void Update();
+    void Draw() const;
+
+    float GetY() override { return pos.y - rad; }
+};
+
+struct Frog : public Animal, RayTiled::TileLayer::Drawable
+{
+    Sound sound;
 
     void Start();
     void Update(const Rectangle& playerRec);

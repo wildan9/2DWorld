@@ -33,6 +33,8 @@
 #include "Animal.h"
 #include "rlCamera2D/rlCamera2D.h"
 
+#include <array>
+
 class GameplayScene : public Scene
 {
 	void CollisionChecking();
@@ -49,5 +51,5 @@ private:
 	RLCamera2D camera{};
 	Rectangle mapRec{};
 	float batsLifetime = 20.0f;
-	//std::array<Bat, 10> bats{};
+	std::array<Bat, 10> bats{};
 };
