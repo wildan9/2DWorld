@@ -35,7 +35,7 @@ static struct
 
     inline void Load()
     {
-        landStep = LoadSound("resources/sounds/land_step.wav");
+        landStep = LoadSound("resources/sounds/grass_walk.wav");
     }
 
     inline void Unload()
@@ -128,7 +128,7 @@ void Player::Update()
         selectedRow = 0;
         frameSpeed = 12.0f;
 
-        float st = (speed > 2.0f) ? 0.33f : 0.23f;
+        float st = (speed > 2.0f) ? 0.28f : 0.18f;
         playerSound.Play("land", st);
     }
     else
