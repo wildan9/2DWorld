@@ -61,8 +61,6 @@ static struct
 void Player::Start()
 {
     pos = Vector2{ 300.0f, 300.0f };
-    rot = 0.0f;
-    scl = 0.6f;
     rad = 10.0f;
     facing = 1.0f;
     isWalk = 1;
