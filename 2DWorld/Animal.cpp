@@ -104,7 +104,7 @@ void Frog::Start()
     frameScale = 0.4f;
     frameSpeed = 8.0f;
 
-    pos = Vector2{517.0f, 390.0f};
+    pos = Vector2{521.5f, 390.0f};
 
     sprite = std::make_unique<Sprite>(pos, "resources/Spritesheet/frog_sprite_sheet.png", frameCol, frameRow, frameFacing);
     rad = 6.0f;
