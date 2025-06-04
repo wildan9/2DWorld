@@ -123,7 +123,7 @@ void Player::Update()
         if (dir.x > 0.0f) facing = -1.0f;
 
         totalRows = 8;
-        selectedRow = 0;
+        selectedRow = (IsKeyDown(KEY_SPACE)) ? 6 : 0;
         frameSpeed = 12.0f;
 
         float st = (speed > 2.0f) ? 0.28f : 0.18f;
