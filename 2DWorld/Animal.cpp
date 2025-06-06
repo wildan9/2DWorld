@@ -29,7 +29,7 @@
 void Bat::Start() 
 {
     pos = pos;
-    speed = Vector2{ 0.7f, 0.9f };
+    speed = Vector2{0.7f, 0.9f};
 
     frameCol = 5;
     frameRow = 3;
@@ -60,7 +60,7 @@ void Bat::Update()
 
     pos = pos + speed;
 
-    sprite->Update(Vector2{ pos.x - rad - 5, pos.y - rad - 5 }, frameScale, frameSpeed, selectedRow, frameFacing, 5, 0);
+    sprite->Update(Vector2{pos.x - rad - 5, pos.y - rad - 5}, frameScale, frameSpeed, selectedRow, frameFacing, 5, 0);
 }
 
 void Bat::Draw() const
@@ -79,14 +79,14 @@ void Horse::Start()
     selectedRow = 0;
     frameFacing = 1.0f;
     frameScale = 1.0f;
-    frameSpeed = 8.0f;
+    frameSpeed = 5.0f;
 
     sprite = std::make_unique<Sprite>(pos, "resources/textures/animals/horse/idle.png", frameCol, frameRow, frameFacing);
 }
 
 void Horse::Update()
 {
-    sprite->Update(Vector2{ pos.x - rad - 5, pos.y - rad - 5 }, frameScale, frameSpeed, selectedRow, frameFacing, 13, 0);
+    sprite->Update(Vector2{pos.x - rad - 5, pos.y - rad - 5}, frameScale, frameSpeed, selectedRow, frameFacing, 13, 0);
 }
 
 void Horse::Draw() const
@@ -101,7 +101,7 @@ void Frog::Start()
     frameRow = 3;
     selectedRow = 0;
     frameFacing = -1.0f;
-    frameScale = 0.4f;
+    frameScale = 0.32f;
     frameSpeed = 8.0f;
 
     pos = Vector2{521.5f, 390.0f};
