@@ -34,7 +34,7 @@
 enum class MapState { STATE_WAITING, STATE_LOADING_HOME, STATE_LOADING_WORLD };
 MapState state = MapState::STATE_WAITING;
 
-bool showGrid = 0, worldCollision = 1, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
+bool showGrid = 0, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
 
 static Rectangle GetRecBottomSide(const Rectangle& rec);
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize);
@@ -52,8 +52,6 @@ Horse horse;
 Frog frog;
 
 Timer mapSwitchTimer;
-
-static int framesCounter = 0;
 
 typedef struct Lightning
 {
