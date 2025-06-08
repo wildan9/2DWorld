@@ -68,7 +68,6 @@ typedef struct Lightning
     float frameFacing;
     float frameScale;
     float frameSpeed;
-    float rad;
 
     Sound sound;
     bool isShown;
