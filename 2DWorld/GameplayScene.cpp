@@ -57,12 +57,23 @@ static int framesCounter = 0;
 
 typedef struct Lightning
 {
-    //Model2D model;
+    Vector2 pos;
     Rectangle rec;
+    std::unique_ptr<Sprite> sprite;
+
+    int frameCol;
+    int frameRow;
+    int selectedRow;
+
+    float frameFacing;
+    float frameScale;
+    float frameSpeed;
+    float rad;
+
     Sound sound;
     bool isShown;
+    bool isDrawn;
     float timer;
-    int animCurrTexture;
     int numFrame;
 };
 Lightning lightning{};
@@ -141,80 +152,78 @@ void DrawFire(const Fire& fire)
     }
 }
 
-//Lightning InitLightning()
-//{
-//    Lightning lgh{};
-//
-//    const std::vector<std::string> lightningPaths
-//    {
-//        "resources/spritesheet/lightning.png",
-//        "resources/spritesheet/lightning_2.png",
-//        "resources/spritesheet/lightning_3.png",
-//        "resources/spritesheet/lightning_4.png"
-//    };
-//
-//    lgh.model = LoadModel2D(lightningPaths);
-//    lgh.model.animData = CreateAnimData();
-//    lgh.model.trans.pos = Vector2{710.0f, 480.0f};
-//    lgh.model.trans.rot = 0.0f;
-//    lgh.model.trans.scl = 0.45f;
-//    lgh.rec = Rectangle{700.0f, 555.0f, 200.0f, 130.0f};
-//    lgh.timer = 10.0f;
-//    lgh.sound = LoadSound("resources/sounds/thunder_explosion_hit.wav");
-//    lgh.animCurrTexture = 1;
-//    lgh.numFrame = 9;
-//
-//    return lgh;
-//}
-//
-//void UpdateLightning(Lightning& lightning)
-//{
-//    if (lightning.isShown)
-//    {
-//        if (lightning.timer > 0.0f)
-//        {
-//            lightning.timer -= GetFrameTime();
-//
-//            if (lightning.timer < 0.0f)
-//            {
-//                lightning.timer = 10.0f;
-//                lightning.animCurrTexture = GetRandomValue(1, 4);
-//                lightning.model.animData->Reset();
-//                lightning.model.trans.pos = Vector2{static_cast<float>(GetRandomValue(610.0f, 760.0f)), static_cast<float>(GetRandomValue(410.0f, 480.0f))};
-//            
-//                if (lightning.animCurrTexture != 4)
-//                {
-//                    lightning.numFrame = 9;
-//                }
-//                else
-//                {
-//                    lightning.numFrame = 16;
-//                }
-//            }
-//        }
-//
-//        if (lightning.timer < 1.0f)
-//        {
-//            PlaySound(lightning.sound);
-//            //UpdateAnim(lightning.model, 1.0f, 9.4f, lightning.numFrame, lightning.animCurrTexture, 1);
-//        }
-//    }
-//
-//    lightning.isShown = CheckCollisionRecs(player.rec, lightning.rec);
-//}
-//
-//void DrawLightning(const Lightning& lightning)
-//{
-//    Rectangle rec = lightning.rec;
-//    DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, RED);
-//    //DrawModel2D(lightning.model);
-//}
-//
-//void DestroyLightning(Lightning& lightning)
-//{
-//    UnloadSound(lightning.sound);
-//    //UnloadModel2D(lightning.model);
-//}
+Lightning InitLightning()
+{
+    Lightning lgh{};
+
+    lgh.pos = Vector2{710.0f, 480.0f};
+    lgh.rec = Rectangle{ 700.0f, 555.0f, 200.0f, 130.0f };
+
+    lgh.frameCol = 13;
+    lgh.frameRow = 1;
+    lgh.selectedRow = 0;
+    lgh.frameFacing = 1.0f;
+    lgh.frameScale = 1.0f;
+    lgh.frameSpeed = 5.0f;
+
+    lgh.timer = 10.0f;
+    lgh.sound = LoadSound("resources/sounds/thunder_explosion_hit.wav");
+    lgh.sprite = std::make_unique<Sprite>(lgh.pos, "resources/Spritesheet/new_lightning.png", lgh.frameCol, lgh.frameRow, lgh.frameFacing);
+
+    return lgh;
+}
+
+void UpdateLightning(Lightning& lightning)
+{
+    if (lightning.isShown)
+    {
+        lightning.isDrawn = 0;
+        if (lightning.timer > 0.0f)
+        {
+            lightning.timer -= GetFrameTime();
+
+            if (lightning.timer < 0.0f)
+            {
+                lightning.timer = 10.0f;
+                lightning.selectedRow = 3;
+                lightning.sprite->Reset();
+                lightning.pos = Vector2{static_cast<float>(GetRandomValue(610.0f, 760.0f)), static_cast<float>(GetRandomValue(410.0f, 480.0f))};
+                            
+                if (lightning.selectedRow != 1)
+                {
+                    lightning.numFrame = 9;
+                }
+                else
+                {
+                    lightning.numFrame = 16;
+                }
+            }
+        }
+
+        if (lightning.timer < 1.0f)
+        {
+            lightning.isDrawn = 1;
+            PlaySound(lightning.sound);
+            lightning.sprite->Update(lightning.pos, lightning.frameScale, lightning.frameSpeed, 3, lightning.frameFacing, lightning.numFrame, 0);
+        }
+    }
+
+    lightning.isShown = CheckCollisionRecs(player.rec, lightning.rec);
+}
+
+void DrawLightning(const Lightning& lightning)
+{
+    Rectangle rec = lightning.rec;
+    DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, RED);
+
+    if (lightning.isDrawn)
+    lightning.sprite->Draw();
+}
+
+void DestroyLightning(Lightning& lightning)
+{
+    UnloadSound(lightning.sound);
+}
 
 void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawable& drawable, float startX, float endX)
 {
@@ -352,7 +361,7 @@ void GameplayScene::Update()
     else houseDoor = Rectangle{484.0f, 625.0f, 9, 9};
 
     CollisionChecking();
-    //UpdateLightning(lightning);
+    UpdateLightning(lightning);
     UpdateFire(fire);
 }
 
@@ -378,14 +387,14 @@ void GameplayScene::LoadResources()
     camera.zoom = 2.0f;
     enteringHouse = 0;
 
-    //lightning = InitLightning();
+    lightning = InitLightning();
     fire = IniFire();
 }
 
 void GameplayScene::FreeResources()
 {
     RayTiled::UnloadTileMap(map, 1);
-    //DestroyLightning(lightning);
+    DestroyLightning(lightning);
 }
 
 void GameplayScene::DrawHUD()
@@ -421,7 +430,7 @@ void GameplayScene::Draw()
                 bat.Draw();
             }
             DrawRectangleLinesEx(mapRec, 12, BLACK);
-            //DrawLightning(lightning);
+            DrawLightning(lightning);
 
         }
     camera.EndMode();
