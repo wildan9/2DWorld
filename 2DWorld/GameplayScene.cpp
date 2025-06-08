@@ -159,12 +159,12 @@ Lightning InitLightning()
     lgh.pos = Vector2{710.0f, 480.0f};
     lgh.rec = Rectangle{ 700.0f, 555.0f, 200.0f, 130.0f };
 
-    lgh.frameCol = 13;
-    lgh.frameRow = 1;
-    lgh.selectedRow = 0;
+    lgh.frameCol = 16;
+    lgh.frameRow = 4;
+    lgh.selectedRow = 3;
     lgh.frameFacing = 1.0f;
     lgh.frameScale = 1.0f;
-    lgh.frameSpeed = 5.0f;
+    lgh.frameSpeed = 8.0f;
 
     lgh.timer = 10.0f;
     lgh.sound = LoadSound("resources/sounds/thunder_explosion_hit.wav");
@@ -185,7 +185,7 @@ void UpdateLightning(Lightning& lightning)
             if (lightning.timer < 0.0f)
             {
                 lightning.timer = 10.0f;
-                lightning.selectedRow = 3;
+                lightning.selectedRow = GetRandomValue(0, 3);
                 lightning.sprite->Reset();
                 lightning.pos = Vector2{static_cast<float>(GetRandomValue(610.0f, 760.0f)), static_cast<float>(GetRandomValue(410.0f, 480.0f))};
                             
@@ -204,7 +204,7 @@ void UpdateLightning(Lightning& lightning)
         {
             lightning.isDrawn = 1;
             PlaySound(lightning.sound);
-            lightning.sprite->Update(lightning.pos, lightning.frameScale, lightning.frameSpeed, 3, lightning.frameFacing, lightning.numFrame, 0);
+            lightning.sprite->Update(lightning.pos, lightning.frameScale, lightning.frameSpeed, lightning.selectedRow, lightning.frameFacing, lightning.numFrame, 0);
         }
     }
 
@@ -217,7 +217,9 @@ void DrawLightning(const Lightning& lightning)
     DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, RED);
 
     if (lightning.isDrawn)
-    lightning.sprite->Draw();
+    {
+        lightning.sprite->Draw();
+    }
 }
 
 void DestroyLightning(Lightning& lightning)
