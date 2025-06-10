@@ -36,7 +36,6 @@ MapState state = MapState::STATE_WAITING;
 
 bool showGrid = 0, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
 
-static Rectangle GetRecBottomSide(const Rectangle& rec);
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize);
 static bool OnTouch(const Player& player, float targetPosX);
 
@@ -134,7 +133,7 @@ void UpdateFire(Fire& fire)
 
         if (fire.sprite != nullptr)
         {
-            fire.sprite->Update(Vector2{ fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10 }, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
+            fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
         }
     }
 }
@@ -255,7 +254,7 @@ void DrawCollisionLayer(RayTiled::ObjectLayer& layer, Camera2D* camera, Vector2 
             break;
 
         case RayTiled::ObjectLayer::ObjectType::Point:
-            DrawCircleV(Vector2{ object->Bounds.x, object->Bounds.y }, 8, GRAY);
+            DrawCircleV(Vector2{object->Bounds.x, object->Bounds.y}, 8, GRAY);
             break;
 
         case RayTiled::ObjectLayer::ObjectType::Text:
@@ -473,7 +472,7 @@ void GameplayScene::CollisionChecking()
         {
             RayTiled::UnloadTileMap(map, 1);
 
-            player.pos = Vector2{ 200.0f, 200.0f };
+            player.pos = Vector2{200.0f, 200.0f};
             isCameraScrollable = 0;
             InitHouseMap();
             camera.zoom = 2.0f;
@@ -489,7 +488,7 @@ void GameplayScene::CollisionChecking()
         {
             RayTiled::UnloadTileMap(map, 1);
 
-            player.pos = Vector2{ 484.0f, 650.0f };
+            player.pos = Vector2{484.0f, 650.0f};
             isCameraScrollable = 1;
             InitWorldMap();
             camera.zoom = 2.0f;
@@ -501,16 +500,6 @@ void GameplayScene::CollisionChecking()
             onSwitch = 0;
         } break;
     }
-}
-
-static Rectangle GetRecBottomSide(const Rectangle& rec)
-{
-    float fullArea = rec.width*rec.height;
-    float bottomArea = fullArea - fullArea*0.85f;
-
-    float y = rec.y + (fullArea - bottomArea)/rec.width;
-
-    return { rec.x, y, rec.width, bottomArea/rec.width };
 }
 
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize)
