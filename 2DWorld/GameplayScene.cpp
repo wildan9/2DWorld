@@ -31,7 +31,7 @@
 #include <iomanip>
 #include <sstream>
 
-enum class MapState { STATE_WAITING, STATE_LOADING_HOME, STATE_LOADING_WORLD };
+enum class MapState {STATE_WAITING, STATE_LOADING_HOME, STATE_LOADING_WORLD};
 MapState state = MapState::STATE_WAITING;
 
 bool showGrid = 0, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
@@ -153,7 +153,7 @@ Lightning InitLightning()
     Lightning lgh{};
 
     lgh.pos = Vector2{710.0f, 480.0f};
-    lgh.rec = Rectangle{ 700.0f, 555.0f, 200.0f, 130.0f };
+    lgh.rec = Rectangle{700.0f, 555.0f, 200.0f, 130.0f};
 
     lgh.frameCol = 16;
     lgh.frameRow = 4;
