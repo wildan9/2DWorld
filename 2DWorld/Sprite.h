@@ -31,7 +31,7 @@
 class Sprite
 {
 private:
-    Vector2 position;
+    Vector2 pos;
     Rectangle frameRec;
     Texture2D spriteSheet;
 
@@ -49,10 +49,10 @@ private:
     float timeAccumulator;
 
 public:
-    Sprite(Vector2 position_, const char* spriteSheetPath_, int frameColumns_, int frameRows_, float frameFacing_)
+    Sprite(Vector2 pos_, const char* spriteSheetPath_, int frameColumns_, int frameRows_, float frameFacing_)
     {
         spriteSheet = LoadTexture(spriteSheetPath_);
-        position = position_;
+        pos = pos_;
 
         frameColumns = frameColumns_;
         frameRows = frameRows_;
@@ -93,7 +93,7 @@ public:
         return currentFrame;
     }
 
-    void Update(Vector2 position_, float frameScale_, float frameSpeed_, int selectedRow_, float frameFacing_, int totalFrames_, bool advanceRow_)
+    void Update(Vector2 pos_, float frameScale_, float frameSpeed_, int selectedRow_, float frameFacing_, int totalFrames_, bool advanceRow_)
     {
         const int framesPerRow = spriteSheet.width/frameWidth*totalFrames_/frameColumns;
 
@@ -102,7 +102,7 @@ public:
             frameScale = frameScale_;
             frameSpeed = frameSpeed_;
             frameFacing = frameFacing_;
-            position = position_;
+            pos = pos_;
 
             frameCounter++;
             if (frameCounter >= (GetFPS()/frameSpeed))
@@ -123,7 +123,7 @@ public:
         {
             frameScale = frameScale_;
             frameFacing = frameFacing_;
-            position = position_;
+            pos = pos_;
 
             // Get current FPS and calculate animation speed
             float animationFPS = static_cast<float>(GetFPS());
@@ -158,7 +158,7 @@ public:
             spriteSheet,
             source,
             Rectangle{
-            position.x, position.y,
+            pos.x, pos.y,
                 frameRec.width*frameScale,
                 frameRec.height*frameScale
             },
