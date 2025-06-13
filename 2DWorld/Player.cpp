@@ -69,7 +69,7 @@ void Player::Start()
     playerSound.Load();
 
     frameCol = 9;
-    frameRow = 7;
+    frameRow = 8;
     selectedRow = 1;
     frameFacing = 1.0f;
     frameScale = 0.4f;
