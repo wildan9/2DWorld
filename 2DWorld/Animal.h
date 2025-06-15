@@ -29,42 +29,6 @@
 #include "Sprite.h"
 #include "rlTileMap/ray_tilemap.h"
 
-//struct Animal
-//{
-//    //Model2D model;
-//    Vector2 speed;
-//    Vector2 pos;
-//    
-//    int animCurrTexture;
-//    float scl;
-//    float rad;
-//    float facing;
-//
-//    virtual void Start() = 0;
-//    virtual void Update() = 0;
-//    virtual void Draw() const = 0;
-//};
-//
-//struct Bat : public Animal
-//{
-//    void Start() override;
-//    void Update() override;
-//    void Draw() const override;
-//
-//    ~Bat();
-//};
-//
-//struct Horse : public Animal, public RayTiled::TileLayer::Drawable
-//{
-//    void Start() override;
-//    void Update() override;
-//    void Draw() const override;
-//
-//    float GetY() override { return pos.y - rad; }
-//
-//    ~Horse();
-//};
-
 struct Animal
 {
     Vector2 pos;
