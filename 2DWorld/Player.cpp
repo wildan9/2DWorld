@@ -31,7 +31,7 @@ static struct
     float dt = 0.0f;
     const float ut = 0.084f;
 
-    Sound landStep{};
+    Sound landStep {};
 
     inline void Load()
     {
@@ -60,11 +60,11 @@ static struct
 
 void Player::Start()
 {
-    pos = Vector2{ 300.0f, 300.0f };
+    pos = Vector2{300.0f, 300.0f};
     rad = 10.0f;
     facing = 1.0f;
     isWalk = 1;
-    rec = Rectangle{ pos.x, pos.y, 10.0f, 15.0f };
+    rec = Rectangle{pos.x, pos.y, 10.0f, 15.0f};
 
     playerSound.Load();
 
@@ -77,7 +77,7 @@ void Player::Start()
     totalRows = 2;
     rad = 10.0f;
 
-    pos = Vector2{ 517.0f, 390.0f };
+    pos = Vector2{517.0f, 390.0f};
 
     sprite = std::make_unique<Sprite>(pos, "resources/Spritesheet/player.png", frameCol, frameRow, frameFacing);
 }
@@ -89,7 +89,7 @@ Player::~Player()
 
 static inline Vector2 Vector2InputDir()
 {
-    Vector2 dir{ 0 };
+    Vector2 dir {0};
 
     if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) dir.x -= 1.0f;
     if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) dir.x += 1.0f;
@@ -101,7 +101,7 @@ static inline Vector2 Vector2InputDir()
 
 void Player::Update()
 {
-    sprite->Update(Vector2{ pos.x - rad - 15, pos.y - rad - 5 }, frameScale, frameSpeed, selectedRow, frameFacing, totalRows, 0);
+    sprite->Update(Vector2{pos.x - rad - 15, pos.y - rad - 5}, frameScale, frameSpeed, selectedRow, frameFacing, totalRows, 0);
 
     dir = Vector2InputDir();
 
@@ -147,7 +147,7 @@ void Player::Update()
     rec.x = pos.x - 10.0f;
     rec.y = pos.y - 10.0f;
 
-    Vector2 playerDrawPos = Vector2{ pos.x - 15.0f, pos.y - 15.0f };
+    Vector2 playerDrawPos = Vector2{pos.x - 15.0f, pos.y - 15.0f};
 }
 
 void Player::Draw() const
