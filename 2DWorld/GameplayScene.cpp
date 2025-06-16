@@ -36,6 +36,8 @@ MapState state = MapState::STATE_WAITING;
 
 bool showGrid = 0, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
 
+std::array<Rectangle, 4> fishingRecs {};
+
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize);
 static bool OnTouch(const Player& player, float targetPosX);
 
@@ -291,6 +293,11 @@ void InitWorldMap()
         static_cast<RayTiled::ObjectLayer*>(collisionlayer)->DrawFunc = DrawCollisionLayer;
         static_cast<RayTiled::ObjectLayer*>(collisionlayer)->CheckForCollisions = 1;
     }
+
+    fishingRecs[0] = Rectangle{505.f, 369.0f, 30.0f, 145.0f};
+    fishingRecs[1] = Rectangle{680.f, 335.0f, 20.0f, 130.0f};
+    fishingRecs[2] = Rectangle{637.f, 456.0f, 20.0f, 40.0f};
+    fishingRecs[3] = Rectangle{580.f, 335.0f, 20.0f, 30.0f};
 }
 
 void InitHouseMap()
@@ -429,6 +436,11 @@ void GameplayScene::Draw()
             }
             DrawRectangleLinesEx(mapRec, 12, BLACK);
             DrawLightning(lightning);
+
+            for (const auto& rec : fishingRecs)
+            {
+                DrawRectangleLinesEx(rec, 1.2f, RED);
+            }
 
         }
     camera.EndMode();
