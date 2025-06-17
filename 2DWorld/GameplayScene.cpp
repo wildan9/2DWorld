@@ -441,6 +441,7 @@ void GameplayScene::Draw()
             {
                 DrawRectangleLinesEx(rec, 1.2f, RED);
             }
+            DrawRectangleLinesEx(frog.rec, 0.8f, RED);
 
         }
     camera.EndMode();

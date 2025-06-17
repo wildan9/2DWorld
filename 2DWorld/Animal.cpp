@@ -127,7 +127,6 @@ void Frog::Update(const Rectangle& playerRec)
 void Frog::Draw() const
 {
     DrawCircleLinesV(pos, rad, GREEN);
-    DrawRectangleLinesEx(rec, 0.4f, RED);
     sprite->Draw();
 }
 
