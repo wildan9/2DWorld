@@ -420,6 +420,15 @@ void GameplayScene::DrawHUD()
     DrawText(ssCameraZoom.str().c_str(), GetScreenWidth() - 140, GetScreenHeight() - 30, 16, WHITE);
 }
 
+void DrawRecs()
+{
+    for (const auto& rec : fishingRecs)
+    {
+        DrawRectangleLinesEx(rec, 1.2f, RED);
+    }
+    DrawRectangleLinesEx(frog.rec, 0.8f, RED);
+}
+
 void GameplayScene::Draw()
 {
     camera.BeginMode();
@@ -436,13 +445,7 @@ void GameplayScene::Draw()
             }
             DrawRectangleLinesEx(mapRec, 12, BLACK);
             DrawLightning(lightning);
-
-            for (const auto& rec : fishingRecs)
-            {
-                DrawRectangleLinesEx(rec, 1.2f, RED);
-            }
-            DrawRectangleLinesEx(frog.rec, 0.8f, RED);
-
+            DrawRecs();
         }
     camera.EndMode();
 
