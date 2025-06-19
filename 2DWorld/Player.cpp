@@ -126,7 +126,7 @@ void Player::Update()
         selectedRow = (IsKeyDown(KEY_SPACE)) ? 6 : 0;
         frameSpeed = 12.0f;
 
-        float st = (speed > 2.0f) ? 0.28f : 0.18f;
+        float st = (speed > 2.0f) ? 0.22f : 0.18f;
         playerSound.Play("land", st);
     }
     else
