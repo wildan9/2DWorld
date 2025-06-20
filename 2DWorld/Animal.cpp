@@ -35,7 +35,7 @@ void Bat::Start()
     frameRow = 3;
     selectedRow = 1;
     frameFacing = 1.0f;
-    frameScale = 1.0f;
+    frameScale = 0.9f;
     frameSpeed = 8.0f;
 
     sprite = std::make_unique<Sprite>(pos, "resources/Spritesheet/bat_sprite_sheet.png", frameCol, frameRow, frameFacing);
