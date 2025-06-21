@@ -448,10 +448,11 @@ void GameplayScene::Draw()
                 bat.Draw();
             }
 
+            DrawLightning(lightning);
+
             if (isDrawRectangles)
             {
                 DrawRectangleLinesEx(mapRec, 12, BLACK);
-                DrawLightning(lightning);
                 DrawRecs();
             }
         }
