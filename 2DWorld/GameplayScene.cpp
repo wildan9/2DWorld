@@ -211,9 +211,6 @@ void UpdateLightning(Lightning& lightning)
 
 void DrawLightning(const Lightning& lightning)
 {
-    Rectangle rec = lightning.rec;
-    DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, RED);
-
     if (lightning.isDrawn)
     {
         lightning.sprite->Draw();
@@ -452,6 +449,8 @@ void GameplayScene::Draw()
 
             if (isDrawRectangles)
             {
+                const Rectangle& rec = lightning.rec;
+                DrawRectangleLines(rec.x, rec.y, rec.width, rec.height, RED);
                 DrawRectangleLinesEx(mapRec, 12, BLACK);
                 DrawRecs();
             }
