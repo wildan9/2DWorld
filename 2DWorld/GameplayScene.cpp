@@ -34,7 +34,7 @@
 enum class MapState {STATE_WAITING, STATE_LOADING_HOME, STATE_LOADING_WORLD};
 MapState state = MapState::STATE_WAITING;
 
-bool showGrid = 0, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1;
+bool isShowGrid = 0, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1, isDrawRectangles = 1;
 
 std::array<Rectangle, 4> fishingRecs {};
 
@@ -343,10 +343,14 @@ void GameplayScene::Update()
         camera.Update(player.pos, mapRec, GetScreenWidth(), GetScreenHeight(), isCameraScrollable);
     }
 
-    // Our debug button
     if (IsKeyPressed(KEY_H))
     {
-        showGrid = !showGrid;
+        isShowGrid = !isShowGrid;
+    }
+
+    if (IsKeyPressed(KEY_J))
+    {
+        isDrawRectangles = !isDrawRectangles;
     }
 
     player.Update();
@@ -404,7 +408,7 @@ void GameplayScene::FreeResources()
 
 void GameplayScene::DrawHUD()
 {
-    if (showGrid)
+    if (isShowGrid)
     {
         DrawGrid(GetScreenWidth(), GetScreenHeight(), 12);
     }
@@ -443,9 +447,13 @@ void GameplayScene::Draw()
             {
                 bat.Draw();
             }
-            DrawRectangleLinesEx(mapRec, 12, BLACK);
-            DrawLightning(lightning);
-            DrawRecs();
+
+            if (isDrawRectangles)
+            {
+                DrawRectangleLinesEx(mapRec, 12, BLACK);
+                DrawLightning(lightning);
+                DrawRecs();
+            }
         }
     camera.EndMode();
 
