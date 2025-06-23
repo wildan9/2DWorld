@@ -78,7 +78,7 @@ void Horse::Start()
     frameRow = 1;
     selectedRow = 0;
     frameFacing = 1.0f;
-    frameScale = 1.0f;
+    frameScale = 0.9f;
     frameSpeed = 5.0f;
 
     sprite = std::make_unique<Sprite>(pos, "resources/textures/animals/horse/idle.png", frameCol, frameRow, frameFacing);
