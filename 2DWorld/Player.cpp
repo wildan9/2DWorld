@@ -72,7 +72,7 @@ void Player::Start()
     frameRow = 8;
     selectedRow = 1;
     frameFacing = 1.0f;
-    frameScale = 0.4f;
+    frameScale = 0.37f;
     frameSpeed = 8.0f;
     totalRows = 2;
     rad = 10.0f;
