@@ -101,7 +101,7 @@ void Frog::Start()
     frameRow = 3;
     selectedRow = 0;
     frameFacing = -1.0f;
-    frameScale = 0.32f;
+    frameScale = 0.31f;
     frameSpeed = 8.0f;
 
     pos = Vector2{521.5f, 390.0f};
