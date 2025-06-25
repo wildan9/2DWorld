@@ -90,7 +90,7 @@ struct Fire : public RayTiled::TileLayer::Drawable
 };
 Fire fire{};
 
-Fire IniFire()
+Fire InitFire()
 {
     Fire fire{};
     fire.rad = 10.0f;
@@ -394,7 +394,7 @@ void GameplayScene::LoadResources()
     enteringHouse = 0;
 
     lightning = InitLightning();
-    fire = IniFire();
+    fire = InitFire();
 }
 
 void GameplayScene::FreeResources()
