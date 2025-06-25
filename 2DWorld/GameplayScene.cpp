@@ -90,7 +90,7 @@ struct Fire : public RayTiled::TileLayer::Drawable
 };
 Fire fire{};
 
-Fire InitFire()
+Fire InitRedFire()
 {
     Fire fire{};
     fire.rad = 10.0f;
@@ -99,6 +99,19 @@ Fire InitFire()
     fire.rec = Rectangle{616.5f, 292.5f, 24, 24};
     StartTimer(fire.timer, 0.7f);
     fire.sprite = std::make_unique<Sprite>(Vector2{619.0f, 299.0f}, "resources/Spritesheet/fire4_64.png", 10, 6, 1.0f);
+
+    return fire;
+}
+
+Fire InitBlueFire()
+{
+    Fire fire{};
+    fire.rad = 10.0f;
+    fire.moveNext = 0;
+    fire.selectedRow = 0;
+    fire.rec = Rectangle{616.5f, 292.5f, 24, 24};
+    StartTimer(fire.timer, 0.7f);
+    fire.sprite = std::make_unique<Sprite>(Vector2{619.0f, 299.0f}, "resources/Spritesheet/fire7_64.png", 10, 6, 1.0f);
 
     return fire;
 }
@@ -394,7 +407,7 @@ void GameplayScene::LoadResources()
     enteringHouse = 0;
 
     lightning = InitLightning();
-    fire = InitFire();
+    fire = InitRedFire();
 }
 
 void GameplayScene::FreeResources()
