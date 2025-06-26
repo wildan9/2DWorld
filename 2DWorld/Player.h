@@ -33,7 +33,7 @@ class Player : public RayTiled::TileLayer::Drawable
 {
 private:
     std::unique_ptr<Sprite> sprite;
-    bool isWalk;
+    bool isMove;
     float rad;
 
     int frameCol;

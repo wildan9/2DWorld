@@ -63,7 +63,7 @@ void Player::Start()
     pos = Vector2{300.0f, 300.0f};
     rad = 10.0f;
     facing = 1.0f;
-    isWalk = 1;
+    isMove = 1;
     rec = Rectangle{pos.x, pos.y, 10.0f, 15.0f};
 
     playerSound.Load();
@@ -115,7 +115,7 @@ void Player::Update()
 
     if (Vector2Length(dir) != 0)
     {
-        isWalk = 1;
+        isMove = 1;
 
         pos = pos - Vector2Scale(dir, speed);
 
@@ -131,13 +131,13 @@ void Player::Update()
     }
     else
     {
-        isWalk = 0;
+        isMove = 0;
         totalRows = 2;
         frameSpeed = 4.0f;
         selectedRow = 1;
     }
 
-    if (!isWalk && isConjuring)
+    if (!isMove && isConjuring)
     {
         totalRows = 7;
         frameSpeed = 9.0f;
