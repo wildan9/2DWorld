@@ -75,7 +75,7 @@ void Player::Start()
     frameScale = 0.37f;
     frameSpeed = 8.0f;
     totalRows = 2;
-    rad = 10.0f;
+    rad = 8.0f;
 
     pos = Vector2{517.0f, 390.0f};
 
