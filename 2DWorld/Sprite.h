@@ -35,17 +35,16 @@ private:
     Rectangle frameRec;
     Texture2D spriteSheet;
 
+    int frameRows;
     int frameWidth;
     int frameHeight;
-    int currentFrame;
     int frameCounter;
+    int frameColumns;
     float frameSpeed;
     float frameScale;
     float frameFacing;
 
-    int frameColumns;
-    int frameRows;
-
+    int currentFrame;
     float timeAccumulator;
 
 public:
