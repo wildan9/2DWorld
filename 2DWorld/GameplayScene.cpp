@@ -35,8 +35,7 @@ enum class MapState {STATE_WAITING, STATE_LOADING_HOME, STATE_LOADING_WORLD};
 MapState state = MapState::STATE_WAITING;
 
 bool isShowGrid = 0, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1, isDrawRectangles = 1;
-unsigned currentFire = 1;
-unsigned currentDrawFire = 0;
+unsigned currentFire = 1, currentDrawFire = 0;
 
 std::array<Rectangle, 4> fishingRecs {};
 
@@ -139,7 +138,7 @@ void UpdateFire(Fire& fire)
         fire.colorTimer = 5.0f;
     }
 
-    if (CheckCollisionRecs(cameraRec, Rectangle{ fire.rec.x - 20, fire.rec.y - 20, 50.f, 50.0f }) && fire.isDrawn)
+    if (CheckCollisionRecs(cameraRec, Rectangle{fire.rec.x - 20, fire.rec.y - 20, 50.f, 50.0f}) && fire.isDrawn)
     {
         if (fire.sprite->GetCurrentFrame() >= 9 && !fire.moveNext)
         {
@@ -158,7 +157,7 @@ void UpdateFire(Fire& fire)
 
         if (fire.sprite != nullptr)
         {
-            fire.sprite->Update(Vector2{ fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10 }, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
+            fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
         }
 
         if (fire.colorTimer > 0.0f)
