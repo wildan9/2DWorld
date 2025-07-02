@@ -439,8 +439,8 @@ void GameplayScene::LoadResources()
 
     lightning = InitLightning();
     
-    fires[0] = InitRedFire();
-    fires[1] = InitBlueFire();
+    fires[0] = InitBlueFire();
+    fires[1] = InitRedFire();
 }
 
 void GameplayScene::FreeResources()
