@@ -26,7 +26,6 @@
 
 #include "GameplayScene.h"
 #include "rlTileMap/ray_tilemap.h"
-#include "rlgl.h"
 
 #include <iomanip>
 #include <sstream>
