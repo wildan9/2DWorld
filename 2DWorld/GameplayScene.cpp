@@ -452,7 +452,7 @@ void GameplayScene::DrawHUD()
 {
     if (isShowGrid)
     {
-        DrawGrid(GetScreenWidth(), GetScreenHeight(), 12);
+        DrawGrid(GetScreenWidth(), GetScreenHeight(), 10);
     }
 
     std::ostringstream ssCameraZoom;
