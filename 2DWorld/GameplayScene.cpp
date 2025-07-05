@@ -34,7 +34,7 @@ enum class MapState {STATE_WAITING, STATE_LOADING_HOME, STATE_LOADING_WORLD};
 MapState state = MapState::STATE_WAITING;
 
 bool isShowGrid = 0, enteringHouse = 0, onSwitch = 0, isCameraScrollable = 1, isDrawRectangles = 1;
-unsigned currentFire = 1, currentDrawFire = 0;
+unsigned currentDrawFire = 0;
 
 std::array<Rectangle, 4> fishingRecs {};
 
@@ -131,7 +131,6 @@ void UpdateFire(Fire& fire)
         fire.isDrawn = !fire.isDrawn;
         StartTimer(fire.timer, 0.7f);
 
-        currentFire = 0;
         currentDrawFire = 0;
 
         fire.colorTimer = 5.0f;
@@ -159,19 +158,30 @@ void UpdateFire(Fire& fire)
             fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
         }
 
-        if (fire.colorTimer > 0.0f)
+        if (fire.colorTimer >= 0.0f)
         {
             fire.colorTimer -= GetFrameTime();
 
-            if (fire.colorTimer < 0.0f)
+            if (fire.colorTimer <= 0.0f)
             {
-                currentFire = 1;
+                fire.colorTimer = 5.0f;
+                currentDrawFire = 1;
             }
         }
-        else if (currentFire == 1)
+    }
+    else if (!fire.isDrawn && currentDrawFire)
+    {
+        if (fire.sprite != nullptr)
         {
-            currentDrawFire = 1;
+            fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
         }
+
+        fire.isDrawn = !fire.isDrawn;
+        StartTimer(fire.timer, 0.7f);
+
+        currentDrawFire = 0;
+
+        fire.colorTimer = 5.0f;
     }
 }
 
@@ -271,16 +281,9 @@ void DrawObjectLayerItem(RayTiled::TileLayer& layer, RayTiled::TileLayer::Drawab
     {
         frog.Draw();
     }
-    else if (&drawable == &fires[0] || &drawable == &fires[1])
+    else if (&drawable == &fires[currentDrawFire])
     {
-        if (currentDrawFire == 0)
-        {
-            DrawFire(fires[0]);
-        }
-        else
-        {
-            DrawFire(fires[1]);
-        }
+        DrawFire(fires[currentDrawFire]);
     }
 }
 
