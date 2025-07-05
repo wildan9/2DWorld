@@ -452,7 +452,7 @@ void GameplayScene::DrawHUD()
 {
     if (isShowGrid)
     {
-        DrawGrid(GetScreenWidth(), GetScreenHeight(), 10);
+        DrawGrid(GetScreenWidth(), GetScreenHeight(), 15);
     }
 
     std::ostringstream ssCameraZoom;
@@ -573,7 +573,7 @@ void GameplayScene::CollisionChecking()
 
 static void DrawGrid(int screenWidth, int screenHeight, int cellSize)
 {
-    cellSize = cellSize*4;
+    cellSize = cellSize*3;
 
     // Draw vertical lines
     for (int x = 0; x <= screenWidth; x += cellSize)
