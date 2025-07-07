@@ -132,8 +132,14 @@ void UpdateFire(Fire& fire)
         StartTimer(fire.timer, 0.7f);
 
         currentDrawFire = 0;
+    }
 
-        fire.colorTimer = 5.0f;
+    if (fire.isDrawn || currentDrawFire)
+    {
+        if (fire.sprite != nullptr)
+        {
+            fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
+        }
     }
 
     if (CheckCollisionRecs(cameraRec, Rectangle{fire.rec.x - 20, fire.rec.y - 20, 50.f, 50.0f}) && fire.isDrawn)
@@ -153,11 +159,6 @@ void UpdateFire(Fire& fire)
             fire.moveNext = 0;
         }
 
-        if (fire.sprite != nullptr)
-        {
-            fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
-        }
-
         if (fire.colorTimer >= 0.0f)
         {
             fire.colorTimer -= GetFrameTime();
@@ -171,17 +172,8 @@ void UpdateFire(Fire& fire)
     }
     else if (!fire.isDrawn && currentDrawFire)
     {
-        if (fire.sprite != nullptr)
-        {
-            fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
-        }
-
         fire.isDrawn = !fire.isDrawn;
         StartTimer(fire.timer, 0.7f);
-
-        currentDrawFire = 0;
-
-        fire.colorTimer = 5.0f;
     }
 }
 
