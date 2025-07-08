@@ -138,7 +138,7 @@ void UpdateFire(Fire& fire)
     {
         if (fire.sprite != nullptr)
         {
-            fire.sprite->Update(Vector2{fire.rec.x - fire.rad - 7, fire.rec.y - fire.rad - 10}, 0.5f, 25.0f, fire.selectedRow, 1.0f, 10, 1);
+            fire.sprite->Update(Vector2{fire.rec.x - fire.rad - ((currentDrawFire) ? 7 : 3), fire.rec.y + ((currentDrawFire) ? 0 : 4) - fire.rad - 10}, ((currentDrawFire) ? 0.5f : 0.38f), 25.0f, fire.selectedRow, 1.0f, 10, 1);
         }
     }
 
