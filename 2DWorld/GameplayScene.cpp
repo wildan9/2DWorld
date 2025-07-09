@@ -134,12 +134,9 @@ void UpdateFire(Fire& fire)
         currentDrawFire = 0;
     }
 
-    if (fire.isDrawn || currentDrawFire)
+    if ((fire.isDrawn || currentDrawFire) && fire.sprite != nullptr)
     {
-        if (fire.sprite != nullptr)
-        {
-            fire.sprite->Update(Vector2{fire.rec.x - fire.rad - ((currentDrawFire) ? 7 : 3), fire.rec.y + ((currentDrawFire) ? 0 : 4) - fire.rad - 10}, ((currentDrawFire) ? 0.5f : 0.38f), 25.0f, fire.selectedRow, 1.0f, 10, 1);
-        }
+        fire.sprite->Update(Vector2{fire.rec.x - fire.rad - ((currentDrawFire) ? 7 : 3), fire.rec.y + ((currentDrawFire) ? 0 : 4) - fire.rad - 10}, ((currentDrawFire) ? 0.5f : 0.38f), 25.0f, fire.selectedRow, 1.0f, 10, 1);
     }
 
     if (CheckCollisionRecs(cameraRec, Rectangle{fire.rec.x - 20, fire.rec.y - 20, 50.f, 50.0f}) && fire.isDrawn)
