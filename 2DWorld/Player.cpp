@@ -146,8 +146,6 @@ void Player::Update()
 
     rec.x = pos.x - 10.0f;
     rec.y = pos.y - 10.0f;
-
-    Vector2 playerDrawPos = Vector2{pos.x - 15.0f, pos.y - 15.0f};
 }
 
 void Player::Draw() const
