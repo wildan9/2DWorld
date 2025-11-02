@@ -407,7 +407,7 @@ namespace RayTiled
 
                     uint32_t header = *(uint32_t*)(contents.data());
 
-                    uint8_t* data = DecodeDataBase64((const unsigned char*)contents.c_str() + 4, &size);
+                    uint8_t* data = DecodeDataBase64(contents.c_str() + 4, &size);
 
                     uint32_t* decompData = nullptr;
                     int decompSize = 0;

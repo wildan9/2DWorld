@@ -65,4 +65,4 @@ T Audio::LoadAudioData(const char* audio)
 
 void DrawVolumeBar();
 void PlayClickSound();
-void SetCurrBGM(char* bgm);
+void SetCurrBGM(const char* bgm);

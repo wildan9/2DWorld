@@ -48,7 +48,7 @@ Volume volume{};
 Sound clickSound{};
 Timer volumeBarTimer{};
 
-char* currBGM;
+static std::string currBGM;
 
 void Audio::LoadResources()
 {
@@ -175,7 +175,7 @@ void DrawVolumeBar()
 	}
 }
 
-void SetCurrBGM(char* bgm)
+void SetCurrBGM(const char* bgm)
 {
 	currBGM = bgm;
 }
